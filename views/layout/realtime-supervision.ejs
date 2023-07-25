@@ -1,0 +1,210 @@
+<%-breadcrumb%>
+<script>
+    var _companies = JSON.parse('<%- JSON.stringify(companies)%>');
+    var _voiceCampaigns = JSON.parse('<%- JSON.stringify(campaigns)%>');
+    var _voiceServices = JSON.parse('<%- JSON.stringify(voiceServices)%>');
+    var _chatServices = JSON.parse('<%- JSON.stringify(chatServices)%>');
+    var _mailServices = JSON.parse('<%- JSON.stringify(mailServices)%>');
+</script>
+<div class="lv-header-alt clearfix">
+    <h2 class="lvh-label hidden-xs">
+        <%- title %>
+    </h2>
+    <div class="clearfix"></div>
+    <div class="form-body">
+        <div class="row m-0 m-t-20 m-b-20">
+            <div class="col-md-3">
+                <label for="idCompany" class="control-label f-13"><span>Công ty</span></label>
+                <select id="idCompany" class="selectpicker input" title="Chọn công ty" multiple>
+                    <% for(var i = 0;i < companies.length;i++){ %>
+                    <option value=<%- companies[i]._id %>>
+                        <%- companies[i].name %>
+                    </option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="idVoiceCampaign" class="control-label f-13"><span>Gọi ra</span></label>
+                <select id="idVoiceCampaign" class="selectpicker input" title="Chọn chiến dịch" multiple>
+                    <% for(var i = 0;i < campaigns.length;i++){ %>
+                    <option value=<%- campaigns[i]._id %>>
+                        <%- campaigns[i].name %>
+                    </option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="idVoiceService" class="control-label f-13"><span>Gọi vào</span></label>
+                <select id="idVoiceService" class="selectpicker input" title="Chọn chiến dịch" multiple>
+                    <% for(var i = 0;i < voiceServices.length;i++){ %>
+                    <option value=<%- voiceServices[i]._id %>>
+                        <%- voiceServices[i].name %>
+                    </option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="idChatService" class="control-label f-13"><span>Chiến dịch chat</span></label>
+                <select id="idChatService" class="selectpicker input" title="Chọn chiến dịch" multiple>
+                    <% for(var i = 0;i < chatServices.length;i++){ %>
+                    <option value=<%- chatServices[i]._id %>>
+                        <%- chatServices[i].name %>
+                    </option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="idMailService" class="control-label f-13"><span>Chiến dịch mail</span></label>
+                <select id="idMailService" class="selectpicker input" title="Chọn chiến dịch" multiple>
+                    <% for(var i = 0;i < mailServices.length;i++){ %>
+                    <option value=<%- mailServices[i]._id %>>
+                        <%- mailServices[i].name %>
+                    </option>
+                    <% } %>
+                </select>
+            </div>
+        </div>
+        <div class="row m-0">
+            <div class="col-md-4"></div>
+            <div class="col-md-4 m-b-20">
+                <div class="btn-group btn-group btn-group-justified">
+                    <a id="btn-search" class="btn bgm-blue uppercase c-white" style="width:auto"><i
+                            class="fa fa-search m-r-10"></i><strong>Tìm
+                            kiếm</strong></a>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body table-responsive">
+        <table class="table table-bordered table-fix" id="tbl-agent-monitor">
+            <thead>
+                <tr class="f-12">
+                    <th class="bgm-orange c-white text-center text-uppercase">chiến dịch</th>
+                    <th class="bgm-orange c-white text-center text-uppercase">công ty</th>
+                    <th class="bgm-orange c-white text-center text-uppercase">sl agent voice online</th>
+                    <th class="bgm-orange c-white text-center text-uppercase">sl agent voice offline</th>
+                    <th class="bgm-orange c-white text-center text-uppercase">sl agent chat online</th>
+                    <th class="bgm-orange c-white text-center text-uppercase">sl agent chat offline</th>
+                    <th class="bgm-orange c-white text-center text-uppercase">sl agent mail online</th>
+                    <th class="bgm-orange c-white text-center text-uppercase">sl agent mail offline</th>
+                </tr>
+            </thead>
+            <tbody id="total-tab">
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="lv-header-alt clearfix">
+    <h2 class="lvh-label hidden-xs">
+        chi tiết
+    </h2>
+</div>
+<div class="card">
+    <div class="card-body table-responsive">
+        <ul class="tab-nav tn-justified" role="tablist">
+            <li role="presentation" class="ticketTab active" data-id="1">
+                <a class="col-sm-6 p-5 f-13"
+                   href="#realtime-supervision-voice"
+                   role="tab"
+                   data-toggle="tab" aria-expanded="false">VOICE</a>
+            </li>
+            <li role="presentation" class="ticketTab" data-id="2">
+                <a class="col-sm-6 p-5 f-13"
+                   href="#realtime-supervision-chat"
+                   role="tab"
+                   data-toggle="tab" aria-expanded="false">CHAT</a>
+            </li>
+            <li role="presentation" class="ticketTab" data-id="2">
+                <a class="col-sm-6 p-5 f-13"
+                   href="#realtime-supervision-mail"
+                   role="tab"
+                   data-toggle="tab" aria-expanded="false">MAIL</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" style="height: 100%" class="tab-pane animated active" id="realtime-supervision-voice">
+                <table class="table table-bordered table-fix">
+                    <thead>
+                        <tr class="f-12">
+                            <th class="bgm-orange c-white text-center text-uppercase">sl agent online</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl agent offline</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl agent đang voice</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl cuộc gọi tính đến thời điểm hiện tại</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl cuộc gọi đang phục vụ</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl cuộc gọi bị nhỡ</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">tỉ lệ phục vụ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center">
+                            <td id="voice-sl-agent-online">0</td>
+                            <td id="voice-sl-agent-offline">0</td>
+                            <td id="voice-sl-agent-dang-voice">0</td>
+                            <td id="voice-sl-cuoc-goi-tinh-den-thoi-diem-hien-tai">0</td>
+                            <td id="voice-sl-cuoc-goi-dang-phuc-vu">0</td>
+                            <td id="voice-sl-cuoc-goi-bi-nho">0</td>
+                            <td id="voice-ti-le-phuc-vu">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div role="tabpanel" style="height: 100%" class="tab-pane animated" id="realtime-supervision-chat">
+                <table class="table table-bordered table-fix">
+                    <thead>
+                        <tr class="f-12">
+                            <th class="bgm-orange c-white text-center text-uppercase">sl agent online</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl agent offline</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl agent đang chat</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl chat thời điểm hiện tại</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl chat đang chờ phục vụ</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl chat đang phục vụ</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl chat bị nhỡ</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">tỉ lệ phục vụ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center">
+                            <td id="chat-sl-agent-online">0</td>
+                            <td id="chat-sl-agent-offline">0</td>
+                            <td id="chat-sl-agent-dang-chat">0</td>
+                            <td id="chat-sl-chat-thoi-diem-hien-tai">0</td>
+                            <td id="chat-sl-chat-dang-cho-phuc-vu">0</td>
+                            <td id="chat-sl-chat-dang-phuc-vu">0</td>
+                            <td id="chat-sl-chat-bi-nho">0</td>
+                            <td id="chat-ti-le-phuc-vu">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div role="tabpanel" style="height: 100%" class="tab-pane animated" id="realtime-supervision-mail">
+                <table class="table table-bordered table-fix">
+                    <thead>
+                        <tr class="f-12">
+                            <th class="bgm-orange c-white text-center text-uppercase">sl agent online</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl agent offline</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl agent đang xử lý mail</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl email nhận</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl email gửi đi</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">sl email đang xử lý</th>
+                            <th class="bgm-orange c-white text-center text-uppercase">tỉ lệ phục vụ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center">
+                            <td id="mail-sl-agent-online">0</td>
+                            <td id="mail-sl-agent-offline">0</td>
+                            <td id="mail-sl-agent-dang-xu-ly-mail">0</td>
+                            <td id="mail-sl-email-nhan">0</td>
+                            <td id="mail-sl-email-gui-di">0</td>
+                            <td id="mail-sl-email-dang-xu-ly">0</td>
+                            <td id="mail-ti-le-phuc-vu">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

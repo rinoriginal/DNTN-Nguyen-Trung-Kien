@@ -1,0 +1,341 @@
+<%-breadcrumb%>
+<script>
+    var customerComplaint;
+    var _urlUpload = JSON.parse('<%- JSON.stringify(_url) %>');
+</script>
+<% if (customer) { %>
+<script>
+    customerComplaint = JSON.parse('<%- JSON.stringify(customer) %>');
+</script>
+<%}%>
+<style>
+    .content-format table td {
+        border: 1px solid #4C4C4C;
+        padding: 2px;
+    }
+</style>
+<div class="card" id="ticket-edit">
+    <div class="card-header">
+        <h2 class="m-b-5"><%- title %> </h2>
+</div>
+
+<div class="card-body card-padding">
+    <section id="main">
+        <div class="row">
+            <div class="col-sm-12">
+
+                            <div class="form-horizontal bgm-white flex-row">
+                                <div class="panel-group m-0" id="accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading p-0">
+                                            <h5 class="panel-title">
+                                                <a data-id="showCustomer"
+                                                    class="btn-block p-10 timelineTag c-white text-uppercase "><i
+                                                        class="zmdi zmdi-collection-text"></i>
+                                                    Phiếu khiếu nại
+
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseOne" class="panel-collapse collapse in">
+                                            <div class="panel-body c-overflow p-5 p-b-10">
+                                                <form id="form-new-complaint" class="form-horizontal">
+
+                                                    <table class="table table-striped table-bordered">
+                                                        <div class="row m-20">
+                                                            <label class="control-label col-md-2 text-left">
+                                                                Nhãn hiệu:<span class="required" style="color: red;">
+                                                                    *</span>
+                                                            </label>
+                                                            <div class="col-md-10 text-left">
+                                                                <select name="brandId" id="brandId"
+                                                                    class="selectpicker input" data-live-search="true"
+                                                                    title="-- Chọn --">
+                                                                    <option value="">---- Chọn ----</option>
+                                                                    <%brands.forEach(function(el){%>
+                                                    <option value="<%- el._id%>"><%- el.name%></option>
+                                                    <%})%>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row m-20">
+                                                <label class="control-label col-md-2 text-left">
+                                                    Tỉnh thành:<span class="required" style="color: red;">
+                                                        *</span>
+                                                </label>
+                                                <div class="col-md-10 text-left">
+                                                    <select name="provinceId" id="provinceId" class="selectpicker input"
+                                                        data-live-search="true" title="-- Chọn --">
+                                                        <option value="">---- Chọn ----</option>
+                                                        <%provinces.forEach(function(el){%>
+                                                        <option value="<%- el._id%>"><%- el.name%></option>
+                                                        <%})%>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row m-20">
+                                                <label class="control-label col-md-2 text-left">
+                                                    Nhà hàng:<span class="required" style="color: red;">
+                                                        *</span>
+                                                </label>
+                                                <div class="col-md-10 text-left">
+                                                    <select name="restaurantId" id="restaurantId"
+                                                        class="selectpicker input" data-live-search="true"
+                                                        title="-- Chọn --">
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row m-20">
+                                                <label class="control-label col-md-2 text-left">
+                                                    Source:<span class="required" style="color: red;">
+                                                        *</span>
+                                                </label>
+                                                <div class="col-md-10 text-left">
+                                                    <select name="channelType" id="channelType"
+                                                        class="selectpicker input" data-live-search="true"
+                                                        title="-- Chọn --">
+                                                        <option value="">---- Chọn ----</option>
+                                                        <option value="1">Social Listening
+                                                        </option>
+                                                        <option value="2">Social Comment
+                                                        </option>
+                                                        <option value="3">Email survey</option>
+                                                        <option value="4">Email support</option>
+                                                        <option value="5">Hotline 19006622
+                                                        </option>
+                                                        <option value="6">Others</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row m-20">
+                                                <label class="control-label col-md-2 text-left">
+                                                    Loại khiếu nại:<span class="required" style="color: red;">
+                                                        *</span>
+                                                </label>
+                                                <div class="col-md-10 text-left">
+                                                    <select name="typeComplaintId" id="typeComplaintId"
+                                                        class="selectpicker input" data-live-search="true"
+                                                        title="-- Chọn --">
+                                                        <option value="">---- Chọn ----</option>
+                                                        <%complaintCategory.forEach(function(el){%>
+                                                        <option value="<%- el._id%>" data-sla="<%- el.slaComplaint%>">
+                                                            <%- el.nameComplaint%>
+                                                        </option>
+                                                        <%})%>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row m-20">
+                                                <label class="control-label col-md-2 text-left">
+                                                    Vấn đề gặp phải:
+                                                </label>
+                                                <div class="col-md-10 text-left">
+                                                    <select name="problemId" id="problemId" class="selectpicker input"
+                                                        data-live-search="true" title="-- Chọn --">
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row m-20">
+                                                <label class="control-label col-md-2 text-left">
+                                                    Category:
+                                                </label>
+                                                <div class="col-md-10 text-left">
+                                                    <select name="categoryComplaintId" id="categoryComplaintId"
+                                                        class="selectpicker input" data-live-search="true"
+                                                        title="-- Chọn --">
+                                                        <option value="">---- Chọn ----</option>
+                                                        <%category.forEach(function(el){%>
+                                                        <option value="<%- el._id%>">
+                                                            <%- el.category%>
+                                                        </option>
+                                                        <%})%>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row m-20">
+                                                <label class="control-label col-md-2 text-left">
+                                                    Sub Category:
+                                                </label>
+                                                <div class="col-md-10 text-left">
+                                                    <select name="subCategoryComplaintId" id="subCategoryComplaintId"
+                                                        class="selectpicker input" data-live-search="true"
+                                                        title="-- Chọn --">
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row m-20">
+                                                <label class="control-label col-md-2 text-left">
+                                                    Nội dung:<span class="required" style="color: red;">
+                                                        *</span>
+                                                </label>
+                                                <div class="col-md-10 text-left">
+
+                                                    <input type="text" class="form-control validate[required]"
+                                                        id="content" name="content">
+                                                </div>
+                                            </div>
+                                            <div class="row m-20">
+                                                <label class="control-label col-md-2 text-left">
+                                                    Đính kèm:
+                                                </label>
+                                                <div class="col-md-10 text-left">
+                                                    <div class="input-group">
+                                                        <a href="javascript:void(0)"
+                                                            onclick="$(`#btnUploadFile`).click()">
+                                                            <span
+                                                                class="btn btn-default btn-info btn-sm btn-file m-r-10 waves-effect">
+                                                                <span class="fileinput-new">
+                                                                    <i class="zmdi zmdi-upload p-r-10 w-13"></i>
+                                                                    Chọn file
+                                                                </span>
+                                                            </span>
+                                                        </a>
+                                                        <input type="file" id="btnUploadFile" name=""
+                                                            style="display: none" class="form-control orange"
+                                                            data-show="uploadFile" multiple>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row m-20 flex-box">
+                                                <label class="control-label col-md-2 text-left">
+                                                </label>
+                                                <div class="col-md-10 text-left">
+                                                    <div class="preview-files-zone-uploadFile overflow-scroll ">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row m-20">
+                                                <label class="control-label col-md-2 text-left">
+                                                    Trạng thái:
+                                                </label>
+                                                <div class="col-md-10 text-left">
+
+                                                    <span style="text-decoration: underline;"
+                                                        class="f-15 text-info">Đang xử lý</span>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row m-20">
+                                                <label class="control-label col-md-2 text-left">
+                                                    Thời hạn xử lý:
+                                                </label>
+                                                <div class="col-md-10 text-left">
+                                                    <div class="input-group">
+                                                        <input class="form-control date-picker" type="text"
+                                                            data-date-format="DD/MM/YYYY HH:mm" autocomplete="off"
+                                                            id="appointmentDate" name="deadline" readonly>
+                                                        <span class="input-group-addon p-l-10 bgm-gray c-white">
+                                                            <i role="button" class="zmdi zmdi-calendar"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row m-20">
+                                                <label class="control-label col-md-2 text-left">
+                                                    Tác vụ:
+                                                </label>
+                                                <div class="col-md-10 text-left">
+                                                    <div class="input-group">
+                                                       <h3>Chọn file ghi âm</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="card">
+                                                            <div class="panel-body p-0 c-overflow">
+                                                                <div class="tab-content">
+                                                                    <div role="tabpanel" style="height: 100%" class="tab-pane animated active">
+                                                                        <form role="form" id="frm-report-call-monitor">
+                                                                            <table class="table table-bordered table-fix" id="tbl-ticket">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th class="bgm-orange c-white text-center">
+                                                                                        <span class="TXT_CALL_TYPE">Loại cuộc gọi</span>
+                                                                                    </th>
+                                                                                    <th class="bgm-orange c-white text-center">
+                                                                                        <span class="TXT_START_TIME">Thời gian gọi vào</span>
+                                                                                    </th>
+                                                                                    <th class="bgm-orange c-white text-center">
+                                                                                        <span class="TXT_END_TIME">Thời gian kêt thúc</span>
+                                                                                    </th>
+                                                                                    <th class="bgm-orange c-white text-center">
+                                                                                        <span class="TXT_AGENT">Điện thoại viên</span>
+                                                                                    </th>
+                                                                                    <th class="bgm-orange c-white text-center">
+                                                                                        <span class="TXT_ACTION">Tác vụ</span>
+                                                                                    </th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                <tr class="filter" id="search-input">
+                                                                                    <td>
+                                                                                        <div>
+                                                                                            <select class="tag-select searchColumn" name="transType">
+                                                                                                <option selected value="">- Chọn -</option>
+                                                                                                <option value="1">Gọi vào</option>
+                                                                                                <option value="6">Gọi ra</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                    <td><input type="text" class="form-control" disabled></td>
+                                                                                    <td><input type="text" class="form-control" disabled></td>
+                                                                                    <td>
+                                                                                        <select class="selectpicker searchColumn" multiple name="agentId">
+                                                                                            <option disabled value="">- Chọn -</option>
+                                                                                            <% myUsers.forEach(function(el){ %>
+                                                                                            <option value="<%- el._id %>"><%- el.displayName + ' (' + el.name + ')' %></option>
+                                                                                            <% }) %>
+                                                                                        </select>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <button type="button" class="btn btn-primary btn-block waves-effect" id="btn-search" name="btn-search">
+                                                                                            <i class="zmdi zmdi-filter-list m-r-5"></i> Lọc
+                                                                                        </button>
+                                                                                    </td>
+                                                                                </tr>
+                                                
+                                                                                <tbody id="ticket-body">
+                                                                                </tbody>
+                                                                                </tbody>
+                                                                            </table>
+                                                                            <div class="text-center" id="ticket-total">
+                                                                                <!--<b>-->
+                                                                                <!--<span class="TXT_TOTAL"></span>:-->
+                                                                                <!--<span class="bold c-red" id="ticket-total">100</span>-->
+                                                                                <!--</b>-->
+                                                                            </div>
+                                                                            <div class="text-center" id="ticket-paging"></div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                </div>
+                                            </div>
+                                            
+
+                                        </table>
+                                        <div class="row m-20">
+                                            <div class="col-sm-offset-4 col-sm-4 text-center">
+                                                <button type="button" id="btnSave"
+                                                    class="btn btn-primary btn-icon-text m-t-10 waves-effect"
+                                                    data-id="" data-type=""><i
+                                                        class="m-r-5 zmdi zmdi-check-all"></i>Xác
+                                                    nhận</button>
+                                            </div>
+                                        </div>
+                                        </form>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    
+                </div>
+            </div>
+    </section>
+</div>
+</div>

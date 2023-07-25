@@ -1,0 +1,1611 @@
+﻿<!DOCTYPE html>
+<html>
+<!--[if IE 9 ]>
+<html class="ie9"><![endif]-->
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        <%- title %>
+    </title>
+    <link href="/assets/plugins/swal/style.css" rel="stylesheet">
+    <link href="/assets/css/animate.css" rel="stylesheet">
+    <link href="/assets/plugins/jquery-ui/style.css" rel="stylesheet">
+    <link href="/assets/tabs/notification/style.css" rel="stylesheet">
+    <link href="/assets/plugins/tail.select/style.css" rel="stylesheet">
+    <link href="/assets/plugins/slimselect/style.css" rel="stylesheet">
+    <link href="/assets/css/webToast.css" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+    <!--<link href="/assets/css/modalFix.css" rel="stylesheet">-->
+    <% if(plugins){ %>
+        <% plugins.forEach(function(s){ %>
+            <% if(!_equal(typeof s, 'string')){ %>
+                <link href="/assets/plugins/<%- s[0] %>/style.css" rel="stylesheet">
+                <% } %>
+                    <% }) %>
+                        <% } %>
+                            <link href="/assets/css/style.css" rel="stylesheet">
+                            <link href="/assets/plugins/window/style.css" rel="stylesheet">
+                            <link href="/assets/tabs/chat/style.css" rel="stylesheet">
+                            <link href="/assets/tabs/voice/style.css" rel="stylesheet">
+                            <link href="/assets/tabs/emailchatcisco/style.css" rel="stylesheet">
+                            <link href="/assets/plugins/bootstrap-select/style.css" rel="stylesheet">
+                            <link href="/assets/plugins/bootstrap-datepicker/style.css" rel="stylesheet">
+                            <link href="/assets/plugins/bootstrap-datetimepicker/style.css" rel="stylesheet">
+                            <link href="/assets/plugins/selectize/selectize.css" rel="stylesheet">
+                            <link href="/assets/plugins/jquery-autocomplete/jquery-autocomplete.css" rel="stylesheet">
+                            <!-- <link href="/assets/plugins/bootstrap-table/style.css" rel="stylesheet">-->
+                            <link href="/assets/pages/<%- page %>/style.css" class="dynamic" rel="stylesheet">
+                            <style>
+                                * {
+                                    box-sizing: border-box;
+                                }
+                                
+                                body {
+                                    /* font: 16px Arial; */
+                                }
+                                /*the container must be positioned relative:*/
+                                
+                                .autocomplete {
+                                    position: relative;
+                                    display: inline-block;
+                                }
+                                
+                                .autocomplete-items {
+                                    position: absolute;
+                                    border: 1px solid #d4d4d4;
+                                    border-bottom: none;
+                                    border-top: none;
+                                    z-index: 99;
+                                    /*position the autocomplete items to be the same width as the container:*/
+                                    top: 100%;
+                                    left: 0;
+                                    right: 0;
+                                }
+                                
+                                .autocomplete-items div {
+                                    padding: 10px;
+                                    cursor: pointer;
+                                    background-color: #fff;
+                                    border-bottom: 1px solid #d4d4d4;
+                                }
+                                /*when hovering an item:*/
+                                
+                                .autocomplete-items div:hover {
+                                    background-color: #e9e9e9;
+                                }
+                                /*when navigating through the items using the arrow keys:*/
+                                
+                                .autocomplete-active {
+                                    background-color: DodgerBlue !important;
+                                    color: #ffffff;
+                                }
+
+                                .float-block-call{
+                                    left: 40%;
+                                    position: fixed;
+                                    top: 2px;
+                                    z-index: 5555;
+                                    width: 60%;
+                                    /* max-width: 40%;
+                                    overflow: scroll; */
+                                    /* padding-right: 0%; */
+                                    right: 44%;
+                                }
+                                /* width */
+                                ::-webkit-scrollbar {
+                                width: 10px;
+                                }
+
+                                /* Track */
+                                ::-webkit-scrollbar-track {
+                                background: #f1f1f1; 
+                                }
+                                
+                                /* Handle */
+                                ::-webkit-scrollbar-thumb {
+                                background: #888; 
+                                }
+
+                                /* Handle on hover */
+                                ::-webkit-scrollbar-thumb:hover {
+                                background: #555; 
+                                }
+                                .scrollRowButton{
+                                    display: inline-flex;
+                                    max-width: 60%;
+                                    overflow-x: auto;
+                                    /* overflow-y: auto; */
+                                    width: 50%;
+                                    margin-left: 5px;
+                                }
+
+                                #keypadDropdown{
+                                    min-width: 210px; 
+                                    /* z-index: 10000000000000000000 !important; */
+                                    position: fixed;
+                                    top: 60px;
+                                    left: 56%;
+
+                                }
+
+                                #wrapupDropdown{
+                                    min-width: 200px; 
+                                    /* z-index: 10000000000000000000 !important; */
+                                    position: fixed;
+                                    top: 40px;
+                                    left: 66%;
+                                }
+
+                                #keypadDropdown > div {
+                                    display: grid;
+                                }
+                            </style>
+                            <script>
+                                CKEDITOR_BASEPATH = '/assets/plugins/ckeditor/', window.user = '<%- user._id || null %>';
+                                window.crudAccess = JSON.parse('<%- JSON.stringify(crud) %>');
+                            </script>
+
+
+                            <script type="text/javascript" src="/assets/plugins/jscolor/jscolor.js"></script>
+</head>
+
+<body class="customize-ggg ctm-t1">
+    <!-- <ul id="sideCallVariable" class="nav navbar-nav m-t-10 m-l-50">
+      
+        <div>
+
+        </div>
+    </ul> -->
+
+        <ul class="nav navbar-nav m-t-2 float-block-call" style="display: none;">
+            <li class="button-share" id="sideCallVariable" style="display:none;">
+                <div style="padding-right: 47px;border-right: 1px solid grey; height: 40px;">
+                    <table>
+                        <tr>
+                            <td class="p-r-15 p-l-15 p-t-5" rowspan="3">
+                                <i class="zmdi zmdi-phone-in-talk f-28" style="color: #0892ac;"></i>
+        
+                            </td>
+                            <td>
+                                    <span>Call Variable 1</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="f-13" id="fromAddress"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span id="sideTimer" class="pull-left">
+                                    <span id="timerCrm" class="f-14 c-white" style="display:none"></span>
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </li>
+            <div class="scrollRowButton">
+                <!-- <li class="button-share button-inbound" >
+                    <button type="button" id="transferCall" class="btn btn-cisco btn-cisco-talking"> Survey</button>
+                </li> -->
+                <li class="nav-item dropdown button-share button-inbound">
+                    <button type="button" class="btn btn-cisco btn-cisco-talking nav-link dropdown-toggle" 
+                    id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">KeyPad</button>
+                    <div class="dropdown-menu" id="keypadDropdown" aria-labelledby="navbarDropdown">
+                        <div class="btn-toolbar p-7" role="toolbar" aria-label="Basic example">
+                            <div class="btn-group m-b-8">
+                                <input style="width: 210px;" class="text-center form-control-lg mb-2" id="code">
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-outline-secondary key py-3 w-70" onclick="document.getElementById('code').value=document.getElementById('code').value + '1';">1</button>
+                                <button type="button" class="btn btn-outline-secondary key py-3 w-70" onclick="document.getElementById('code').value=document.getElementById('code').value + '2';">2</button>
+                                <button type="button" class="btn btn-outline-secondary key py-3 w-70" onclick="document.getElementById('code').value=document.getElementById('code').value + '3';">3</button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-outline-secondary key py-3 w-70" onclick="document.getElementById('code').value=document.getElementById('code').value + '4';">4</button>
+                                <button type="button" class="btn btn-outline-secondary key py-3 w-70" onclick="document.getElementById('code').value=document.getElementById('code').value + '5';">5</button>
+                                <button type="button" class="btn btn-outline-secondary key py-3 w-70" onclick="document.getElementById('code').value=document.getElementById('code').value + '6';">6</button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-outline-secondary key py-3 w-70" onclick="document.getElementById('code').value=document.getElementById('code').value + '7';">7</button>
+                                <button type="button" class="btn btn-outline-secondary key py-3 w-70" onclick="document.getElementById('code').value=document.getElementById('code').value + '8';">8</button>
+                                <button type="button" class="btn btn-outline-secondary key py-3 w-70" onclick="document.getElementById('code').value=document.getElementById('code').value + '9';">9</button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-outline-secondary key py-3 w-70" onclick="document.getElementById('code').value=document.getElementById('code').value + '*';">*</button>
+                                <button type="button" class="btn btn-outline-secondary key py-3 w-70" onclick="document.getElementById('code').value=document.getElementById('code').value + '0';">0</button>
+                                <button type="button" class="btn btn-outline-secondary key py-3 w-70" onclick="document.getElementById('code').value=document.getElementById('code').value + '#';">#</button>
+                            </div>
+                        </div>
+                      </div>
+                    </li>
+                <li class="button-share button-inbound" >
+                    <button type="button"  class="btn btn-cisco btn-cisco-talking holdCall">Hold</button></li>
+                <li class="button-share button-inbound"><button type="button" class="btn btn-cisco btn-cisco-talking retrieveCall" style="display: none;">Retrieve</button></li>
+                <!-- <li class="button-share button-inbound"><button type="button" class="btn btn-cisco btn-cisco-talking btnDirect" disabled>Direct Transfer</button></li>
+                <li class="button-share button-inbound"><button type="button"  class="btn btn-cisco btn-cisco-talking btnConsult" disabled>Consult</button></li> -->
+                <li class="button-share button-inbound dropdown">
+                    <button type="button" class="btn btn-cisco btn-cisco-talking dropdown-toggle" 
+                    id="dropDownWrapUp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Wrap-Up <span class="caret"></span></button>
+                    <div class="dropdown-menu" id="wrapupDropdown">
+                      <input class="form-control" id="myInput" type="text" placeholder="Search..">
+                      <div class="ulList form-check" id="wrapList">
+                        
+                      </div>
+                      <hr class="m-b-0"/>
+                        <div class="form-group m-b-5">
+                            <button type="button" class="btn btn-secondary btn-icon-text m-l-2 m-t-10 m-r-10 waves-effect waves-effect w-90" id="btn-cancel" name="btn-back" >Cancel</button>
+                            <button type="button" class="btn btn-primary btn-icon-text m-t-10 waves-effect w-90" id="btn-apply">Apply</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="pull-right button-end">
+                    <button type="button" id="endCall" class="btn btn-cisco btn-cisco-end">End</button>
+                </li>
+            </div>
+          
+            
+            <!-- <li id="sideDialing" class="pull-left m-t-9 button-outbound" id="sideDialingCrm" style="margin-left: 100px;">
+                <span id="dialingCall" style="display: none;" class="f-14 c-white">Dialing 0123456</span>
+            </li> -->
+        </ul>
+    
+    
+
+    <div class="tab-content p-relative" style="z-index: 11">
+        <div role="tabpanel" class="tab-pane animated fadeIn p-relative " id="tab-email-and-chat" style="overflow-x:hidden">
+            <div style="width: 65%; float:left; height: 100%; padding-bottom: 30px;">
+                <iframe id="inlineFrameExample" title="Inline Frame Example" width="100%" height="100%" src="<%- urlBinding %>">
+                </iframe>
+            </div>
+            <div style="width: 35%; float:right; height: 100%; padding-bottom: 30px;" id="frm-update-ticket">
+                <!-- <div class="panel-body p-5 p-b-10" id="frm-update-ticket">
+                </div> -->
+                <!-- <div class="form-horizontal bgm-white flex-row c-overflow">
+                    <div id="accordion" style="display: none;">
+                        <div class="panel panel-default">
+                        
+                        </div>
+                    </div>
+                    <div class="panel-body p-5 p-b-10" id="frm-update-ticket">
+                    </div>
+                </div> -->
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane animated fadeIn p-relative tab-panel-channel " id="tab-chat" style="overflow-x:hidden">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav navbar-left">
+                            <li class="active" id="btn-visitor"><a><i
+                                        class="zmdi zmdi-comments f-20 p-relative t-3 m-r-5"></i>Visitor</a></li>
+                            <li class="" id="btn-history"><a><i
+                                        class="zmdi zmdi-time f-20 p-relative t-2 m-r-5"></i>Lịch sử</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown" id="chat-status-container">
+                                <a class="dropdown-toggle" id="chat-status-info" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i
+                                        class="zmdi zmdi-account c-green m-r-5"></i>Sẵn sàng phục vụ <span
+                                        class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="chat-status" role="button" data-chat-status="1">Sẵn sàng phục vụ</a>
+                                    </li>
+                                    <li><a class="chat-status" role="button" data-chat-status="0">Offline</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+                <!--/.container-fluid -->
+            </nav>
+            <div class="card" id="visitor-panel">
+                <div class="row visitor">
+                    <div class="col-sm-2 p-r-0">
+                        <div class="list-group m-t-20" id="chat-task-lists">
+                            <a data-target="#chat-tbl-active-visitor-container" data-id="#chat-tbl-active-visitor-container" class="task list-group-item active" href="javascript:void(0)">Active Visitors <span class="badge m-t-3 f-10"
+                                    style="display: none">0</span></a>
+                            <a data-target="#chat-tbl-idle-visitor-container" data-id="#chat-tbl-idle-visitor-container" class="task list-group-item" href="javascript:void(0)">Idle Visitors <span
+                                    class="badge m-t-3 f-10" style="display: none">0</span></a>
+                            <a data-target="#chat-tbl-request-visitor-container" data-id="#chat-tbl-request-visitor-container" class="task list-group-item" href="javascript:void(0)">Chat requests <span class="badge m-t-3 f-10"
+                                    style="display: none">0</span></a>
+                            <!--<a class="list-group-item" href="javascript:void(0)"><i class="zmdi zmdi-plus m-r-5"></i>New label</a>-->
+                        </div>
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="lv-header-alt clearfix p-5" style="background-color: #edecec;">
+                            <h2 class="lvh-label p-l-15 c-orange">Active Visitors</h2>
+                        </div>
+                        <div id="chat-tbl-active-visitor-container">
+                            <table id="chat-tbl-active-visitor" data-type="active" data-unique-id="id" data-toggle="table" data-pagination="true" data-page-size="15" data-filter-control="true" class="table table-fix table-bordered f-13">
+                                <thead>
+                                    <tr>
+                                        <th data-field="id" data-visible="false"></th>
+                                        <th data-field="customer" data-sortable="true" data-filter-control="input" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>Khách hàng
+                                        </th>
+                                        <th data-field="location" data-sortable="true" data-filter-control="input" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-globe c-gray f-14 p-relative t-1 m-r-5"></i>Địa điểm
+                                        </th>
+                                        <th data-field="online" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>Thời gian online
+                                        </th>
+                                        <th data-field="viewing" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Đang xem
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="chat-tbl-idle-visitor-container" style="display: none">
+                            <table id="chat-tbl-idle-visitor" data-type="idle" data-unique-id="id" data-toggle="table" data-filter-control="true" data-pagination="true" data-page-size="15" class="table table-fix table-bordered f-13">
+                                <thead>
+                                    <tr>
+                                        <th data-field="id" data-visible="false"></th>
+                                        <th data-field="customer" data-filter-control="input" data-sortable="true" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>Khách hàng
+                                        </th>
+                                        <th data-field="location" data-filter-control="input" data-sortable="true" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-globe c-gray f-14 p-relative t-1 m-r-5"></i>Địa điểm
+                                        </th>
+                                        <th data-field="online" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>Thời gian online
+                                        </th>
+                                        <th data-field="viewing" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Đang xem
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="chat-tbl-request-visitor-container" style="display: none">
+                            <table id="chat-tbl-request-visitor" data-type="cquest" data-unique-id="id" data-toggle="table" data-filter-control="true" data-pagination="true" data-page-size="15" class="table table-fix table-bordered f-13">
+                                <thead>
+                                    <tr>
+                                        <th data-field="id" data-visible="false"></th>
+                                        <th data-field="customer" data-filter-control="input" data-sortable="true" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>Khách hàng
+                                        </th>
+                                        <th data-field="location" data-filter-control="input" data-sortable="true" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-globe c-gray f-14 p-relative t-1 m-r-5"></i>Địa điểm
+                                        </th>
+                                        <th data-field="online" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>Thời gian online
+                                        </th>
+                                        <th data-field="viewing" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Đang xem
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card hidden" id="supervisor-panel">
+                <div class="row visitor">
+                    <div class="col-sm-2 p-r-0">
+                        <div class="list-group m-t-20" id="chat-task-lists">
+
+                            <a data-target="#supervisior-tbl-active-visitor-container" data-id="#chat-tbl-active-visitor-container" class="task list-group-item active" href="javascript:void(0)">Active Visitors <span class="badge m-t-3 f-10"
+                                    style="display: none">0</span></a>
+                            <a data-target="#supervisior-tbl-idle-visitor-container" data-id="#chat-tbl-idle-visitor-container" class="task list-group-item" href="javascript:void(0)">Idle Visitors <span class="badge m-t-3 f-10"
+                                    style="display: none">0</span></a>
+                            <a data-target="#supervisior-tbl-request-visitor-container" data-id="#chat-tbl-request-visitor-container" class="task list-group-item" href="javascript:void(0)">Chat requests <span class="badge m-t-3 f-10"
+                                    style="display: none">0</span></a>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="lv-header-alt clearfix p-5" style="background-color: #edecec;">
+                            <h2 class="lvh-label p-l-15 c-orange">Active Visitors</h2>
+                        </div>
+
+                        <div id="supervisior-tbl-active-visitor-container">
+                            <table id="chat-tbl-active-visitor" data-type="active" data-unique-id="id" data-toggle="table" data-filter-control="true" data-pagination="true" data-page-size="15" class="table table-fix  table-bordered f-13">
+                                <thead>
+                                    <tr>
+                                        <th data-field="id" data-visible="false"></th>
+                                        <th data-field="customer" data-filter-control="input" data-sortable="true" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>Khách hàng
+                                        </th>
+                                        <th data-field="location" data-filter-control="input" data-sortable="true" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-globe c-gray f-14 p-relative t-1 m-r-5"></i>Địa điểm
+                                        </th>
+                                        <th data-field="online" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>Thời gian online
+                                        </th>
+                                        <th data-field="viewing" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Đang xem
+                                        </th>
+                                        <th data-field="agent" data-filter-control="input" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Agent
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="supervisior-tbl-idle-visitor-container" style="display: none">
+                            <table id="chat-tbl-idle-visitor" data-type="idle" data-unique-id="id" data-toggle="table" data-filter-control="true" data-pagination="true" data-page-size="15" class="table table-fix table-bordered f-13">
+                                <thead>
+                                    <tr>
+                                        <th data-field="id" data-visible="false"></th>
+                                        <th data-field="customer" data-filter-control="input" data-sortable="true" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>Khách hàng
+                                        </th>
+                                        <th data-field="location" data-filter-control="input" data-sortable="true" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-globe c-gray f-14 p-relative t-1 m-r-5"></i>Địa điểm
+                                        </th>
+                                        <th data-field="online" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>Thời gian online
+                                        </th>
+                                        <th data-field="viewing" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Đang xem
+                                        </th>
+                                        <th data-field="agent" data-filter-control="input" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Agent
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="supervisor-tbl-visitor-request-container" style="display: none">
+                            <table id="chat-tbl-visitor-request" data-type="cquest" data-unique-id="id" data-toggle="table" data-filter-control="true" data-pagination="true" data-page-size="15" class="table table-fix table-bordered f-13">
+                                <thead>
+                                    <tr>
+                                        <th data-field="id" data-visible="false"></th>
+                                        <th data-field="customer" data-filter-control="input" data-sortable="true" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>Khách hàng
+                                        </th>
+                                        <th data-field="location" data-filter-control="input" data-sortable="true" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-globe c-gray f-14 p-relative t-1 m-r-5"></i>Địa điểm
+                                        </th>
+                                        <th data-field="online" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>Thời gian online
+                                        </th>
+                                        <th data-field="viewing" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Đang xem
+                                        </th>
+                                        <th data-field="agent" data-filter-control="input" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Agent
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card hidden" id="history-panel">
+                <div class="row visitor">
+                    <div class="col-sm-12">
+                        <!--<div class="lv-header-alt clearfix p-5" style="background-color: #edecec;">-->
+                        <!--<h2 class="lvh-label p-l-15 c-orange">Active Visitors</h2>-->
+                        <!--<ul class="lv-actions actions">-->
+                        <!--<li><a href="/menu-manager" data-toggle="tooltip" data-placement="top" data-original-title="Tìm kiếm"><i class="zmdi zmdi-search"></i></a></li>-->
+                        <!--<li><a href="/menu-manager" data-toggle="tooltip" data-placement="top" data-original-title="Refresh"><i class="zmdi zmdi-refresh"></i></a></li>-->
+                        <!--</ul>-->
+                        <!--</div>-->
+
+                        <div id="history-filter-toolbar" class="row" role="form">
+                            <div>
+                                <table class="table table-bordered table-search-history">
+                                    <thead>
+                                        <tr>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center">
+                                                <div>
+                                                    <label class="text-center col-sm-2 control-label p-t-8">Tên Agent:
+                                                    </label>
+                                                    <div class="col-sm-2">
+                                                        <input class="filter p-t-6 form-control" type="text" id="agent-search-chat" name="agent-search-chat">
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label class="text-center col-sm-2 control-label p-t-8">Từ ngày:
+                                                    </label>
+                                                    <div class="col-sm-2">
+                                                        <input class="date-picker filter p-t-6 form-control" type="text" id="fromTime-search-chat" name="fromTime-search-chat">
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label class="text-center col-sm-2 control-label p-t-8">Đến ngày:
+                                                    </label>
+                                                    <div class="col-sm-2">
+                                                        <input class="date-picker filter p-t-6 form-control" type="text" id="toTime-search-chat" name="toTime-search-chat">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">
+                                                <div>
+                                                    <label class="text-center col-sm-2 control-label p-t-8">Tên visitor:
+                                                    </label>
+                                                    <div class="col-sm-2">
+                                                        <input class="filter p-t-6 form-control" type="text" id="name-search-chat" name="name-search-chat">
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label class="text-center col-sm-2 control-label p-t-8">Email
+                                                        visitor: </label>
+                                                    <div class="col-sm-2">
+                                                        <input class="filter p-t-6 form-control" type="text" id="mail-search-chat" name="mail-search-chat">
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label class="text-center col-sm-2 control-label p-t-8">Số điện
+                                                        thoại visitor: </label>
+                                                    <div class="col-sm-2">
+                                                        <input class="filter p-t-6 form-control" type="text" id="phone-search-chat" name="phone-search-chat">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">
+                                                <div>
+                                                    <label class="text-center col-sm-2 control-label p-t-8">Tin nhắn:
+                                                    </label>
+                                                    <div class="col-sm-2">
+                                                        <input class="filter p-t-6 form-control" type="text" id="content-search-chat" name="content-search-chat">
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label class="text-center col-sm-2 control-label p-t-8">Loại:
+                                                    </label>
+                                                    <div class="col-sm-2">
+                                                        <select class="selectpicker filter" id="type-search-chat" name="type-search-chat">
+                                                            <option value="-1" selected>-- Tất cả --</option>
+                                                            <option value="1">Visitor mới</option>
+                                                            <option value="3">Visitor quay lại</option>
+                                                            <option value="0">Cuộc chat bỏ lỡ</option>
+                                                            <option value="2">Tin nhắn offline</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">
+                                                <div class="col-sm-10">
+                                                    <a class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect waves-effect" id="btn-search-history-chat" name="btn-search-history-chat" type="submit"><i></i>Tìm kiếm</a>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <a class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect waves-effect" style="background-color: #4a4a4a" href="javascript: void(0)" id="btn-show-export-history" name="btn-show-export-history"><i
+                                                            class=""></i>
+                                                        <div class="c-white">Xuất</div>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <form class="frm-export-history hidden card" style="display: block;" role="form">
+                                <div class="card-header" style="background-color: rgba(237, 236, 236, 0.6)">
+                                    <h4 class="m-b-5">Xuất lịch sử chat</h4>
+                                </div>
+                                <div class="card-body card-padding">
+                                    <div class="m-t-10">
+                                        <div class="col-sm-6">
+                                            <input class="form-control date-picker" placeholder="Từ ngày" type="text" id="fromDate" name="fromDate">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input class="form-control date-picker" type="text" placeholder="Đến ngày" id="toDate" name="toDate">
+                                        </div>
+                                        <div class="col-sm-12 p-t-20">
+                                            <input class="form-control" type="text" placeholder="Các email ngăn cách nhau bởi dấu phẩy" id="toEmail" name="toEmail">
+                                        </div>
+                                        <div class="col-sm-12 p-t-10">
+                                            <i class="m-t-10" style="font-size: 12px">Lịch sử chat sẽ được gửi vào các
+                                                email trên</i>
+                                        </div>
+                                        <div class="col-sm-12 p-t-10">
+                                            <div class="col-sm-6">
+                                                <button type="submit" class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect waves-effect" style="background-color: #4a4a4a" id="btn-export-history" name="btn-export-history">
+                                                    <i class=""></i>
+                                                    <div class="c-white">Xuất</div>
+                                                </button>
+                                                <a class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect waves-effect" style="background-color: #e1e1e1" href="javascript: void(0)" id="btn-show-export-history" name="btn-show-export-history"><i
+                                                        class=""></i>
+                                                    <div class="c-black">Hủy</div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div id="history-tbl-container">
+                            <table id="chat-tbl-history" data-type="active" data-unique-id="id" data-toolbar="#history-toolbar" data-response-handler="responseHandler" data-toggle="table" data-pagination="true" data-page-size="15" class="table table-fix table-bordered f-13">
+                                <thead>
+                                    <tr>
+                                        <th data-field="id" data-visible="false"></th>
+                                        <th data-field="customer" data-sortable="true" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>Khách hàng
+                                        </th>
+                                        <th data-field="content" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-comment-more c-gray f-14 p-relative t-1 m-r-5"></i>Tin nhắn
+                                        </th>
+                                        <th data-field="location" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-globe c-gray f-14 p-relative t-1 m-r-5"></i>Địa điểm
+                                        </th>
+                                        <th data-field="time" data-sortable="true" style="background-color: rgba(237, 236, 236, 0.6);"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Thời gian
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="history-view hidden" style="display: block;">
+                            <div class="viewhistory-top">
+                                <div id="tabs">
+                                    <ul class="main-tabs tab-nav tn-justified tn-icon p-fixed b-0" style="z-index: 12" role="tablist">
+                                        <li role="presentation" class="active">
+                                            <a class="col-sx-4 p-relative" id="tab-transcript" aria-controls="tab-transcript" role="tab" data-toggle="tab" aria-expanded="false">
+                                                <i class="zmdi zmdi-comment icon-tab visible-sm visible-xs"></i><span class="m-l-10 hidden-sm hidden-xs">TRANSCRIPT</span>
+                                            </a>
+                                        </li>
+                                        <li role="presentation" class="">
+                                            <a class="col-xs-4 p-relative" id="tab-info" aria-controls="tab-info" role="tab" data-toggle="tab" aria-expanded="false">
+                                                <i class="zmdi zmdi-account-box-mail icon-tab visible-sm visible-xs"></i><span class="m-l-10 hidden-sm hidden-xs">THÔNG TIN</span>
+                                            </a>
+                                        </li>
+                                        <li role="presentation" class="">
+                                            <a class="col-xs-4 p-relative" id="tab-note" aria-controls="tab-note" role="tab" data-toggle="tab" aria-expanded="true">
+                                                <i class="zmdi zmdi-star icon-tab visible-sm visible-xs"></i><span class="m-l-10 hidden-sm hidden-xs">GHI CHÚ</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="text-right p-r-10" id="close-history-view" role="button">
+                                        <span class="closesearch" id="closehistory">Đóng<i
+                                                class="subizdasboard iclose"></i></span>
+                                        <i class="zmdi zmdi-close"></i>
+                                    </div>
+                                    <!--<div role="tabpanel" class="tab-pane animated fadeIn p-relative" id="tab-mail">mail</div>-->
+                                    <!--<div role="tabpanel" class="tab-pane animated fadeIn p-relative" id="tab-voice"></div>-->
+                                    <!--<div id="tab-history" class="content-tab" style="display: block;"></div>-->
+                                </div>
+                            </div>
+                            <!--<div class="chat-dialog ui-widget-content p-0 p-absolute ui-draggable">-->
+                            <!--<div class="content">-->
+
+                            <!--</div>-->
+                            <!--</div>-->
+                            <div class="transcript chat-msg-container m-b-5 m-r-0 p-r-5 p-relative c-overflow" style="width: 100%; height: 405px; overflow: scroll">
+                            </div>
+                            <div class="info hidden" style="width: 100%; height: 420px;">
+                                <div id="info-time" class="hidden">
+                                    <span>Thời gian trên website: </span>
+                                </div>
+                                <div id="info-location">
+                                    <span>Địa điểm: </span>
+                                </div>
+                                <div id="info-ip">
+                                    <span>Địa chỉ ip: </span>
+                                </div>
+                            </div>
+                            <div class="note hidden p-relative c-overflow" style="width: 100%; height: 405px; overflow: scroll">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ul id="chat-bars-container"></ul>
+
+            <!-- Chat setting client modal-->
+            <div class="modal fade in" id="modal-chat-setting-client" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="false">
+                <form class="form-horizontal m-t-30" role="form" id="create-reason">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Cài đặt</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card-body">
+                                    <div class="form-group">
+
+                                        <label for="enable-notification" class="col-sm-3 control-label"><span
+                                                class="TXT_STATUS">Notification</span></label>
+                                        <div class="col-sm-6">
+                                            <div class="checkbox m-b-15">
+                                                <label>
+                                                    <input type="checkbox" id="enable-notification"
+                                                        name="enable-notification" checked="" value="1">
+                                                    <i class="input-helper"></i>
+                                                    <span class="p-l-10" data-text-on="Không kích hoạt"
+                                                        data-text-off="Kích hoạt">Kích hoạt</span>
+
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="enable-sound" class="col-sm-3 control-label"><span
+                                                class="TXT_STATUS">Âm thanh</span></label>
+                                        <div class="col-sm-6">
+                                            <div class="checkbox m-b-15">
+                                                <label>
+                                                    <input type="checkbox" id="enable-sound" name="enable-sound"
+                                                        checked="" value="1">
+                                                    <i class="input-helper"></i>
+                                                    <span class="p-l-10" data-text-on="Không kích hoạt"
+                                                        data-text-off="Kích hoạt">Kích hoạt</span>
+
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="auto-close-notification" class="col-sm-3 control-label"><span
+                                                class="TXT_STATUS">Thời gian tự tắt notification</span></label>
+                                        <div class="col-sm-6">
+                                            <input type="number" class="form-control input-sm" id="auto-close-notification" name="auto-close-notification" placeholder="Tính bằng giây">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary waves-effect create">Xác nhận</button>
+
+                                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Bỏ qua
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /Chat setting client modal-->
+
+            <div class="modal fade in" id="modal-chat-display-setting" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="false">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header" style="
+    background: #8ec50c;
+    color: white;
+    text-transform: uppercase;
+    padding: 11px 0px 11px 10px;
+    text-align: center;
+">
+                            <h4 class="modal-title" style="text-align: center;">Thiết lập cuộc trò chuyện</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card-body">
+                                <div id="style-container" class="p-5" style="margin: 10px 10px 10px 20px;">
+
+                                    <div class="style-property">
+                                        <div class="style-label">font</div>
+                                        <div class="style-edit-value">
+
+                                            <select id="edit-font-family">
+                                                <option value="Calibri Light">Calibri Light</option>
+                                                <option value="Arial">Arial</option>
+                                                <option value="Cambria">Cambria</option>
+                                                <option value="Garamond">Garamond</option>
+                                                <option value="Georgia">Georgia</option>
+                                                <option value="Harrington">Harrington</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="style-property">
+                                        <div class="style-label">màu chữ</div>
+                                        <div class="style-edit-value">
+                                            <button id="edit-text-color" class="jscolor {valueElement:null,value:'000000'}"></button>
+
+                                        </div>
+                                    </div>
+                                    <div class="style-property">
+                                        <div class="style-label">màu cửa sổ</div>
+                                        <div id="edit-title-color-container" class="style-edit-value">
+                                            <button id="edit-title-color" class="jscolor {valueElement:null,value:'ffffff'}"></button>
+                                        </div>
+                                    </div>
+                                    <div class="style-property">
+                                        <div class="style-label">cỡ chữ</div>
+                                        <div class="style-edit-value">
+                                            <select id="edit-font-size">
+                                                <% for (var i=0; i<(32-8);i++){%>
+                                                <option value="<%-(i+8)%>px"><%-(8+i)%></option>
+                                                <% }%>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!--<div class="style-button" style="display: flex; margin-top: 10px; margin-left: 40px">-->
+
+                                    <!--<button id="style-cancel" type="button" class="btn btn-default btn-icon-text m-t-10 waves-effect" data-dismiss="modal" style="width: 90px; margin-right: 15px">Huỷ</button>-->
+                                    <!--<button id="style-submit" type="button" class="btn btn-default btn-icon-text m-t-10 waves-effect" data-dismiss="modal" style="width: 90px">Lưu</button>-->
+
+                                    <!--</div>-->
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button id="style-submit" class="btn btn-primary waves-effect">Xác nhận</button>
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Bỏ
+                                qua</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane animated fadeIn p-relative tab-panel-channel " id="tab-mail" style="overflow-x:hidden">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="#"><i
+                                        class="zmdi zmdi-comments f-20 p-relative t-3 m-r-5"></i>Email</a>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right m-t-17">
+                            <li>Offline</li>
+                            <li id="toggle-width" class="m-r-20 m-l-20">
+                                <div class="toggle-switch">
+                                    <input id="tw-switch" type="checkbox" hidden="hidden"><label for="tw-switch" class="ts-helper"></label>
+                                </div>
+                            </li>
+                            <li>Online</li>
+                        </ul>
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+                <!--/.container-fluid -->
+            </nav>
+            <div class="card bgm-white">
+                <div class="row">
+                    <div class="col-sm-3 p-r-0">
+                        <div class="list-group m-t-20" id="mail-task-lists">
+                            <a id="tab-danh-sach-mail" data-target="#mail-danh-sach-mail" data-type="new" data-text="Danh sách Mail" class="task list-group-item btn-float active" href="javascript:void(0)"><i class="zmdi zmdi-email f-22 p-relative t-3 m-r-10"></i>Danh
+                                sách Mail <span class="badge m-t-3 f-10 p-relative t-2"
+                                    style="display: none">0</span></a>
+                            <a id="tab-danh-sach-mail-nhan" data-target="#mail-danh-sach-mail-nhan" data-type="unprogressing" data-text="Danh sách Mail nhận" class="task list-group-item btn-float " href="javascript:void(0)"><i
+                                    class="zmdi zmdi-email-open f-22 p-relative t-3 m-r-10"></i>Danh sách Mail nhận
+                                <span class="badge m-t-3 f-10 p-relative t-2" style="display: none">0</span></a>
+                            <a id="tab-danh-sach-mail-gui" data-target="#mail-danh-sach-mail-gui" data-type="progressing" data-text="Danh sách Mail gửi" class="task list-group-item btn-float " href="javascript:void(0)"><i
+                                    class="zmdi zmdi-mail-send f-22 p-relative t-3 m-r-10"></i>Danh sách Mail gửi <span
+                                    class="badge m-t-3 f-10 p-relative t-2" style="display: none">0</span></a>
+                            <a id="tab-danh-sach-spam" data-target="#mail-danh-sach-spam" data-type="progressed" data-text="Danh sách Spam" class="task list-group-item btn-float " href="javascript:void(0)"><i
+                                    class="fa fa-exclamation-triangle f-21 p-relative t-2 m-r-9"></i>Danh sách Spam
+                                <span class="badge m-t-3 f-10 p-relative t-2" style="display: none">0</span></a>
+                            <a id="tab-danh-sach-mail-spam" data-target="#mail-danh-sach-mail-spam" data-type="spam" data-text="Danh sách Mail Spam" class="task list-group-item btn-float " href="javascript:void(0)"><img src="/assets/images/spam_mail.png" height="22" width="22"></img>
+                                </i> Danh sách Mail Spam <span class="badge m-t-3 f-10 p-relative t-2" style="display: none">0</span></a>
+                        </div>
+                    </div>
+                    <div class="col-sm-9" id="list-mail">
+                        <div class="lv-header-alt clearfix p-5" style="background-color: #edecec;">
+                            <h2 class="lvh-label p-l-15 c-orange">Danh sách Mail</h2>
+                            <input type="text" id="mail-search" class="fixed-table-toolbar p-absolute r-40 m-r-10" placeholder="Tìm kiếm..." style="float: right;height: 31px;padding: 6px 12px;font-size: 12px;line-height: 1.42857;color: #555;background-color: #fff;background-image: none;border: 1px solid #ccc;border-radius: 1px;">
+
+                        </div>
+
+                        <div id="mail-danh-sach-mail" style="border-left:outset;max-height: 600px;display:block;overflow-y:auto;overflow-x: hidden">
+                            <div class="form-group">
+                                <table style="width: 80%">
+                                    <tr>
+                                        <td style="padding: 5px;color: #333;">NỘI DUNG</td>
+                                        <td style="padding: 5px;">TIÊU ĐỀ</td>
+                                        <td style="padding: 5px;">FILE ĐÍNH KÈM</td>
+                                        <td style="padding: 5px;">NGÀY THÁNG</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px;"><input class="form-control" id="content-search" type="text"></td>
+                                        <td style="padding: 5px;"><input class="form-control" type="text" id="header-search"></td>
+                                        <td style="padding: 5px;"><input class="form-control" type="text" id="file-search">
+                                        </td>
+                                        <td style="padding: 5px;"><input class="form-control" type="date" id="date-search">
+                                        </td>
+                                        <td align="right">
+                                            <button style="width: 300%" id="mail-search-button-all" class="btn btn-primary">
+                                                <i class="fa fa-search"></i></button>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="background: #edecec;height: 5px">
+                                <hr style="size: 10px">
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td>
+                                            <button id="spamButton" style="display: none;" class="spam-button btn btn-light waves-effect" onclick="spamBtn(0)"><i
+                                                    class="fa fa-exclamation-triangle f-21 p-relative t-2 m-r-9"></i>Spam
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </thead>
+                            </table>
+
+
+                            <table id="tbl-new" data-toggle="table" data-url="/mail-all" data-table="mail-danh-sach-mail" data-query-params="MailFilterParams" data-side-pagination="server" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-search="false" data-sort-name="created"
+                                data-sort-order="desc" class="table table-fix table-bordered table-hover f-13">
+                                <thead>
+                                    <tr>
+                                        <th data-field="checked" data-checkbox="true" id="checked" oninput="loadButton()"></th>
+
+                                        <th data-field="from" data-width="200"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>Người gửi
+                                        </th>
+                                        <th data-field="subject" data-width="250"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Tiêu đề
+                                        </th>
+                                        <th data-field="body"><i class="zmdi zmdi-comment c-gray f-14 p-relative t-1 m-r-5"></i>Nội dung
+                                        </th>
+                                        <th data-field="created" data-sortable="true" data-width="150" data-class="text-center"><i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>Ngày gửi
+                                        </th>
+                                        <th data-field="attachments" data-width="150" data-class="text-center" data-formatter="listMailConvertAttachment"><i class="zmdi zmdi-file-text c-gray f-14 p-relative t-1 m-r-5"></i>Tệp đính kèm
+                                        </th>
+                                        <th data-width="50" data-field="forward"><i class="zmdi zmdi-forward c-gray f-14 p-relative t-1 m-r-1"></i>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody style="max-width: 250px"></tbody>
+                            </table>
+                        </div>
+                        <div id="mail-danh-sach-mail-nhan" style="display: none;border-left: outset">
+
+                            <div class="form-group">
+                                <table style="width: 80%">
+                                    <tr>
+                                        <td style="padding: 5px;color: #333;">NỘI DUNG</td>
+                                        <td style="padding: 5px;">TIÊU ĐỀ</td>
+                                        <td style="padding: 5px;">FILE ĐÍNH KÈM</td>
+                                        <td style="padding: 5px;">NGÀY THÁNG</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px;"><input class="form-control" id="content-search" type="text"></td>
+                                        <td style="padding: 5px;"><input class="form-control" type="text" id="header-search"></td>
+                                        <td style="padding: 5px;"><input class="form-control" type="text" id="file-search">
+                                        </td>
+                                        <td style="padding: 5px;"><input class="form-control" type="date" id="date-search">
+                                        </td>
+                                        <td>
+                                            <button style="width: 300%" id="mail-search-button-inbox" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="background: #edecec;height: 5px">
+                                <hr style="size: 10px">
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td>
+                                            <button id="spamButton" style="display: none;" class="spam-button btn btn-light waves-effect" onclick="spamBtn(1)"><i
+                                                    class="fa fa-exclamation-triangle f-21 p-relative t-2 m-r-9"></i>Spam
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <table id="tbl-unprogressing" data-toggle="table" data-url="/mail-inbox" data-table="mail-danh-sach-mail-nhan" data-query-params="MailFilterParams" data-side-pagination="server" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-search="false"
+                                data-sort-name="created" data-sort-order="desc" class="table table-fix table-bordered table-hover f-13">
+                                <thead>
+                                    <tr>
+                                        <th data-field="checked" data-checkbox="true" oninput="loadButton()"></th>
+                                        <th data-field="from" data-width="200"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>Người gửi
+                                        </th>
+                                        <th data-field="subject" data-width="250"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Tiêu đề
+                                        </th>
+                                        <th data-field="body"><i class="zmdi zmdi-comment c-gray f-14 p-relative t-1 m-r-5"></i>Nội dung
+                                        </th>
+                                        <th data-field="created" data-sortable="true" data-width="150" data-class="text-center"><i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>Ngày gửi
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div id="mail-danh-sach-mail-gui" style="display: none;border-left: outset">
+                            <div class="form-group">
+                                <table style="width: 80%">
+                                    <tr>
+                                        <td style="padding: 5px;color: #333;">NỘI DUNG</td>
+                                        <td style="padding: 5px;">TIÊU ĐỀ</td>
+                                        <td style="padding: 5px;">FILE ĐÍNH KÈM</td>
+                                        <td style="padding: 5px;">NGÀY THÁNG</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px;"><input class="form-control" id="content-search" type="text"></td>
+                                        <td style="padding: 5px;"><input class="form-control" type="text" id="header-search"></td>
+                                        <td style="padding: 5px;"><input class="form-control" type="text" id="file-search">
+                                        </td>
+                                        <td style="padding: 5px;"><input class="form-control" type="date" id="date-search">
+                                        </td>
+                                        <td>
+                                            <button style="width: 300%" id="mail-search-button-sent" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="background: #edecec;height: 5px">
+                                <hr style="size: 10px">
+                            </div>
+                            <button class="btn btn-light waves-effect" onclick="spamBtn(2)" id="spamButton" style="display: none;"><i
+                                    class="fa fa-exclamation-triangle f-21 p-relative t-2 m-r-9"></i>Spam
+                            </button>
+                            <table id="tbl-progressing" data-toggle="table" data-url="/mail-outbox" data-table="mail-danh-sach-mail-gui" data-query-params="MailFilterParams" data-side-pagination="server" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-search="false"
+                                data-sort-name="created" data-sort-order="desc" class="table table-fix table-bordered table-hover f-13">
+                                <thead>
+                                    <tr>
+                                        <th data-field="from" data-width="200"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>Người gửi
+                                        </th>
+                                        <th data-field="subject" data-width="250"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Tiêu đề
+                                        </th>
+                                        <th data-field="body"><i class="zmdi zmdi-comment c-gray f-14 p-relative t-1 m-r-5"></i>Nội dung
+                                        </th>
+                                        <th data-field="created" data-sortable="true" data-width="150" data-class="text-center"><i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>Ngày gửi
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div id="mail-danh-sach-spam" style="display: none;border-left: outset">
+                            <div class="form-group">
+                                <table style="width: 80%" ư>
+                                    <tr>
+                                        <td style="padding: 5px;color: #333;">NỘI DUNG</td>
+                                        <td style="padding: 5px;">TIÊU ĐỀ</td>
+                                        <td style="padding: 5px;">FILE ĐÍNH KÈM</td>
+                                        <td style="padding: 5px;">NGÀY THÁNG</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px;"><input class="form-control" id="content-search" type="text"></td>
+                                        <td style="padding: 5px;"><input class="form-control" type="text" id="header-search"></td>
+                                        <td style="padding: 5px;"><input class="form-control" type="text" id="file-search">
+                                        </td>
+                                        <td style="padding: 5px;"><input class="form-control" type="date" id="date-search">
+                                        </td>
+                                        <td>
+                                            <button style="width: 300%" id="mail-search-button-spam" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="background: #edecec;height: 5px">
+                                <hr style="size: 10px">
+                            </div>
+                            <div>
+                                <button class="spam-button btn btn-light waves-effect" style="display: none;" id="notSpamButton" onclick="notSpamBtn()"><i
+                                        class="fa fa-exclamation-triangle f-21 p-relative t-2 m-r-9"></i>Not Spam
+                                </button>
+                            </div>
+
+                            <table id="tbl-progressed" data-toggle="table" data-url="/mail-id-spam" data-table="mail-danh-sach-spam" data-side-pagination="server" data-query-params="MailFilterParams" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-search="false"
+                                data-sort-name="created" data-sort-order="desc" class="table table-fix table-bordered table-hover f-13">
+                                <thead>
+                                    <tr>
+                                        <th data-field="checked" data-checkbox="true"></th>
+                                        <th data-field="from" data-width="200"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>Người gửi
+                                        </th>
+                                        <th data-field="subject" data-width="250"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Tiêu đề
+                                        </th>
+                                        <th data-field="body"><i class="zmdi zmdi-comment c-gray f-14 p-relative t-1 m-r-5"></i>Nội dung
+                                        </th>
+                                        <th data-field="created" data-sortable="true" data-width="150" data-class="text-center"><i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>Ngày gửi
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+
+                        <div id="mail-danh-sach-mail-spam" style="display: none;border-left: outset">
+                            <button type="button" data-toggle="modal" style="" class="btn btn-light" data-target="#spamModal"><i class="fa fa-plus c-gray f-14 p-relative t-1 m-r-5"></i>
+                            </button>
+                            <div class="modal fade" id="spamModal" tabindex="-1" role="dialog" aria-labelledby="labelModel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="background: #74b23b; max-height: 50px;text-align: center">
+                                            <h5 class="c-white t-9" STYLE="text-align: center" id="labelModel">THÊM ĐỊA CHỈ SPAM
+                                            </h5>
+
+                                        </div>
+                                        <div class="modal-body">
+                                            <br>
+                                            <p>Địa chỉ Email: </p>
+
+                                            <input type="email" id="input_mail_spam" class="form-control">
+                                            <h4 style="font-style:italic" id='result'></h4>
+                                        </div>
+                                        <div class="modal-footer" style="text-align: center">
+
+                                            <button type="submit" onclick="addSpamMail()" class="btn btn-secondary">Hoàn
+                                                tất
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="labelModel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="background: #74b23b; max-height: 50px;text-align: center">
+                                            <h5 class="c-white t-9" STYLE="text-align: center" id="labelModel">Xác nhận
+                                            </h5>
+
+                                        </div>
+                                        <div class="modal-body">
+                                            <br>
+                                            <h3 style="font-style: italic;text-align: center" id="contentDelete"></h3>
+                                            <div><i></i></div>
+
+                                        </div>
+                                        <div class="modal-footer" style="text-align: center">
+                                            <button type="submit" data-dismiss="modal" class="btn btn-secondary">Không
+                                            </button>
+                                            <button type="submit" onclick="actionDelete()" style="background: red" class="btn btn-secondary">Có
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table id="tbl-spam" data-toggle="table" data-url="/mail-spam" data-table="mail-danh-sach-mail-spam" data-expand="false" data-action="false" data-animation="false" data-collapse="false" data-trigger="false" data-side-pagination="server" data-pagination="true"
+                                data-query-params="MailFilterParams" data-page-list="[10, 20, 50, 100, 200]" data-search="false" data-sort-name="date_time" data-sort-order="desc" class="table table-fix table-bordered table-hover f-13">
+                                <thead>
+                                    <tr>
+                                        <!--<th data-field="checked" data-checkbox="true"></th>-->
+                                        <th data-field="emails_spam" data-sortable="false" data-width="400"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>ĐỊA CHỈ EMAIL
+                                        </th>
+                                        <th data-field="date_time" data-sortable="true" data-width="400">
+                                            <i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>NGÀY ĐƯA VÀO DANH SÁCH
+                                        </th>
+                                        <th data-field="task" style="text-align: center" class="text-center"><i class="zmdi zmdi-comment c-gray f-14 p-relative t-1 m-r-5"></i>TÁC VỤ
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="forwardModal" tabindex="-1" role="dialog" aria-labelledby="labelModel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background: #74b23b; max-height: 50px;text-align: center">
+                                    <h5 class="c-white t-9" STYLE="text-align: center" id="labelModel">CHUYỂN TIẾP
+                                    </h5>
+
+                                </div>
+                                <div class="modal-body">
+                                    <br>
+
+                                    <select id="select-to" multiple>
+
+                                    </select>
+                                    <h4 style="font-style:italic" id='result'></h4>
+                                </div>
+                                <div class="modal-footer" style="text-align: center">
+
+                                    <button type="submit" id="forwardButtonIndex" href="/" class="btn btn-secondary">Chuyển tiếp
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-9 p-t-20" id="detail-mail" style="display: none">
+
+                        <h4 class="m-t-0"></h4>
+                        <h5>Người gửi : <span id="from" class="text-muted"></span></h5>
+
+                        <hr class="m-0 m-b-5">
+                        <div class="content m-b-10">
+                            <iframe class="w-p-100" frameborder="0"></iframe>
+                        </div>
+                        <hr class="m-0" />
+                        <h5>Tệp đính kèm: <span id="detail-mail-attachments"></span></h5>
+                        <hr class="m-0" />
+                        <ul class="tab-nav tn-justified m-r-10" role="tablist">
+                            <li role="presentation" class="">
+                                <a class="col-sx-4" href="#tab-1" aria-controls="tab-1" role="tab" data-toggle="tab" aria-expanded="false">Trả lời
+                                </a>
+                            </li>
+                            <li role="presentation" class="active">
+                                <a class="col-xs-4" href="#tab-2" aria-controls="tab-2" role="tab" data-toggle="tab" aria-expanded="true">Ticket
+                                </a>
+                            </li>
+
+                        </ul>
+                        <div class="tab-content m-r-10">
+                            <div role="tabpanel" class="tab-pane animated fadeIn" id="tab-1">
+                                <div class="row m-t-10">
+                                    <div class="col-sm-8">
+                                        <textarea id="reply-container" rows="2" class="m-r-10"></textarea>
+                                        <button class="btn btn-float btn-primary btn-sm m-t-10 pull-right btn-reply"><i
+                                                class="zmdi zmdi-mail-send m-r-5"></i>Gửi
+                                        </button>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="panel-group" role="tablist" id="tab-mail-template-list">
+                                            <div class="panel panel-default"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane animated fadeIn active" id="tab-2">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane animated fadeIn p-relative tab-panel-channel" id="tab-voice">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="#"><i
+                                        class="zmdi zmdi-comments f-20 p-relative t-3 m-r-5"></i>Voice</a></li>
+                        </ul>
+                        <button type="button" class="btn btn-light f-12 m-l-10 m-t-10" id="transferCall">
+                            <i class="zmdi zmdi-check-all m-r-5"></i>
+                            To Call Survey
+                        </button>
+                        <!--<ul class="nav navbar-nav navbar-right">-->
+                        <!--<li class="dropdown">-->
+                        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="zmdi zmdi-settings m-r-5"></i>Cài đặt <span class="caret"></span></a>-->
+                        <!--<ul class="dropdown-menu">-->
+                        <!--<li><a href="#">Action</a></li>-->
+                        <!--<li><a href="#">Another action</a></li>-->
+                        <!--<li><a href="#">Something else here</a></li>-->
+                        <!--<li role="separator" class="divider"></li>-->
+                        <!--<li class="dropdown-header">Nav header</li>-->
+                        <!--<li><a href="#">Separated link</a></li>-->
+                        <!--<li><a href="#">One more separated link</a></li>-->
+                        <!--</ul>-->
+                        <!--</li>-->
+                        <!--</ul>-->
+                        
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown" id="voice-status-container">
+                               
+                            </li>
+                        </ul>
+                      
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <a id="call-status-info" role="button" class="dropdown-toggle p-7" aria-haspopup="true" aria-expanded="false">
+                                    <i class="zmdi zmdi-account m-r-5"></i>DISCONNECTED
+                                </a>
+                            </li>
+                        </ul>
+                        <div id="button-talking" style="display: none;">
+                            
+                            
+                            
+                        </div>
+                       
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+                <!--/.container-fluid -->
+            </nav>
+
+            <ul id="voice-bars-container"></ul>
+        </div>
+
+
+        <div role="tabpanel" class="tab-pane animated fadeIn p-relative tab-panel-channel active" id="tab-crm">
+            <header id="header">
+                <ul class="header-inner">
+                    <li id="menu-trigger" data-trigger="#sidebar" class="">
+                        <div class="line-wrap">
+                            <div class="line top"></div>
+                            <div class="line center"></div>
+                            <div class="line bottom"></div>
+                        </div>
+                    </li>
+                    <!--DUONGNB: insert logo to nav top bar-->
+                    <li class="">
+                        <img class="logo-nav-top" src="assets/images/logo-neg.png">
+                    </li>
+                    <li class="logo hidden-xs">
+                        <a href="/#articles-list">
+                            <%- projectName %>
+                                <% if(company && company.name){ %>
+                                    <span class="m-l-10 m-r-10">-</span>
+                                    <%- company.name %>
+                                        <% } %>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i id="btnQuickCall" class="zmdi zmdi-account-box-phone boxInner" style="font-size: 18px;margin-top: 7px; color: #fff;" data-toggle="tooltip" title="Quick call!" data-placement="right"></i>
+                        </a>
+                        
+                    </li>
+                    
+                    <li class="pull-right">
+                        <ul class="top-menu">
+                            <li class="dropdown b-10">
+                                <a role="button" data-toggle="dropdown" class="zmdi zmdi-globe c-white" aria-expanded="false">
+                                    <i class="tmn-counts c-white" style="display: none">1</i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-lg pull-right">
+                                    <div class="listview">
+                                        <div class="lv-header">
+                                            Thông báo
+                                        </div>
+                                        <div class="lv-body p-relative" style="height: 295px">
+                                        </div>
+                                        <a class="lv-footer" href="/#notification/<%- user._id %>">Xem tất cả</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="t--20 p-l-2 p-r-20 hidden-xs">
+                                <a role="button" class="c-white t-7">
+                                    <span class="text-uppercase"><%- auth %></span><span class="m-l-10 m-r-10">-</span><span><%- user.displayName %></span>
+                                </a>
+                            </li>
+                            <li class="dropdown">
+                                <a role="button" data-toggle="dropdown" class="tm-settings" aria-expanded="false"></a>
+                                <ul class="dropdown-menu dm-icon pull-right">
+                                    <li class="hidden-xs">
+                                        <a data-action="fullscreen" href=""><i class="zmdi zmdi-fullscreen"></i>Toggle
+                                            Fullscreen</a>
+                                    </li>
+                                    <li>
+                                        <a data-action="clear-localstorage" href=""><i
+                                                class="zmdi zmdi-delete"></i>Clear
+                                            Local Storage</a>
+                                    </li>
+                                    <li id="auth-l">
+                                        <a href="/auth"><i class="zmdi zmdi-sign-in"></i>Chọn quyền truy cập</a>
+                                    </li>
+                                    <li id="account">
+                                        <a href="/users/<%- user._id %>"><i class="zmdi zmdi-account"></i>Thông tin chi
+                                            tiết</a>
+                                    </li>
+                                    <li>
+                                        <!-- <a href="/logout"><i class="zmdi zmdi-sign-in"></i>Đăng xuất</a> -->
+                                        <a href="#" id="logoutTelehubCisco"><i class="zmdi zmdi-sign-in"></i>Đăng xuất</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </li>
+                  
+                    
+                </ul>
+            </header>
+            <%- _breadCrumbs(menu, _url); %>
+                <section id="main">
+                    <aside id="sidebar">
+                        <div class="sidebar-inner c-overflow">
+                            <div class="profile-menu">
+                                <a href="javascript:;">
+                                    <div class="profile-pic">
+                                        <img src="<%- user.avatar %>" alt="">
+                                    </div>
+
+                                    <div class="profile-info">
+                                        <%- user.email %>
+                                            <i class="zmdi zmdi-arrow-drop-down"></i>
+                                    </div>
+                                </a>
+                                <ul class="main-menu" style="display: none">
+                                    <li>
+                                        <a href="/users/<%- user._id %>"><i class="zmdi zmdi-account"></i>Tài khoản</a>
+                                    </li>
+                                    <li>
+                                        <a href=""><i class="zmdi zmdi-settings"></i>Cài đặt</a>
+                                    </li>
+                                    <li>
+                                        <a href="/logout"><i class="zmdi zmdi-sign-in"></i>Đăng xuất</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="panel-group" role="tablist" aria-multiselectable="false" id="accordion">
+                                <% var __html = '';
+                        for (var i = 0; i < menu.length; ++i) {
+                            if (menu && menu[i] && menu[i].childs.length && menu[i].access) {
+                                __html += _Tags([{
+                                    tag: 'div', attr: {class: 'panel panel-collapse m-t-0'},
+                                    childs: [
+                                        {
+                                            tag: 'div',
+                                            attr: {
+                                                class: 'panel-heading',
+                                                role: 'role',
+                                                id: 'headingMenu' + i
+                                            },
+                                            childs: [{
+                                                tag: 'h5', attr: {class: 'panel-title'},
+                                                childs: [{
+                                                    tag: 'a',
+                                                    attr: {
+                                                        'data-toggle': 'collapse',
+                                                        'data-parent': '#menu-accordion',
+                                                        'href': '#collapseManager' + i,
+                                                        'aria-expanded': false,
+                                                        'aria-controls': 'collapseManager' + i,
+                                                        class: 'class'
+                                                    },
+                                                    content: menu[i].name
+                                                }]
+                                            }]
+                                        },
+                                        {
+                                            tag: 'div',
+                                            attr: {
+                                                id: 'collapseManager' + i,
+                                                class: 'collapse',
+                                                role: 'tabpanel',
+                                                'aria-labelledby': 'headingMenu' + i,
+                                                'aria-expanded': false,
+                                                style: 'height: 0px;'
+                                            },
+                                            childs: [{
+                                                tag: 'div',
+                                                attr: {class: 'panel-body p-0 p-b-10'},
+                                                content: _parseMenu(menu[i].childs, 'main-menu')
+                                            }]
+                                        }
+                                    ]
+                                }]);
+                            }
+                        }
+                        %>
+                                    <%- __html %>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </aside>
+                    <div class="container m-b-50">
+                        <%- include('layout/'+ page) %>
+                    </div>
+                </section>
+                <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <ul id="crm-tab-nav-bar" class="main-tabs tab-nav tn-justified tn-icon p-fixed b-0" style="z-index: 12" role="tablist">
+        <!-- <li id="label-tab-chat" role="presentation" class="">
+            <a class="col-sx-4 p-relative" href="#tab-chat" aria-controls="tab-chat" role="tab" data-toggle="tab" aria-expanded="true">
+                <i class="zmdi zmdi-comments icon-tab visible-sm visible-xs"></i><span class="m-l-10 hidden-sm hidden-xs">Chat</span>
+                <i class="tmn-counts" style="display: none">0</i>
+            </a>
+        </li> -->
+
+        <li role="presentation" class="" id="tab_chat-cisco">
+            <a class="col-xs-4 p-relative" href="#tab-email-and-chat" aria-controls="tab-mail" role="tab" data-toggle="tab" aria-expanded="false">
+                <i class="zmdi zmdi-account-box-mail icon-tab visible-sm visible-xs" id="email-chat-icon-tab"></i><span class="m-l-10 hidden-sm hidden-xs">Email & Chat</span>
+                <i class="tmn-counts" style="display: none">0</i>
+            </a>
+        </li>
+        <li role="presentation" class="">
+            <a class="col-xs-4 p-relative" href="#tab-mail" aria-controls="tab-mail" role="tab" data-toggle="tab" aria-expanded="false">
+                <i class="zmdi zmdi-account-box-mail icon-tab visible-sm visible-xs"></i><span class="m-l-10 hidden-sm hidden-xs">Email</span>
+                <i class="tmn-counts" style="display: none">0</i>
+            </a>
+        </li>
+        <li role="presentation" class="">
+            <a class="col-xs-4 p-relative" href="#tab-voice" aria-controls="tab-voice" role="tab" data-toggle="tab" aria-expanded="false">
+                <i class="zmdi zmdi-account-box-phone icon-tab visible-sm visible-xs"></i><span class="m-l-10 hidden-sm hidden-xs">Voice</span>
+                <i class="tmn-counts" style="display: none"></i>
+            </a>
+        </li>
+        <li role="presentation" class="active">
+            <a class="col-xs-4 p-relative" href="#tab-crm" aria-controls="tab-crm" role="tab" data-toggle="tab" aria-expanded="false">
+                <i class="zmdi zmdi-star icon-tab visible-sm visible-xs"></i><span class="m-l-10 hidden-sm hidden-xs">CRM</span>
+            </a>
+        </li>
+    </ul>
+
+    <script type="text/javascript" src="/assets/js/jquery.js"></script>
+    <script type="text/javascript" src="/assets/plugins/tail.select/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/slimselect/script.js"></script>
+
+    <script type="text/javascript" src="/assets/js/jquery-migrate.js"></script>
+    <script type="text/javascript" src="/assets/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/assets/js/bbq.js"></script>
+    <script type="text/javascript" src="/assets/plugins/jquery-ui/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/moment/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/waves/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/nicescroll/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/underscore/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/underscore/string.js"></script>
+    <script type="text/javascript" src="/assets/plugins/validation/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/validation/i18n/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/swal/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/bootstrap-table/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/bootstrap-table/extensions/filter-control/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/bootstrap-table/extensions/advanced-toolbar/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/ckeditor/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/ckeditor/adapters/jquery.js"></script>
+    <script type="text/javascript" src="/assets/plugins/swal/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/bootstrap-select/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/bootstrap-datepicker/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/bootstrap-datetimepicker/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/bootstrap-typeahead/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/notification/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/highchart/script.js"></script>
+    <script type="text/javascript" src="/assets/plugins/jquery-autocomplete/jquery-autocomplete.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+    <script type="text/javascript" src="/assets/js/webToast.js"></script>
+    <% if(plugins){ %>
+        <% plugins.forEach(function (s){ %>
+
+            <script type="text/javascript" src="/assets/plugins/<%- s %>/script.js"></script>
+            <% }) %>
+                <% } %>
+
+                    <script type="text/javascript" src="/assets/js/global.js"></script>
+                    <script type="text/javascript" src="/assets/js/util.js"></script>
+                    <script type="text/javascript" src="/assets/tabs/notification/script.js"></script>
+                    <script type="text/javascript" src="/assets/plugins/selectize/selectize.js"></script>
+                    <script type="text/javascript" src="/assets/js/xml2json.js"></script>
+                    <script type="text/javascript" src="/assets/js/jabberwerx.js"></script>
+                    <script type="text/javascript" src="/assets/js/finessenongadget.js"></script>
+                    <script type="text/javascript" src="/assets/js/sample.js"></script>
+                    <script type="text/javascript" src="/assets/tabs/chatmail/chatmail.js"></script>
+                    <script type="text/javascript" src="/assets/tabs/chat/script.js"></script>
+                    <script type="text/javascript" src="/assets/tabs/mail/script.js"></script>
+                    <script type="text/javascript" src="/assets/tabs/emailchatcisco/script.js"></script>
+
+                    <script type="text/javascript" src="/assets/tabs/voice/script.js"></script>
+                    <div class="page-loader">
+                        <div class="preloader pls-blue">
+                            <svg class="pl-circular" viewBox="25 25 50 50">
+                <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+            </svg>
+
+                            <p>Please wait...</p>
+                        </div>
+                    </div>
+                    <style>
+                        @media (min-width: 1280px) {
+                            #tab-crm>#main>.container.stoggled {
+                                padding-left: 283px;
+                                padding-right: 15px;
+                                width: 100%;
+                            }
+                        }
+                    </style>
+</body>
+<%- include ('./dialog/quick-call.ejs') %>
+</html>

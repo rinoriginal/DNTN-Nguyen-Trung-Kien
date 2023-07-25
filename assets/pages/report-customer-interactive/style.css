@@ -1,0 +1,28 @@
+
+
+
+@media (min-width: 768px) {
+  .card-filter-item {
+    min-width: 140px;
+  }
+
+  .card-filter{
+    display: flex;
+  }
+}
+
+.card-filter-item-label {
+  font-size: 12px;
+  padding-left: 12px;
+  padding-bottom: 2px;
+}
+
+.card-filter-item-input {
+  border-left: 1px solid #f7f7f7;
+  border-top: 1px solid #f7f7f7;
+  padding: 8px;
+}
+
+.card-filter-item-input .filter-option {
+  text-align: center !important;
+}

@@ -1,0 +1,370 @@
+<%-breadcrumb%>
+<%
+var _time = function(i){
+    if(i < 10){
+        return '0' + i;
+    }else{
+        return i;
+    }
+}
+%>
+<div class="card">
+    <div class="portlet-title">
+        <div class="lv-header-alt clearfix m-l-10">
+            <h2 class="lvh-label hidden-xs">
+                <%= title %>
+            </h2>
+            <ul class="lv-actions actions">
+                <!-- <li>
+                    <a href="/#ticket-advisory/new" data-toggle="tooltip" data-placement="top" id="addTernal"
+                        data-original-title="Tạo mới">
+                        <i class="zmdi zmdi-plus"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a data-toggle="tooltip" data-placement="top" data-original-title="Refresh" id="reload"><i
+                            class="zmdi zmdi-refresh"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+
+
+        <div class="p-30 flex-space-between" style="width:100%">
+            <div class="box-shadow p-20" style="width:20%">
+                <h4 class="col-md-12 m-b-15 m-t-15 lbc-silver">
+                    <strong>Tổng Số Lượng</strong>
+                </h4>
+                <div class="col-md-12">
+                    <strong class="f-24" id="textTotal">--</strong>
+                </div>
+                <div class="col-md-12 m-t-15 flex-box-align">
+                    <div class="col-md-4 p-0" id="trendTotal">
+                        
+                    </div>
+                    <div class="col-md-8 p-0 lbc-silver since">
+                        <p class="m-0 f-12">Since Last Month</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="box-shadow p-20" style="width:20%">
+                <h4 class="col-md-12 m-b-15 m-t-15 lbc-silver">
+                    <strong>Tiếp Nhận</strong>
+                </h4>
+                <div class="col-md-12">
+                    <strong class="f-24" id="textReceive">--</strong>
+                </div>
+                <div class="col-md-12 m-t-15 flex-box-align">
+                    <div class="col-md-4 p-0" id="trendReceive">
+                    </div>
+                    <div class="col-md-8 p-0 lbc-silver since">
+                        <p class="m-0 f-12">Since Last Month</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="box-shadow p-20" style="width:20%">
+                <h4 class="col-md-12 m-b-15 m-t-15 lbc-silver">
+                    <strong>Nhỡ</strong>
+                </h4>
+                <div class="col-md-12">
+                    <strong class="f-24" id="textMiss">--</strong>
+                </div>
+                <div class="col-md-12 m-t-15 flex-box-align">
+                    <div class="col-md-4 p-0" id="trendMiss">
+                        
+                    </div>
+                    <div class="col-md-8 p-0 lbc-silver since">
+                        <p class="m-0 f-12">Since Last Month</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="box-shadow p-20" style="width:20%">
+                <h4 class="col-md-12 m-b-15 m-t-15 lbc-silver">
+                    <strong>Offline</strong>
+                </h4>
+                <div class="col-md-12">
+                    <strong class="f-24" id="textOffline">--</strong>
+                </div>
+                <div class="col-md-12 m-t-15 flex-box-align">
+                    <div class="col-md-4 p-0" id="trendOffline">
+                    </div>
+                    <div class="col-md-8 p-0 lbc-silver since">
+                        <p class="m-0 f-12">Since Last Month</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row m-l-30 m-r-30" style="display: flex;">
+            <!-- start chart campaign -->
+            <div class="col-md-3 m-b-20 box-shadow p-t-10 m-r-20" id="">
+
+                <div class="portlet-title flex-box">
+                    <div class="lv-header-alt clearfix">
+                        <h2 class="lvh-label hidden-xs c-black">
+                            <strong>Campaign</strong>
+                        </h2>
+                    </div>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default  active">
+                            <input type="radio" name="rdoCampaign" id="option1" value="dayCampaign" autocomplete="off"
+                                checked>To day
+                        </label>
+                        <label class="btn btn-default ">
+                            <input type="radio" name="rdoCampaign" id="option2" value="weekCampaign" autocomplete="off">
+                            Weekly
+                        </label>
+                        <label class="btn btn-default ">
+                            <input type="radio" name="rdoCampaign" id="option3" value="monthCampaign"
+                                autocomplete="off"> Month
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-12" id="chartCampaign">
+                </div>
+                <div class="col-md-12 m-t-10 m-b-15">
+                    <div class="col-md-4 text-center">
+                        <strong class="f-24 lbc-silver" id="receiveCampaign">--</strong>
+                        <div class="m-t-7"><i class="zmdi zmdi-circle" style="color: #FC8E10;"></i> <span
+                                class="f-14">Tiếp nhận</span></div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <strong class="f-24 lbc-silver" id="missCampaign">--</strong>
+                        <div class="m-t-7"><i class="zmdi zmdi-circle" style="color: #346D92;"></i> <span
+                                class="f-14">Nhỡ</span></div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <strong class="f-24 lbc-silver" id="offlineCampaign">--</strong>
+                        <div class="m-t-7"><i class="zmdi zmdi-circle" style="color: #C3E0EF;"></i> <span
+                                class="f-14">Offline</span></div>
+                    </div>
+                </div>
+            </div>
+            <!-- and chart campaign -->
+            <!-- start chart total -->
+            <div class="col-md-9 m-b-20 box-shadow p-t-10 m-l-20" id="">
+                <div class="portlet-title flex-box">
+                    <div class="lv-header-alt clearfix">
+                        <h2 class="lvh-label hidden-xs c-black">
+                            <strong>Total number of chat</strong>
+                        </h2>
+                    </div>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default  active">
+                            <input type="radio" name="rdoTotal" value="dayTotal" id="option4" autocomplete="off"
+                                checked>To day
+                        </label>
+                        <label class="btn btn-default ">
+                            <input type="radio" name="rdoTotal" value="weekTotal" id="option5" autocomplete="off">
+                            Weekly
+                        </label>
+                        <label class="btn btn-default ">
+                            <input type="radio" name="rdoTotal" value="monthTotal" id="option6" autocomplete="off">
+                            Month
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-12" id="chartTotal">
+                </div>
+            </div>
+            <!-- and chart total -->
+
+
+        </div>
+
+
+        <div class="row m-l-20 m-r-20">
+            <div class="card m-10">
+
+                <div class="panel panel-default box-shadow">
+
+                    <div class="panel-heading p-0" id="product-anchor">
+                        <h5 class="panel-title">
+                            <div data-id="showCustomer" class="btn-block p-10 bgm-green c-white text-uppercase ">
+                                MONITOR - CHAT CHANNEL
+                            </div>
+
+                        </h5>
+                    </div>
+
+                    <div class="panel-body p-20 ">
+                        <div class="panel-filter" id="transaction-filter">
+                            <div class="row form-group">
+
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-md-2 text-right p-t-5">
+                                            <label for="searchChannel" class="control-label"><strong>TRA CỨU
+                                                    AGENT</strong></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="fg-line">
+                                                <input type="text" value="" class="form-control input"
+                                                    id="searchChannel" name="searchChannel">
+                                            </div>
+                                        </div>
+
+                                        <button class="btn btn-gray waves-effect bgm-gray c-white"
+                                            id="btn-search-channel">
+                                            <i class="zmdi zmdi-search"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+
+                            <!-- <div class="row">
+                                
+                            </div> -->
+
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div id="sideChannelChat">
+            <!-- <div class="p-30 flex-space-between" style="width:100%">
+                <div class="box-shadow p-20" style="width:48%">
+                    <div class="col-md-12 m-b-13 p-l-0 p-r-0">
+                        <div class="col-md-4 p-0 " title="Kênh chat 01Kênh chat 01Kênh chat 01Kênh chat 01">
+                            <span class="name-channel">
+                                <strong>
+                                    Kênh chat 01Kênh chat 01Kênh chat 01Kênh chat 01
+                                </strong>
+                            </span>
+                        </div>
+                        <div class="col-md-8 p-r-0">
+                            <div class="col-md-4 p-0 box-shadow">
+                                <button type="button" style="width: 80px;background-color: #53A83F;"
+                                    class="btn btn-icon-text c-white p-l-6 ">Chăm sóc</button>
+                                <span class="p-10">10</span>
+
+                            </div>
+                            <div class="col-md-4 p-0 box-shadow">
+                                <button type="button" style="width: 80px;background-color: #FC8E10;"
+                                    class="btn btn-icon-text c-white ">Chờ</button>
+                                <span class="p-10">10</span>
+
+                            </div>
+                            <div class="col-md-4 p-0 box-shadow">
+                                <button type="button" style="width: 80px;background-color: #767876;"
+                                    class="btn btn-icon-text c-white ">Offline</button>
+                                <span class="p-10">10</span>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <hr style="width:90%;text-align:center;border-top: 1px solid #555555">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Agent</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Đang chăm sóc</th>
+                                <th scope="col">Đang chờ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Larry</td>
+                                <td>the Bird</td>
+                                <td>@twitter</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div> -->
+        </div>
+
+
+
+
+
+
+    </div>
+
+</div>
+
+<!-- popup -->
+<div class="modal fade" id="modal-form-input" tabindex="-1" role="dialog" aria-labelledby="modal-form-input-label"
+    aria-hidden="true">
+    <!-- <div class="modal-dialog" role="document" style="width:60%">
+        <div class="modal-content">
+            <div class="modal-header modal-popup-store p-10" style="background-color: #5AAFC8 ;">
+                <div class="row m-t-0 m-b-0">
+                    <div class="col-sm-10">
+                        <h4 class="modal-title c-white" id="modal-form-input-complaint-label">Danh sách phiếu liên quan
+                        </h4>
+                    </div>
+                    <div class="col-sm-2"><button type="button" class="close btn-resta-modal-form-close"
+                            data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span><span
+                                class="sr-only">Close</span> </button></div>
+                </div>
+            </div>
+
+
+            <div class="modal-body p-0" id="modal-ticket">
+                <div class="panel-body p-0">
+                    <div class="text-center alert hide" id="text-form-input-alert"></div>
+                    <form id="form-modal-custom" class="form-horizontal">
+                        <div class="tableFixHeadPopup">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">STT</th>
+                                        <th scope="col">Agent</th>
+                                        <th scope="col">Khách hàng</th>
+                                        <th scope="col">Thời điểm bắt đầu</th>
+                                        <th scope="col">Thời gian chờ</th>
+                                        <th scope="col">Thời gian chat</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                        <td>@mdo</td>
+                                        <td>@mdo</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer p-t-0">
+                <button id="btn-modal-form-submit" type="button" class="btn btn-primary btn-icon-text waves-effect"><i
+                        class="zmdi zmdi-check"></i>&nbsp;Xác nhận</button>
+                <button type="button" class="btn btn-default btn-icon-text waves-effect btn-resta-modal-form-close"
+                    data-dismiss="modal"><i class="zmdi zmdi-close"></i>&nbsp;Đóng</button>
+            </div>
+        </div>
+    </div> -->
+</div>

@@ -1,0 +1,258 @@
+<%-breadcrumb%>
+<script>
+    var surveys=  JSON.parse('<%- JSON.stringify(surveys)%>');
+</script>
+<div class="card">
+    <div class="lv-header-alt clearfix">
+        <h2 class="lvh-label hidden-xs"><%- title %></h2>
+        <ul class="lv-actions actions">
+            <li>
+                <a href="#frm-add-survey" data-toggle="modal" data-placement="top" data-original-title="Tạo mới">
+                    <i class="zmdi zmdi-plus"></i>
+                </a>
+            </li>
+            <li>
+                <a href="#survey-chat" id="btn-refresh" data-toggle="tooltip" data-placement="top" data-original-title="Làm mới">
+                    <i class="zmdi zmdi-refresh"></i>
+                </a>
+            </li>
+            <li class="hidden" id="li-hidden">
+                <a role="button" data-toggle="tooltip" data-placement="top" data-original-title="Xóa các mục đánh dấu" id="btn-delSelection">
+                    <i class="zmdi zmdi-delete"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <form id="form-channel">
+            <table class="table table-bordered" id="tbl-company-channel">
+                <thead>
+                <tr>
+                    <th class="bgm-orange c-white text-center w-50"></th>
+                    <th class="bgm-orange c-white text-center w-200" >
+                        Danh sách khảo sát</th>
+                    <th class="bgm-orange c-white text-center w-200" >
+                        Website</th>
+                    <th class="bgm-orange c-white text-center w-200">
+                        Ngày tạo</th>
+                    <th class="bgm-orange c-white text-center w-100">
+                        Trạng thái</th>
+                    <th class="w-100 bgm-orange c-white text-center">Tác vụ</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="filter">
+                    <td class="text-center">
+
+                    </td>
+                    <td class="text-center"><input class="form-control filter" type="text" id="find-name" name="name"></td>
+                    <td class="text-center"><input class="form-control filter" type="text" id="find-website" name="website"></td>
+                    <td class="text-center"></td>
+                    <td>
+                        <select class="form-control selectpicker" id="find-status" name="status">
+                            <option selected value="-1">-- Tất cả --</option>
+                            <option value="1">Kích hoạt</option>
+                            <option value="0">Không kích hoạt</option>
+                        </select>
+                    </td>
+                    <td><button class="btn btn-primary btn-block waves-effect" id="btn-search" name="btn-search"><i class="zmdi zmdi-filter-list m-r-5"></i> Lọc</button></td>
+                </tr>
+                <script> var isZeroList = false; </script>
+                <% if (surveys.length == 0){ %>
+                <script> isZeroList   = true; </script>
+                <tr>
+                    <td colspan="6" class="text-center">Không có dữ liệu</td>
+                </tr>
+                <%}else{ %>
+                <% surveys.forEach(function(c, i) { %>
+                <tr>
+                    <td class="select-cell text-center w-60">
+
+                    </td>
+                    <td class="p-l-10"><%- c.name %></td>
+                    <td class="p-l-10"><%- c.website %></td>
+                    <td class="p-l-10 text-center"><%- _moment(c.created).format("DD/MM/YYYY") %></td>
+                    <td class="text-center">
+                        <div class="checkbox m-0">
+                            <label>
+                                <input disabled name="select" type="checkbox" class="select-box" value="<%- c._id %>" <%- (c.status ? 'checked' : ''); %> />
+                                <i class="input-helper"></i>
+                            </label>
+                        </div>
+                    </td>
+                    <td class="text-center">
+
+                        <a role="button" class="p-t-3 btn-flat-bg btn-edit" href="#frm-edit-survey" data-toggle="modal" data-placement="top" data-id="<%- c._id %>" data-index="<%- i %>" data-original-title="Sửa"><i class="zmdi zmdi-edit green f-17"></i></a>
+                        <a role="button" class="btn-remove btn-flat-bg" data-toggle="tooltip" data-placement="top" data-original-title="Xoá" data-display-name="<%- c.name%>" data-id="<%- c._id %>"><i class="zmdi zmdi-close red f-23 "></i></a>
+                    </td>
+                </tr>
+                <% }); }%>
+                </tbody>
+            </table>
+
+        </form>
+    </div>
+</div>
+<style>
+    .sweet-alert.xxxx p{
+        text-align: left;
+    }
+</style>
+
+
+<div class="modal fade" id="frm-add-survey" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+    <form class="form-horizontal m-t-30" role="form">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header dialog-title">
+                    <h4 class="modal-title">TẠO MỚI BỘ ĐÁNH GIÁ</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body p-t-40" style="max-height: 400px; overflow-y: scroll; overflow-x: hidden">
+                        <div class="form-group">
+                            <label for="dlg-name" class="col-sm-3 control-label dialog-control">Tên bộ đánh giá <span class="required">*</span></label>
+                            <div class="col-sm-8 dialog-control">
+                                <div class="fg-line">
+                                    <input type="text" maxlength="255" value="" class=" form-control input-sm validate[required,ajax[NewCheck]]" id="dlg-name" name="name">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="website" class="dialog-control col-sm-3 control-label">Website<span class="required">*</span></label>
+                            <div class="col-sm-8 dialog-control">
+                                <div class="fg-line select ">
+                                    <select class="selectpicker validate[required]" id="dlg-website" name="website">
+                                        <option value='' disabled selected>---- Chọn ----</option>
+                                        <% companiesChannel.forEach(function(el, i) {%>
+                                        <option value="<%- el._id%>"><%- el.website%></option>
+                                        <%})%>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="choice-new">
+                            <label class="col-sm-8" >Ý kiến đánh giá</label> <label class="col-sm-2 dialog-control" style="float: left">Value</label>
+                            <div class="col-sm-8" style="margin-bottom: 5px;">
+                                <input type="text" value="" maxlength="50" class=" form-control input-sm validate[required]" id="question" name="question[]">
+                            </div>
+                            <div class="col-sm-2" style="margin-bottom: 5px;">
+                                <input type="number" value="" class=" form-control input-sm validate[required]" id="question-value" name="value[]">
+                            </div>
+
+
+
+                        </div>
+                        <div style="
+                            border-style: solid;
+                            border-width: thin;
+                            border-color: #d2d2d2;
+                            width: 25px;
+                            height: 25px;
+                            align-items: center;
+                            text-align: center;
+                        "><a id="add-choice" data-toggle="tooltip" data-placement="top" data-original-title="Thêm lựa chọn">
+                                <i class="zmdi zmdi-plus add-choice"></i>
+                            </a></div>
+
+                        <div class="form-group">
+                            <label for="status" class="col-sm-3 control-label dialog-control-checkbox ">Trạng thái</label>
+                            <div class="col-sm-8 ">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="1" name="status" id="status" checked>
+                                        <i class="input-helper"></i>
+                                        <span id="status-span" class="p-l-10" data-text-on="Không kích hoạt" data-text-off="Kích hoạt"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect" data-dismiss="modal"><i class="m-r-5 zmdi zmdi-arrow-left"></i>Bỏ qua</button>
+                    <button type="submit" class="btn btn-primary btn-icon-text m-t-10 waves-effect"><i class="m-r-5 zmdi zmdi-plus-circle-o"></i>Xác nhận</button>
+                    <button type="submit" class="btn btn-primary btn-icon-text m-t-10 waves-effect" style="display: none"><i class="m-r-5 zmdi zmdi-plus-circle-o"></i>Cập nhật</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<div class="modal fade" id="frm-edit-survey" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+    <form class="form-horizontal m-t-30" role="form">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header dialog-title">
+                    <h4 class="modal-title">SỬA BỘ ĐÁNH GIÁ</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body p-t-40" style="max-height: 400px; overflow-y: scroll; overflow-x: hidden">
+                        <div class="form-group">
+                            <label for="dlg-name" class="col-sm-3 control-label dialog-control">Tên bộ đánh giá <span class="required">*</span></label>
+                            <div class="col-sm-8 dialog-control">
+                                <div class="fg-line">
+                                    <input type="text" maxlength="255" value="" class=" form-control input-sm validate[required,ajax[EditCheck]]" id="edit-name" name="name">
+                                    <input type="text" style="display: none" maxlength="255" value="" class=" form-control input-sm" id="edit-id" name="id">
+                                    <input type="text" style="display: none" maxlength="255" value="" class=" form-control input-sm " id="edit-name-original" name="original-name">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="website" class="dialog-control col-sm-3 control-label">Website<span class="required">*</span></label>
+                            <div class="col-sm-8 dialog-control">
+                                <div class="fg-line select ">
+                                    <select class="selectpicker validate[required]" id="edit-website" name="website">
+                                        <option value='' disabled selected>---- Chọn ----</option>
+                                        <% companiesChannel.forEach(function(el, i) {%>
+                                        <option value="<%- el._id%>"><%- el.website%></option>
+                                        <%})%>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="edit-choice-new">
+
+                        </div>
+                        <div style="
+                            border-style: solid;
+                            border-width: thin;
+                            border-color: #d2d2d2;
+                            width: 25px;
+                            height: 25px;
+                            align-items: center;
+                            text-align: center;
+                        "><a id="add-choice-edit" data-toggle="tooltip" data-placement="top" data-original-title="Thêm lựa chọn">
+                                <i class="zmdi zmdi-plus add-choice"></i>
+                            </a></div>
+
+                        <div class="form-group">
+                            <label for="status" class="col-sm-3 control-label dialog-control-checkbox ">Trạng thái</label>
+                            <div class="col-sm-8 ">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="1" name="status" id="edit-status" checked>
+                                        <i class="input-helper"></i>
+                                        <span id="status-span" class="p-l-10" data-text-on="Không kích hoạt" data-text-off="Kích hoạt"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect" data-dismiss="modal"><i class="m-r-5 zmdi zmdi-arrow-left"></i>Bỏ qua</button>
+                    <!--<button type="submit" class="btn btn-primary btn-icon-text m-t-10 waves-effect"><i class="m-r-5 zmdi zmdi-plus-circle-o"></i>Xác nhận</button>-->
+                    <button type="submit" class="btn btn-primary btn-icon-text m-t-10 waves-effect" ><i class="m-r-5 zmdi zmdi-plus-circle-o"></i>Cập nhật</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

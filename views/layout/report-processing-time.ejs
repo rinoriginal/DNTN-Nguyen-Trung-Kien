@@ -1,0 +1,208 @@
+<%- breadcrumb %>
+    <div class="card">
+        <div class="portlet-title">
+            <div class="lv-header-alt clearfix">
+                <h2 class="lvh-label hidden-xs">
+                    <%= title %>
+                </h2>
+                <ul class="lv-actions actions">
+                    <li>
+                        <a data-toggle="tooltip" data-placement="top" data-original-title="Refresh">
+                            <i class="zmdi zmdi-refresh"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+            <div class="form-horizontal">
+                <div class="form-body">
+                    <div class="row m-0 m-t-20">
+                        <div class="col-md-3 m-b-20">
+                            <label for="startDate" class="control-label f-13">
+                                <span>Ngày bắt đầu</span>
+                            </label>
+
+                            <div class="input-group">
+                                <input type="text" class="form-control pull-right search-field date-picker filter-campain input" id="filter-startDate" name="filter-startDate"
+                                    placeholder="Ngày bắt đầu, VD: 01/01/2016">
+                                <span class="input-group-addon p-l-10 bgm-gray c-white">
+                                    <i role="button" class="zmdi zmdi-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 m-b-20">
+                            <label for="endDate" class="control-label f-13">
+                                <span>Ngày kết thúc</span>
+                            </label>
+
+                            <div class="input-group">
+                                <input type="text" class="form-control pull-right search-field date-picker filter-campain input" id="filter-endDate" name="filter-endDate"
+                                    placeholder="Ngày kết thúc, VD: 31/12/2016">
+                                <span class="input-group-addon p-l-10 bgm-gray c-white">
+                                    <i role="button" class="zmdi zmdi-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="col-md-4 m-b-20" style="z-index: 8">
+                                <label for="filter-company" class="control-label f-13">
+                                    <span>Công ty</span>
+                                </label>
+                                <select name="filter-company[]" multiple id="filter-company" class="selectpicker input" title="Chọn công ty">
+                                    <% for(var i = 0;i < companies.length;i++){ %>
+                                        <option value=<%- companies[i]._id %>>
+                                            <%- companies[i].name %>
+                                        </option>
+                                        <% } %>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 m-b-20">
+                                <label for="filter-channel" class="control-label f-13">
+                                    <span>Kênh</span>
+                                </label>
+                                <div class="card-filter-item-input">
+                                    <select name="filter-channel[]" id="filter-channel" multiple class="selectpicker input" title="- Chọn kênh -">
+                                        <option value="1">
+                                            Voice
+                                        </option>
+                                        <option value="2">
+                                            Chat
+                                        </option>
+                                        <option value="3">
+                                            Mail
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 m-b-20">
+                                <label for="filter-agent" class="control-label f-13">
+                                    <span>Agent</span>
+                                </label>
+                                <div class="card-filter-item-input">
+                                    <select name="filter-agent[]" id="filter-agent" multiple class="selectpicker input" title="- Tất cả -">
+                                        <% for(var i = 0;i < agents.length;i++){ %>
+                                            <option value=<%- agents[i]._id %>>
+                                                <%- agents[i].displayName %>
+                                            </option>
+                                            <% } %>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row m-0">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6 m-b-20">
+                            <div class="btn-group btn-group btn-group-justified">
+                                <a id="filter-btn" class="btn bgm-blue uppercase c-white" style="width:auto">
+                                    <i class="fa fa-search m-r-10"></i>
+                                    <strong>Tìm kiếm
+                                    </strong>
+                                </a>
+
+                                <div class="col-md-2"></div>
+                                <a id="download-excel" class="btn bgm-blue default c-white" style="width:auto">
+                                    <i class="fa fa-file-excel-o m-r-10"></i>Xuất Excel</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+                </form>
+            </div>
+
+
+
+            <div class="card-body table-responsive" style=" min-height:200px">
+                <table class="table table-hover table-condensed table-bordered table-fix" style="table-layout: fixed;" id="exceldata">
+                    <thead>
+                        <tr>
+                            <td rowspan="2" colspan="2" class="bgm-orange c-white text-center">
+                                <span>AGENT</span>
+                            </td>
+                            <td colspan="3" style="border-bottom-width: 0" class="bgm-orange c-white text-center">
+                                <span>VOICE</span>
+                            </td>
+                            <td colspan="3" style="border-bottom-width: 0" class="bgm-orange c-white text-center">
+                                <span>CHAT</span>
+                            </td>
+                            <td colspan="3" style="border-bottom-width: 0" class="bgm-orange c-white text-center">
+                                <span>EMAIL</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="bgm-orange c-white text-center">
+                                <span>Tổng</span>
+                            </td>
+                            <td class="bgm-orange c-white text-center">
+                                <span>Trung bình</span>
+                            </td>
+                            <td class="bgm-orange c-white text-center">
+                                <span>Số phiếu</span>
+                            </td>
+                            <td class="bgm-orange c-white text-center">
+                                <span>Tổng</span>
+                            </td>
+                            <td class="bgm-orange c-white text-center">
+                                <span>Trung bình</span>
+                            </td>
+                            <td class="bgm-orange c-white text-center">
+                                <span>Số phiếu</span>
+                            </td>
+                            <td class="bgm-orange c-white text-center">
+                                <span>Tổng</span>
+                            </td>
+                            <td class="bgm-orange c-white text-center">
+                                <span>Trung bình</span>
+                            </td>
+                            <td class="bgm-orange c-white text-center">
+                                <span>Số phiếu</span>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody id="tbBody">
+                        <%for(var i = 0; i < data.length;i++){%>
+                            <tr class="text-center">
+                                <td  colspan="2" class="text-uppercase">
+                                    <%- data[i].agent ? data[i].agent.displayName : ""%>
+                                </td>
+                                <td>
+                                    <%- data[i].voiceTime%>
+                                </td>
+                                <td>
+                                    <%- data[i].voiceAvg%>
+                                </td>
+                                <td>
+                                    <%- data[i].voiceTicket%>
+                                </td>
+                                <td>
+                                    <%- data[i].chatTime%>
+                                </td>
+                                <td>
+                                    <%- data[i].chatAvg%>
+                                </td>
+                                <td>
+                                    <%- data[i].chatTicket%>
+                                </td>
+                                <td>
+                                    <%- data[i].emailTime%>
+                                </td>
+                                <td>
+                                    <%- data[i].emailAvg%>
+                                </td>
+                                <td>
+                                    <%- data[i].emailTicket%>
+                                </td>
+                            </tr>
+                            <%}%>
+                    </tbody>
+                </table>
+                <div id="container">
+                </div>
+            </div>
+        </div>

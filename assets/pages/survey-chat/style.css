@@ -1,0 +1,33 @@
+.dialog-control{
+    float: none;
+    text-align: left!important;
+
+}
+
+.dialog-control-checkbox{
+    text-align: left!important;
+}
+
+.dialog-title{
+    background: #74b23b;
+    text-align: center;
+    color: white;
+}
+
+.add-choice{
+    -webkit-transition: color;
+    -o-transition: color;
+    transition: color;
+    -webkit-transition-duration: 1300ms;
+    transition-duration: 1300ms;
+    color: #adadad;
+    font-size: 20px;
+}
+
+#frm-add-survey > form > div > div > div.modal-body > div > div:nth-child(2) > div > div > div.dlg-websiteformError.parentFormundefined.formError{
+    left: 310px!important;
+}
+
+#frm-edit-survey > form > div > div > div.modal-body > div > div:nth-child(2) > div > div > div.edit-websiteformError.parentFormundefined.formError{
+    left: 310px!important;
+}

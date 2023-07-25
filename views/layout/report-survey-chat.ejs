@@ -1,0 +1,212 @@
+<%- breadcrumb %>
+<script>
+    var companies = JSON.parse('<%- JSON.stringify(companies) %>');
+    var services = JSON.parse('<%- JSON.stringify(services) %>');
+    var campaigns = JSON.parse('<%- JSON.stringify(campaigns) %>');
+    var agents = JSON.parse('<%- JSON.stringify(agents) %>');
+    var data= JSON.parse('<%- JSON.stringify(data) %>');
+    var totalThread= parseInt(<%- totalThread%>);
+    var totalAnswer= parseInt(<%- totalAnswer%>);
+    console.log(9,companies);
+    console.log(10, services);
+    console.log(11, agents);
+</script>
+<div class="card">
+    <div class="panel panel-default card-filter p-t-35 p-b-8">
+        <div class="card-filter-item">
+            <div class="card-filter-item-label text-uppercase color-grey">Công ty</div>
+            <div class="card-filter-item-input">
+                <select id="filter-company" name="filter-company" class="selectpicker input" title="- Chọn -">
+                    <% for(var i = 0;i < companies.length;i++){ %>
+                    <option value=<%- companies[i]._id %>><%- companies[i].name %></option>
+                    <% } %>
+                </select>
+            </div>
+        </div>
+        <div class="card-filter-item">
+            <div class="card-filter-item-label text-uppercase color-grey">chiến dịch</div>
+            <div class="card-filter-item-input">
+                <select id="filter-campaign" name="filter-campaign" class="selectpicker input" title="- Chọn -">
+                    <% for(var i = 0;i < services.length;i++){ %>
+                    <option value=<%- "service_"+services[i]._id %>><%- services[i].name %></option>
+                    <% } %>
+                    <% for(var i = 0;i < campaigns.length;i++){ %>
+                    <option value=<%- "campaign_"+campaigns[i]._id %>><%- campaigns[i].name %></option>
+                    <% } %>
+                </select>
+            </div>
+        </div>
+        <div class="card-filter-item">
+            <div class="card-filter-item-label text-uppercase color-grey">Điện thoại viên</div>
+            <div class="card-filter-item-input">
+                <select id="filter-agent" name="filter-agent" class="selectpicker input" title="- Chọn -">
+                    <% for(var i = 0;i < agents.length;i++){ %>
+                    <option value=<%- agents[i]._id %>><%- agents[i].displayName %></option>
+                    <% } %>
+                </select>
+            </div>
+        </div>
+        <div class="card-filter-item">
+            <div class="card-filter-item-label text-uppercase color-grey">từ ngày</div>
+            <div class="card-filter-item-input">
+                <div class="input-group">
+                    <input type="text"
+                           class="form-control pull-right search-field date-picker filter-campain input"
+                           id="filter-start-date" name="startDate"
+                           placeholder=" VD: 01/01/2018">
+                            <span class="input-group-addon p-l-10 bgm-gray c-white"><i role="button"
+                                                                                       class="zmdi zmdi-calendar"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-filter-item">
+            <div class="card-filter-item-label text-uppercase color-grey">đến ngày</div>
+            <div class="card-filter-item-input">
+                <div class="input-group">
+                    <input type="text"
+                           class="form-control pull-right search-field date-picker filter-campain input"
+                           id="filter-end-date" name="filter-end-date"
+                           placeholder=" VD: 01/01/2018">
+                            <span class="input-group-addon p-l-10 bgm-gray c-white"><i role="button"
+                                                                                       class="zmdi zmdi-calendar"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-filter-item" style="width: 100%; text-align: right">
+            <div class="card-filter-item-label text-uppercase color-grey" style="opacity: 0;">search</div>
+            <div class="card-filter-item-input">
+                <a id="filter-btn" class="btn c-white bg-color-green" style="width:100px"><i class="fa fa-search"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card p-b-8">
+    <div class="block" style="display: flex;">
+        <span class="text-uppercase color-grey" style="display: flex;align-items: center; padding-left: 12px;">Báo cáo đánh giá phiên chat của agent</span>
+        <a id="download-excel" class="btn c-white bg-color-green" style="margin-left: auto;"><i class="fa fa-file-excel-o m-r-10"></i>Xuất Excel</a>
+    </div>
+
+    <div class="card-body table-responsive" style="
+    display: flex;
+    padding-left: 20px;
+    line-height: 50px;
+">
+        <div style="
+    width: 40%;
+">
+
+            <%for(var i = 0; i < data.length;i++){%>
+                <div style="
+    display: flex;
+"><div style="
+    width: 60%;
+    background-color: #777;
+    color: white;
+    padding: 0px 20px 0px 20px;
+    text-transform: uppercase;
+"><%-data[i].question.content%></div>
+                    <div style="
+    width: 100px;
+    text-align: right;
+    border: #00000059;
+    border-style: solid;
+    border-width: thin;
+    padding: 0px 20px 0px 0px;
+"><%-data[i].count%></div></div>
+            <%}%>
+
+            <div style="
+    display: flex;
+"><div style="
+    width: 60%;
+    background-color: #777;
+    color: white;
+    padding: 0px 20px 0px 20px;
+    text-transform: uppercase;
+">Không đánh giá</div>
+                <div style="
+    width: 100px;
+    text-align: right;
+    border: #00000059;
+    border-style: solid;
+    border-width: thin;
+    padding: 0px 20px 0px 0px;
+"><%- (totalThread- totalAnswer)%></div></div>
+
+            <div style="
+    display: flex;
+"><div style="
+    width: 60%;
+    background-color: #777;
+    color: white;
+    padding: 0px 20px 0px 20px;
+    text-transform: uppercase;
+">Tổng số</div>
+                <div style="
+    width: 100px;
+    text-align: right;
+    border: #00000059;
+    border-style: solid;
+    border-width: thin;
+    padding: 0px 20px 0px 0px;
+"><%- totalThread%></div></div>
+        </div>
+
+        <div id="chart-container" ></div>
+
+    </div>
+</div>
+
+<div class="card p-b-8">
+    <div class="block" style="display: flex;">
+        <span class="text-uppercase color-grey" style="display: flex;align-items: center; padding-left: 12px;">báo cáo chi tiết</span>
+        <a id="download-excel-detail" class="btn c-white bg-color-green" style="margin-left: auto;"><i class="fa fa-file-excel-o m-r-10"></i>Xuất Excel</a>
+    </div>
+
+    <div class="card-body table-responsive">
+        <table id="table-detail" class="table table-hover table-condensed table-bordered table-fix">
+            <thead>
+            <tr>
+                <th class="bgm-orange c-white text-center text-uppercase" rowspan="2"><span>Dự án</span></th>
+                <th class="bgm-orange c-white text-center text-uppercase" rowspan="2"><span>Chiến dịch</span></th>
+                <th class="bgm-orange c-white text-center text-uppercase" rowspan="2"><span>Điện thoại viên</span></th>
+                <th class="bgm-orange c-white text-center text-uppercase" rowspan="2"><span>Số điện thoại</span></th>
+                <th class="bgm-orange c-white text-center text-uppercase" rowspan="2"><span>Tên khách hàng</span></th>
+                <th class="bgm-orange c-white text-center text-uppercase" rowspan="2"><span>Email</span></th>
+                <th class="bgm-orange c-white text-center text-uppercase" rowspan="2"><span>Đánh giá</span></th>
+                <th class="bgm-orange c-white text-center text-uppercase" rowspan="2"><span>Lý do đánh giá</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% if(!!dataDetail){ %>
+            <%for(var i = 0; i < dataDetail.length;i++){%>
+            <tr class="text-center">
+                <td><%- dataDetail[i].idCompany.name%></td>
+                <td><%- _.isUndefined(dataDetail[i].idService)? "": dataDetail[i].idService.name %></td>
+                <td><%- dataDetail[i].idAgent.name%></td>
+                <td><%- dataDetail[i].customerPhone%></td>
+                <td><%- dataDetail[i].fhoten?dataDetail[i].fhoten.value: ''%></td>
+                <td><%- dataDetail[i].customerEmail.length==0?(dataDetail[i].femail?dataDetail[i].femail.value:''):dataDetail[i].customerEmail %></td>
+                <td><%- dataDetail[i].idQuestion.content%></td>
+                <td><%- dataDetail[i].reason%></td>
+            </tr>
+            <%}%>
+            <% } %>
+            </tbody>
+        </table>
+
+        <% if(!!pagingDetail && pagingDetail.totalResult > 0){ %>
+        <div class="text-center p-t-20" id="report-total">
+            <b>
+                <span>Tổng</span>
+                <span class="bold c-red"><%- pagingDetail.totalResult%></span>
+            </b>
+        </div>
+        <% include ../pagingDetail.ejs %>
+        <% } %>
+    </div>
+
+</div>

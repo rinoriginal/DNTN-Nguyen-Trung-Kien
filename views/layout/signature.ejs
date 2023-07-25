@@ -1,0 +1,171 @@
+
+<div class="card">
+    <div class="lv-header-alt clearfix m-b-5">
+        <h2 class="lvh-label hidden-xs"><%- title %></h2>
+        <div class="lvh-search">
+            <input type="text" placeholder="Start typing..." class="lvhs-input">
+            <i class="lvh-search-close">×</i>
+        </div>
+
+        <ul class="lv-actions actions">
+            <li><a data-target="#create_signature" data-toggle="modal" data-placement="top" data-original-title="Create"><i class="zmdi zmdi-account-add"></i></a></li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="modal fade" id="delete_signature" tabindex="-1" role="dialog" aria-labelledby="labelModel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header"
+                         style="background: #74b23b; max-height: 50px;text-align: center">
+                        <h5 class="c-white t-9" STYLE="text-align: center" id="labelModel">XÓA CHỮ KÝ</h5>
+                    </div>
+                    <div class="modal-body">
+                        <br>
+                        <div style="text-align: center" id="content-delete-signature"></div>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+
+                        <button type="submit" id="delete_signature_accept" onclick="" class="btn btn-secondary"
+                        >Đồng ý
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Hủy bỏ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="create_signature" tabindex="-1" role="dialog" aria-labelledby="labelModel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header"
+                         style="background: #74b23b; max-height: 50px;text-align: center">
+                        <h5 class="c-white t-9" STYLE="text-align: center" id="labelModel">TẠO MỚI CHỮ KÝ</h5>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered table-fix table-hover m-b-30">
+                            <thead>
+                            <tr>
+                                <td><label for="mail_picker">Mail <i style="color: red">*</i></label></td>
+                                <td><label for="name_signature">Tên bộ chữ ký mail <i style="color: red">*</i></label></td>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td style="overflow-y:auto;padding-bottom: 60px "><select id="mail_picker" class="form-control selectpicker input" title="Chọn email" style="size: 6">
+                                            <% for(var i = 0;i < service.length;i++){ %>
+                                                <option value=<%- service[i]._id %>>
+                                                    <%- service[i].send_user %>
+                                                </option>
+                                            <% } %>
+
+                                        </select></td>
+                                    <td style="padding-bottom: 60px"><input type="text" id="name_signature" class="form-control"></td>
+                                </tr>
+                            <tr></tr>
+                            </tbody>
+                        </table>
+                        <textarea id="signature-modal" rows="2" class="m-r-10"></textarea>
+                        <br>
+                        <label for="active-signature">Sử dụng / Không sử dụng: </label>
+                                <input id="active-signature" type="checkbox"><label for="active-signature"
+                                                                                             class="ts-helper"></label>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+
+                        <button type="submit" id="submit_signature" onclick="" class="btn btn-secondary"
+                        >Hoàn tất
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="update_signature" tabindex="-1" role="dialog" aria-labelledby="labelModel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header"
+                         style="background: #74b23b; max-height: 50px;text-align: center">
+                        <h5 class="c-white t-9" STYLE="text-align: center" id="labelModel">CHỈNH SỬA CHỮ KÝ</h5>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered table-fix table-hover m-b-30">
+                            <thead>
+                            <tr>
+                                <td><label for="mail_picker_update">Mail <i style="color: red">*</i></label></td>
+                                <td><label for="name_signature_update">Tên bộ chữ ký mail <i style="color: red">*</i></label></td>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr>
+                                <td style="overflow-y:auto;padding-bottom: 60px "><select id="mail_picker_update" name="select-mail-update" class="form-control selectpicker input" title="Chọn email" style="size: 6">
+                                        <% for(var i = 0;i < service.length;i++){ %>
+                                            <option value=<%- service[i]._id %>>
+                                                <%- service[i].send_user %>
+                                            </option>
+                                        <% } %>
+
+                                    </select></td>
+                                <td style="padding-bottom: 60px"><input type="text" id="name_signature_update" class="form-control"></td>
+                            </tr>
+                            <tr></tr>
+                            </tbody>
+                        </table>
+                        <textarea id="signature-modal-update" rows="2" class="m-r-10"></textarea>
+                        <br>
+                        <label for="active-signature-update">Sử dụng / Không sử dụng: </label>
+                        <input id="active-signature-update" type="checkbox"><label for="active-signature-update"
+                                                                            class="ts-helper"></label>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+
+                        <button type="button" id="updateSignatureBtn" class="btn btn-secondary"
+                        >Hoàn tất
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+                <% TableCellDateFormat = function (value) {
+                    return moment(value, 'DD/MM/YYYY HH:mm:ss', true).isValid() ? moment(value, 'DD/MM/YYYY HH:mm:ss').format("DD/MM/YYYY HH:mm") : moment(value).format("DD/MM/YYYY HH:mm");
+                }%>
+        <table id="signature-index" class="table table-bordered table-fix table-hover m-b-30">
+                <thead>
+                <tr>
+                    <th class="bgm-orange c-white w-150">Tên bộ cấu hình chữ ký mail</th>
+                    <th class="bgm-orange c-white w-200">Email</th>
+                    <th class="bgm-orange c-white w-100 text-center p-0">Ngày tạo</th>
+                    <th class="bgm-orange c-white w-60 text-center p-0">Trạng thái</th>
+                    <th class="bgm-orange c-white w-70 text-center">Tác vụ</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <% for(var i = 0;i < signatureIndex.length;i++){ %>
+                    <tr id="<%- signatureIndex[i]._id %>" index="<%-i%>" mail_picker="<%- signatureIndex[i].mail_picker %>" mail_name="<%- signatureIndex[i].mail_name %>" name="<%- signatureIndex[i].name %>" active="<%- signatureIndex[i].active%>">
+                        <td><%- signatureIndex[i].name %></td>
+                        <td><%- signatureIndex[i].mail_name %></td>
+                        <td data-formatter="TableCellDateFormat"><%- TableCellDateFormat(signatureIndex[i].created) %></td>
+                        <td><% if(signatureIndex[i].active == true){ %>
+                            Sử dụng
+                          <% } else{ %>  
+                            Không sử dụng
+                         <% } %></td>
+                        
+                        <td class="form-inline">
+                            <ul class="lv-actions actions">
+                                <li><a data-target="#update_signature" data-toggle="modal" data-placement="top" data-original-title="Update"><i class="zmdi zmdi-edit"></i></a></li>
+                                <li><a data-target="#delete_signature" id="delete_signature" type="button" style="color:red;" data-toggle="modal" data-placement="top" data-original-title="Delete"><i class="zmdi zmdi-delete"></i></a></li>
+                            </ul>
+                        </td>
+                        <td hidden="hidden" class="body_raw"><%- signatureIndex[i].body_raw %></td>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

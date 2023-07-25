@@ -1,0 +1,41 @@
+<%- breadcrumb %>
+<script>
+    var results = JSON.parse('<%- JSON.stringify(results)%>');
+</script>
+<div class="card">
+    <div class="card-header">
+        <h2 class="m-b-5"><%- title %></h2>
+    </div>
+    <div class="card-body card-padding">
+        <form role="form" class="form-horizontal" id="add-new-article" enctype="multipart/form-data">
+            
+            <div class="form-group">
+                <label for="group" class="col-sm-3 control-label">Tên nhóm kỹ năng<span class="required">*</span></label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="text" class="form-control validate[required]" value="<%- results.data.name%>" id="name" name="name">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">Tên skill <span class="required">*</span></label>
+                <div class="col-sm-6">
+                    <select class="selectpicker" id="listSkills" name="listSkills[]" multiple>
+                        <option value="" disabled>-- Chọn --</option>
+                        <%results.skillgroup.forEach(function(item){%>
+                            <option value="<%- item.peripheralNumber%>" <% if (results.data.listSkills.indexOf(item.peripheralNumber) != -1) {%> selected<%}%> ><%- item.skillGroupName%></option>
+                            
+                        <%})%>
+                    </select>
+                </div>
+            </div>
+            <input type="hidden" name="members" id="members">
+            <div class="form-group m-b-0">
+                <div class="col-sm-offset-3 col-sm-10">
+                    <a class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect waves-effect" id="btn-back" name="btn-back" href="/#manage-skill-groups"><i class="m-r-5 zmdi zmdi-arrow-left"></i>Quay lại</a>
+                    <button type="submit" class="btn btn-primary btn-icon-text m-t-10 waves-effect"><i class="m-r-5 zmdi zmdi-plus-circle-o"></i>Xác nhận</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

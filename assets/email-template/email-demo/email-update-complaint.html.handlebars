@@ -1,0 +1,94 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>{{titleEmail}}</title>
+</head>
+
+<body
+    style="-webkit-text-size-adjust: none; box-sizing: border-box; color: #74787E; font-family: Helvetica Neue,Helvetica,Lucida Grande,tahoma,verdana,arial,sans-serif; height: 100%; line-height: 1.4; margin: 0; width: 100% !important;"
+    bgcolor="#F2F4F6">
+    <style type="text/css">
+        body {
+            width: 100% !important;
+            height: 100%;
+            margin: 0;
+            line-height: 1.4;
+            background-color: #F2F4F6;
+            color: #74787E;
+            -webkit-text-size-adjust: none;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .email-body_inner {
+                width: 100% !important;
+            }
+
+            .email-footer {
+                width: 100% !important;
+            }
+        }
+
+        @media only screen and (max-width: 500px) {
+            .button {
+                width: 100% !important;
+            }
+        }
+    </style>
+    <div>
+        <div>Dear anh/chị,</div>
+        <div>Customer Service Team gửi anh/chị trường hợp khách hàng cập nhật KHIẾU NẠI về {{complaint.complaint}}</div>
+        <p>
+        <div>Thông tin khách hàng :</div>
+        <div>
+            <div>Họ tên: {{customer.name}}</div>
+            <div>SĐT: {{customer.phone}}</div>
+            <div>Email: {{customer.email}}</div>
+            <div>Tỉnh thành: {{customer.province}}</div>
+        </div>
+
+
+        </p>
+
+        <p>
+        <div>Thông tin nhà hàng :</div>
+        <div>
+            <div>Nhà hàng : {{complaint.restaurant}}</div>
+            <div>Nhãn hiệu : {{complaint.brand}}</div>
+            <div>Tỉnh thành : {{complaint.province}}</div>
+        </div>
+
+
+        </p>
+        <p>
+        <div>Thông tin phản ánh :</div>
+        <div>
+            <div>Source :{{complaint.source}}</div>
+            <div>Loại khiếu nại : {{complaint.complaint}}</div>
+            <div>Vấn đề gặp phải : {{complaint.problem}}</div>
+            <div>SLA : {{complaint.sla}}</div>
+            <div>Nội dung : {{complaint.content}}</div>
+        </div>
+        </p>
+        <p>
+        <div>Anh/chị vui lòng liên hệ xử lý gấp!</div>
+        <div>Xin cảm ơn.</div>
+        <div>* This is auto-email from system. Please do not reply.</div>
+
+        <div>File đính kèm :</div>
+        <ul>
+            {{#each complaint.file}}
+            <li><a href="{{this.urlUpload}}" download>{{this.nameUpload}}</a></li>
+            {{/each}}
+            {{#each complaint.fileRecord}}
+            <li>{{this}}</li>
+            {{/each}}
+        </ul>
+        </p>
+
+    </div>
+
+</body>
+
+</html>

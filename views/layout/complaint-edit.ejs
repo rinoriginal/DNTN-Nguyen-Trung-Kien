@@ -1,0 +1,785 @@
+<%-breadcrumb%>
+<script>
+    var data = JSON.parse('<%- JSON.stringify(data) %>');
+    var _urlUpload = JSON.parse('<%- JSON.stringify(_url) %>');
+    var isEdit = JSON.parse(`<%- isEdit%>`)
+</script>
+<style>
+    .content-format table td {
+        border: 1px solid #4C4C4C;
+        padding: 2px;
+    }
+</style>
+<div class="card" id="ticket-edit">
+    <div class="card-header">
+        <h2 class="m-b-5"><%- title %> </h2>
+    </div>
+
+    <div class="card-body card-padding">
+        <section id="main">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="form-horizontal bgm-white flex-row">
+                            <div class="panel-group m-0 p-b-5" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading p-0">
+                                        <h5 class="panel-title">
+                                            <a data-id="showCustomer"
+                                                class="btn-block p-10 bgm-orange c-white text-uppercase TXT_CUSTOMER_INFO"><i
+                                                    class="zmdi zmdi-account-circle"></i>
+                                                Thông tin khách hàng</a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body c-overflow p-5 p-b-10">
+                                            <table class="table table-striped table-bordered">
+                                                <%  for(var i = 0; i < fields.length; i++){ %>
+                                                <div class="row m-20">
+                                                    <label
+                                                        class="control-label col-md-3 text-left"><%- fields[i].displayName %>
+                                                        <%- _switch(fields[i].isRequired, [0, 1], ['', '<span class="c-red">*</span>']) %>
+                                                    </label>
+                                                    <% {%>
+                                                    <div class="col-md-9 text-left">
+                                                        <%- fnInfo(fields[i], customer); %>
+                                                    </div>
+                                                    <%}%>
+                                                        </div>
+                                                        <% } %>
+                                            </table>
+                                            <input type="hidden" name="idCustomer" id="idCustomer"
+                                                value="<%- customer._id%>">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+
+                        <div class="form-horizontal bgm-white flex-row">
+                            <div class="panel-group m-0" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading p-0">
+                                        <h5 class="panel-title">
+                                            <a data-id="showCustomer"
+                                                class="btn-block p-10 timelineTag c-white text-uppercase "><i
+                                                    class="zmdi zmdi-collection-text"></i>
+                                                Phiếu khiếu nại
+
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body c-overflow p-5 p-b-10">
+                                            <form id="form-edit-complaint" class="form-horizontal">
+
+                                                <table class="table table-striped table-bordered">
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Nhãn hiệu:<span class="required" style="color: red;">
+                                                                *</span>
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <select name="brandId" id="brandId"
+                                                                class="selectpicker input" data-live-search="true"
+                                                                title="-- Chọn --">
+                                                                <option value="">---- Chọn ----</option>
+                                                                <%brands.forEach(function(el){%>
+                                                                <option
+                                                                    <%- (JSON.stringify(el._id) == JSON.stringify(data.brandId)) ? 'selected' : ''%>
+                                                                    value="<%- el._id%>"><%- el.name%></option>
+                                                                <%})%>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Tỉnh thành:<span class="required" style="color: red;">
+                                                                *</span>
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <select name="provinceId" id="provinceId"
+                                                                class="selectpicker input" data-live-search="true"
+                                                                title="-- Chọn --">
+                                                                <option value="">---- Chọn ----</option>
+                                                                <%provinces.forEach(function(el){%>
+                                                                <option
+                                                                    <%- (JSON.stringify(el._id) == JSON.stringify(data.provinceId)) ? 'selected' : ''%>
+                                                                    value="<%- el._id%>"><%- el.name%></option>
+                                                                <%})%>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Nhà hàng:<span class="required" style="color: red;">
+                                                                *</span>
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <select name="restaurantId" id="restaurantId"
+                                                                class="selectpicker input" data-live-search="true"
+                                                                title="-- Chọn --">
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Source:<span class="required" style="color: red;"> *</span>
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <select name="channelType" id="channelType"
+                                                                class="selectpicker input" data-live-search="true"
+                                                                title="-- Chọn --">
+                                                                <option value="">---- Chọn ----</option>
+                                                                <option
+                                                                    <%- data.channelType == 1 ? 'selected' :'' %>
+                                                                    value="1">Social Listening
+                                                                </option>
+                                                                <option
+                                                                    <%- data.channelType == 2 ? 'selected' :'' %>
+                                                                    value="2">Social Comment
+                                                                </option>
+                                                                <option
+                                                                    <%- data.channelType == 3 ? 'selected' :'' %>
+                                                                    value="3">Email survey</option>
+                                                                <option
+                                                                    <%- data.channelType == 4 ? 'selected' :'' %>
+                                                                    value="4">Email support</option>
+                                                                <option
+                                                                    <%- data.channelType == 5 ? 'selected' :'' %>
+                                                                    value="5">Hotline 19006622
+                                                                </option>
+                                                                <option
+                                                                    <%- data.channelType == 6 ? 'selected' :'' %>
+                                                                    value="6">Others</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Loại khiếu nại:<span class="required" style="color: red;">
+                                                                *</span>
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <select name="typeComplaintId" id="typeComplaintId"
+                                                                class="selectpicker input" data-live-search="true"
+                                                                title="-- Chọn --">
+                                                                <option value="">---- Chọn ----</option>
+                                                                <%complaintCategory.forEach(function(el){%>
+                                                                <option
+                                                                    <%- (JSON.stringify(el._id) == JSON.stringify(data.typeComplaintId)) ? 'selected' : ''%>
+                                                                    value="<%- el._id%>"
+                                                                    data-sla="<%- el.slaComplaint%>">
+                                                                    <%- el.nameComplaint%>
+                                                                </option>
+                                                                <%})%>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Vấn đề gặp phải:
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <select name="problemId" id="problemId"
+                                                                class="selectpicker input" data-live-search="true"
+                                                                title="-- Chọn --">
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Category:
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <select name="categoryComplaintId" id="categoryComplaintId"
+                                                                class="selectpicker input" data-live-search="true"
+                                                                title="-- Chọn --">
+                                                                <option value="">---- Chọn ----</option>
+                                                                <%category.forEach(function(el){%>
+                                                                <option
+                                                                    <%- (JSON.stringify(el._id) == JSON.stringify(data.categoryComplaintId)) ? 'selected' : ''%>
+                                                                    value="<%- el._id%>">
+                                                                    <%- el.category%>
+                                                                </option>
+                                                                <%})%>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Sub Category:
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <select name="subCategoryComplaintId"
+                                                                id="subCategoryComplaintId" class="selectpicker input"
+                                                                data-live-search="true" title="-- Chọn --">
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Nội dung:<span class="required" style="color: red;">
+                                                                *</span>
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+
+                                                            <input type="text" class="form-control" id="content"
+                                                                name="content" value="<%- data.content%>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20 flex-box">
+                                                        <label class="control-label col-sm-2 col-md-2 text-left">
+                                                            Đính kèm:
+                                                        </label>
+                                                        <div class="col-md-10 col-sm-10 text-left">
+                                                            <div class="input-group">
+                                                                <a href="javascript:void(0)"
+                                                                    onclick="$(`#btnUploadFile`).click()">
+                                                                    <span
+                                                                        class="btn btn-default btn-info btn-sm btn-file m-r-10 waves-effect">
+                                                                        <span class="fileinput-new">
+                                                                            <i class="zmdi zmdi-upload p-r-10 w-13"></i>
+                                                                            Chọn file
+                                                                        </span>
+                                                                    </span>
+                                                                </a>
+                                                                <input type="file" id="btnUploadFile" name=""
+                                                                    style="display: none" class="form-control orange"
+                                                                    data-show="uploadFile" multiple>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row m-20 flex-box">
+                                                        <label class="control-label col-md-2 col-sm-2 text-left">
+                                                        </label>
+                                                        <div class="col-md-10 col-sm-10 text-left">
+                                                            <div class="preview-files-zone-uploadFile overflow-scroll ">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Trạng thái:
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <select class="form-control" name="status" id="status">
+                                                                <option <%- (data.status == 0) ? 'selected' : ''%>
+                                                                    value="0">Đang xử lý</option>
+                                                                <option <%- (data.status == 1) ? 'selected' : ''%>
+                                                                    value="1">Tạm dừng xử lý</option>
+                                                                <option <%- (data.status == 2) ? 'selected' : ''%>
+                                                                    value="2">Đã xử lý aa </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Thời hạn xử lý:
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <div class="input-group">
+                                                                <!-- <input type="text" name="deadline" id="deadline"
+                                                                class="form-control"
+                                                                value="<%- data.deadline ? _moment(data.deadline).format('DD/MM/YYYY HH:mm A') : '';%>"
+                                                                readonly> -->
+                                                                <input class="form-control date-picker" type="text"
+                                                                    data-date-format="DD/MM/YYYY HH:mm"
+                                                                    autocomplete="off" id="appointmentDate"
+                                                                    name="deadline"
+                                                                    value="<%- data.deadline ? _moment(data.deadline).format('DD/MM/YYYY HH:mm A') : '';%>"
+                                                                    readonly>
+                                                                <span class="input-group-addon p-l-10 bgm-gray c-white">
+                                                                    <i role="button" class="zmdi zmdi-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Tác vụ:
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <div class="input-group">
+                                                                <h3>Chọn file ghi âm</h3>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card">
+                                                            <div class="panel-body p-0 c-overflow">
+                                                                <div class="tab-content">
+                                                                    <div role="tabpanel" style="height: 100%"
+                                                                        class="tab-pane animated active">
+                                                                        <form role="form" id="frm-report-call-monitor">
+                                                                            <table
+                                                                                class="table table-bordered table-fix"
+                                                                                id="tbl-ticket">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th
+                                                                                            class="bgm-orange c-white text-center">
+                                                                                            <span
+                                                                                                class="TXT_CALL_TYPE">Loại
+                                                                                                cuộc gọi</span>
+                                                                                        </th>
+                                                                                        <th
+                                                                                            class="bgm-orange c-white text-center">
+                                                                                            <span
+                                                                                                class="TXT_START_TIME">Thời
+                                                                                                gian gọi vào</span>
+                                                                                        </th>
+                                                                                        <th
+                                                                                            class="bgm-orange c-white text-center">
+                                                                                            <span
+                                                                                                class="TXT_END_TIME">Thời
+                                                                                                gian kêt thúc</span>
+                                                                                        </th>
+                                                                                        <th
+                                                                                            class="bgm-orange c-white text-center">
+                                                                                            <span class="TXT_AGENT">Điện
+                                                                                                thoại viên</span>
+                                                                                        </th>
+                                                                                        <th
+                                                                                            class="bgm-orange c-white text-center">
+                                                                                            <span class="TXT_ACTION">Tác
+                                                                                                vụ</span>
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+
+                                                                                    <tr class="filter"
+                                                                                        id="search-input">
+                                                                                        <td>
+                                                                                            <div>
+                                                                                                <select
+                                                                                                    class="selectpicker searchColumn"
+                                                                                                    name="transType">
+                                                                                                    <option selected
+                                                                                                        value="">- Chọn
+                                                                                                        -</option>
+                                                                                                    <option value="1">
+                                                                                                        Gọi vào</option>
+                                                                                                    <option value="6">
+                                                                                                        Gọi ra</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        <td><input type="text"
+                                                                                                class="form-control"
+                                                                                                disabled></td>
+                                                                                        <td><input type="text"
+                                                                                                class="form-control"
+                                                                                                disabled></td>
+                                                                                        <td>
+                                                                                            <select
+                                                                                                class="selectpicker searchColumn"
+                                                                                                name="agentId">
+                                                                                                <option selected
+                                                                                                    value="">- Chọn -
+                                                                                                </option>
+                                                                                                <% myUsers.forEach(function(el){ %>
+                                                                                                <option
+                                                                                                    value="<%- el._id %>">
+                                                                                                    <%- el.displayName + ' (' + el.name + ')' %>
+                                                                                                </option>
+                                                                                                <% }) %>
+                                                                                            </select>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <button type="button"
+                                                                                                class="btn btn-primary btn-block waves-effect"
+                                                                                                id="btn-search"
+                                                                                                name="btn-search">
+                                                                                                <i
+                                                                                                    class="zmdi zmdi-filter-list m-r-5"></i>
+                                                                                                Lọc
+                                                                                            </button>
+                                                                                        </td>
+                                                                                    </tr>
+
+                                                                                <tbody id="ticket-body">
+                                                                                </tbody>
+                                                                                </tbody>
+                                                                            </table>
+                                                                            <div class="text-center" id="ticket-total">
+                                                                                <!--<b>-->
+                                                                                <!--<span class="TXT_TOTAL"></span>:-->
+                                                                                <!--<span class="bold c-red" id="ticket-total">100</span>-->
+                                                                                <!--</b>-->
+                                                                            </div>
+                                                                            <div class="text-center" id="ticket-paging">
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </table>
+                                                <div class="row m-20" id="boxButton">
+                                                    <div class="col-sm-offset-5 col-sm-10">
+                                                        <button type="button" id="back"
+                                                            class="btn btn-primary btn-icon-text m-t-10 waves-effect" <i
+                                                            class="m-r-5 zmdi zmdi-arrow-back"></i>Quay
+                                                            lại</button>
+                                                        <button type="submit" id="btnSave"
+                                                            class="btn btn-primary btn-icon-text m-t-10 waves-effect"
+                                                            data-id="<%- data._id%>" data-type=""><i
+                                                                class="m-r-5 zmdi zmdi-check-all"></i>Xác
+                                                            nhận</button>
+                                                    </div>
+                                                </div>
+
+                                            </form>
+                                            <!-- lịch sử tác động -->
+                                            <div class="panel-group m-0 p-t-10" id="accordion">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading p-0">
+                                                        <h5 class="panel-title">
+                                                            <a data-id="showCustomer"
+                                                                class="btn-block p-10 timelineTag c-white text-uppercase ">
+                                                                <i class="zmdi zmdi-time"></i>
+                                                                LỊCH SỬ TÁC ĐỘNG</a>
+                                                        </h5>
+                                                    </div>
+                                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                                        <div class="panel-body c-overflow p-5 p-b-10">
+                                                            <div class="dots-list">
+                                                                <ol>
+                                                                    <%history.forEach(function(item,i){%>
+                                                                    <li>
+                                                                        <span
+                                                                            class="date"><%-moment(item.created).format("HH:mm:ss DD/MM/YYYY")%></span>
+                                                                        <i class='fa fa-pencil text-success'></i>
+                                                                        Cập nhật phiếu khiếu
+                                                                        nại.
+                                                                    </li>
+                                                                    <li>
+                                                                        <%if (item.brand) {%>
+                                                                        <span
+                                                                            class="timelineAgent"><%-item.updatedBy%></span>
+                                                                        <span>đã thay đổi nhãn hiệu thành </span>
+                                                                        <span class="timelineAction">
+                                                                            <%-item.brand%>
+                                                                        </span>
+
+                                                                        <%}%>
+                                                                        </li>
+                                                                    <li>
+                                                                        <%if (item.province) {%>
+                                                                        <span
+                                                                            class="timelineAgent"><%-item.updatedBy%></span>
+                                                                        <span>đã thay đổi Tỉnh Thành thành </span>
+                                                                        <span class="timelineAction">
+                                                                            <%-item.province%>
+                                                                        </span>
+
+                                                                        <%}%>
+                                                                        </li>
+                                                                    <li>
+                                                                        <%if (item.restaurant) {%>
+                                                                        <span
+                                                                            class="timelineAgent"><%-item.updatedBy%></span>
+                                                                        <span>đã thay đổi Cửa hàng thành </span>
+                                                                        <span class="timelineAction">
+                                                                            <%-item.restaurant%>
+                                                                        </span>
+
+                                                                        <%}%>
+                                                                        </li>
+                                                                    <li>
+                                                                        <%if (item.channelType) {%>
+                                                                        <span
+                                                                            class="timelineAgent"><%-item.updatedBy%></span>
+                                                                        <span>đã thay đổi Source thành </span>
+                                                                        <span class="timelineAction">
+                                                                            <%-item.channelType%>
+                                                                        </span>
+
+                                                                        <%}%>
+                                                                        </li>
+                                                                    <li>
+                                                                        <%if (item.complaintCategory) {%>
+                                                                        <span
+                                                                            class="timelineAgent"><%-item.updatedBy%></span>
+                                                                        <span>đã thay đổi loại khiếu nại thành
+                                                                        </span>
+                                                                        <span class="timelineAction">
+                                                                            <%-item.complaintCategory%>
+                                                                        </span>
+
+                                                                        <%}%>
+                                                                        </li>
+                                                                    <li>
+                                                                        <%if (item.problem) {%>
+                                                                        <span
+                                                                            class="timelineAgent"><%-item.updatedBy%></span>
+                                                                        <span>đã thay đổi vấn đề gặp phải thành
+                                                                        </span>
+                                                                        <span class="timelineAction">
+                                                                            <%-item.problem%>
+                                                                        </span>
+
+                                                                        <%}%>
+                                                                        </li>
+                                                                    <li>
+                                                                        <%if (item.category) {%>
+                                                                        <span
+                                                                            class="timelineAgent"><%-item.updatedBy%></span>
+                                                                        <span>đã thay đổi category thành </span>
+                                                                        <span class="timelineAction">
+                                                                            <%-item.category%>
+                                                                        </span>
+
+                                                                        <%}%>
+                                                                        </li>
+                                                                    <li>
+                                                                        <%if (item.subCategory) {%>
+                                                                        <span
+                                                                            class="timelineAgent"><%-item.updatedBy%></span>
+                                                                        <span>đã thay đổi Sub Category thành </span>
+                                                                        <span class="timelineAction">
+                                                                            <%-item.subCategory%>
+                                                                        </span>
+
+                                                                        <%}%>
+                                                                        </li>
+                                                                    <li>
+                                                                        <%if (item.content) {%>
+                                                                        <span
+                                                                            class="timelineAgent"><%-item.updatedBy%></span>
+                                                                        <span>đã thay đổi nội dung phiếu thành
+                                                                        </span>
+                                                                        <span class="timelineAction">
+                                                                            <%-item.content%>
+                                                                        </span>
+
+                                                                        <%}%>
+                                                                        </li>
+                                                                    <li>
+                                                                        <%if (item.files) {%>
+                                                                        <span
+                                                                            class="timelineAgent"><%-item.updatedBy%></span>
+                                                                        <span>đã thay đổi File đính kèm </span>
+
+                                                                        <%}%>
+                                                                        </li>
+                                                                    <li>
+                                                                        <%if (item.status) {%>
+                                                                        <span
+                                                                            class="timelineAgent"><%-item.updatedBy%></span>
+                                                                        <span>đã thay đổi trạng thái phiếu thành
+                                                                        </span>
+                                                                        <span class="timelineAction">
+                                                                            <%if(item.status == 0){%>
+                                                                            Đang xử lý
+                                                                            <%}else if(item.status ==1){%>
+                                                                            Tạm dừng xử lý
+                                                                            <%}else if(item.status){%>
+                                                                            Đã xử lý
+                                                                            <%}%>
+                                                                        </span>
+                                                                        <%}%>
+                                                                    </li>
+                                                                    <%})%>
+                                                                    <%if (data) {%>
+                                                                        <li><span
+                                                                                class="date"><%- moment(data.created).format("HH:mm:ss DD/MM/YYYY")%></span><i
+                                                                                class='fa fa-edit text-success'></i> Tạo
+                                                                            mới phiếu khiếu
+                                                                            nại. </li>
+                                                                        <li>
+                                                                            <span
+                                                                                class="timelineAgent"><%-ticket.agentName%></span>
+                                                                            đã
+                                                                            tạo phiếu khiếu nại cho
+                                                                            <span
+                                                                                class="timelineAgent"><%-ticket.customer.field_ho_ten ? ticket.customer.field_ho_ten : '' %></span>.
+                                                                        </li>
+                                                                        <%}%>
+                                                                </ol>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Gửi phản hồi -->
+                                            <form role="form" class="form-horizontal" id="update-order"
+                                                enctype="multipart/form-data">
+                                                <div class="panel-group m-0 p-t-10" id="accordion">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading p-0">
+                                                            <h5 class="panel-title">
+                                                                <a data-id="showCustomer"
+                                                                    class="btn-block p-10 timelineTag c-white text-uppercase ">
+                                                                    <i class="fa fa-comment-o"></i>
+                                                                    GỬI PHẢN HỒI</a>
+                                                            </h5>
+                                                        </div>
+                                                        <!--  -->
+                                                        <div class="panel-feedbacks">
+                                                            <% if(ticket.feedbacks && ticket.feedbacks.length){%>
+                                                            <ul class="ul-feedbacks">
+                                                                <!-- Chat: right/left clearfix-->
+                                                                <% for(var k = 0; k<ticket.feedbacks.length; k++){
+                                                            var feedbackInfo = ticket.feedbacks[k];
+                                                            var position = feedbackInfo.author == currentUser ? 'right' : 'left';
+                                                            if (!feedbackInfo.author.length) continue;
+                
+                                                        %>
+
+                                                                <li class="list-feedbacks" data-toggle="tooltip"
+                                                                    data-original-title="<%-moment(feedbackInfo.time).format('H:mm:ss - DD/MM/YYYY')%>"
+                                                                    style="<%- (feedbackInfo.content===undefined&&feedbackInfo.attachments.length===0)?'visibility: hidden':' ' %> ">
+                                                                    <div class="div-feedbacks">
+                                                                        <% if(position == 'left'){%>
+                                                                        <div class="header">
+                                                                            <strong class="primary-font">
+                                                                                <% if (feedbackInfo.author && feedbackInfo.author.length > 0) {%>
+                                                                                <%-feedbackInfo.author[0].displayName%>
+                                                                                <%}%>
+                                                                        <small class="text-muted">
+                                                                            <i class="zmdi zmdi-time"></i>
+                                                                            <span class="chatTime1"
+                                                                                data-date="<%-feedbackInfo.time%>"><%-moment(feedbackInfo.time).format("HH:mm:ss DD/MM/YYYY")%></span>
+                                                                                </small>
+                                                                            </strong>
+                                                                        </div>
+                                                                        <%}%>
+                        
+                                                                <ul class="list-content">
+                                                                    <li>
+                                                                        <div class="content-format">
+                                                                            <%-feedbackInfo.content%>
+                                                                    </div>
+                                                                </li>
+
+                                                                <% if(feedbackInfo.attachments && feedbackInfo.attachments.length > 0){ %>
+                                                                <li>
+                                                                    <div style="display: inline-block;">
+                                                                        <ul class="attachmentList">
+                                                                            <% feedbackInfo.attachments.forEach(item=>{
+                                                                                let newUrl = item.replace(/\\/g, '/');
+                                                                                let fileName = newUrl.split('/').pop();
+                                                                                let ext = fileName.split('.').pop();
+                                                                                let icon = 'fa-file-image-o';
+                                                                                let download = 'download'
+                                                                                let target =''
+                                                                                if(ext == 'xls' || ext == 'xlsx'){
+                                                                                    icon = 'fa-file-excel-o';
+                                                                                    download=''
+                                                                                    newUrl = 'https://docs.google.com/viewer?embedded=true&url='+_url+newUrl
+                                                                                }
+                                                                                else if(ext == 'doc' || ext == 'docx')
+                                                                                {
+                                                                                    icon = 'fa-file-word-o';
+                                                                                    download=''
+                                                                                    newUrl = 'https://docs.google.com/viewer?embedded=true&url='+_url+newUrl
+                                                                                } 
+                                                                                else if(ext == 'pdf'){
+                                                                                    icon = 'fa-file-pdf-o';
+                                                                                    target="_blank"
+                                                                                }
+                                                                                else if(ext == 'txt'){
+                                                                                    icon = 'fa-file-text-o';
+                                                                                }
+                                                                            %>
+                                                                            <li>
+                                                                                <i class="fa <%-icon%>"></i> <a
+                                                                                    href="<%-newUrl%>" <%- download%> <%- target%>
+                                                                                    title="<%-newUrl%>"><%- fileName %></a>
+                                                                            </li>
+                                                                            <% }) %>
+                                                                        </ul>
+                                                                    </div>
+                                                                </li>
+                                                                <% } %>
+
+                                                            </ul>
+                                                        </div>
+                                                        </li>
+                                                        <% }%>
+                                                        </ul>
+                                                        <%}else{%>
+                                                        <div class="chatNoChat">Chưa có dữ liệu!</div>
+                                                        <%}%>
+                                        </div>
+                                                        <!--  -->
+                
+                                                        <div id="collapseOne" class="panel-collapse collapse in">
+                                                            <div class="panel-body c-overflow p-5 p-b-10">
+                                                                <div class="dots-list">
+                                                                    <div>
+                                                                        <textarea class="form-control" name="feedback" id="feedback"
+                                                                            placeholder="Nhập thông tin phản hồi tại mục này"></textarea>
+                
+                
+                                                                        <div style="margin-top: 5px" class="">
+                                                                                <div class="row m-20 flex-box">
+                                                                                    <label
+                                                                                        class="control-label col-sm-2 col-md-2 text-left">
+                                                                                        Đính kèm:
+                                                                                    </label>
+                                                                                    <div class="col-md-10 col-sm-10 text-left">
+                                                                                        <div class="input-group">
+                                                                                            <a href="javascript:void(0)"
+                                                                                                onclick="$(`#btnUploadFileFeedBack`).click()">
+                                                                                                <span
+                                                                                                    class="btn btn-default btn-info btn-sm btn-file m-r-10 waves-effect">
+                                                                                                    <span class="fileinput-new">
+                                                                                                        <i
+                                                                                                            class="zmdi zmdi-upload p-r-10 w-13"></i>
+                                                                                                        Chọn file
+                                                                                                    </span>
+                                                                                                </span>
+                                                                                            </a>
+                                                                                            <input type="file" id="btnUploadFileFeedBack"
+                                                                                                name="" style="display: none"
+                                                                                                class="form-control blue"
+                                                                                                data-show="uploadFileFeedBack" multiple>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row m-20 flex-box">
+                                                                                    <label class="control-label col-md-2 col-sm-2 text-left">
+                                                                                    </label>
+                                                                                    <div class="col-md-10 col-sm-10 text-left">
+                                                                                        <div class="preview-files-zone-uploadFileFeedBack overflow-scroll ">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                        </div>
+                
+                                                                    </div>
+                                                                    <div class="text-left p-t-5">
+                                                                        <button type="submit" id="btn-feedback"
+                                                                            class="btn btn-sm btn-warning"><i class="fa fa-send-o"></i>
+                                                                            Gửi đi</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+        </section>
+    </div>
+</div>

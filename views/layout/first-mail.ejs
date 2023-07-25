@@ -1,0 +1,255 @@
+<%-breadcrumb%>
+    <div class="card">
+        <div class="card-body">
+            <form id="first-mail" style="width:1290px">
+                <table class="table table-hover table-fix table-bordered">
+                    <thead>
+                        <tr class="listHead">
+                            <th class="w-150">
+                                DỰ ÁN
+                            </th>
+                            <th class="w-150">
+                                CHIẾN DỊCH
+                            </th>
+                            <th class="w-150">
+                                CÔNG TY
+                            </th>
+                            <th class="w-150">
+                                AGENT
+                            </th>
+                            <th class="w-150">
+                                TỪ NGÀY
+                            </th>
+                            <th class="w-150">
+                                TỪ GIỜ
+                            </th>
+                            <th class="w-150">
+                                ĐẾN NGÀY
+                            </th>
+                            <th class="w-150">
+                                ĐẾN GIỜ
+                            </th>
+                            <th class="w-78"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-filter filter">
+                            <td>
+                                <select class="selectpicker" id="filter_idProject" name="filter_idProject">
+                                    <option value='' selected class="text-center">Tất cả</option>
+                                    
+                                </select>
+                            </td>
+                            <td>
+                                <select class="selectpicker" id="filter_idCampain" name="filter_idCampain">
+                                    <option value='' selected class="text-center">Tất cả</option>
+                                    <% campains.forEach(function(element, index) { %>
+                                        <option value='<%- element._id %>' class="text-center">
+                                            <%- element.name %>
+                                        </option>
+                                    <%})%>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="selectpicker" id="filter_idCompany" name="filter_idCompany">
+                                    <option value='' selected class="text-center">Tất cả</option>
+                                    <% companies.forEach(function(element, index) { %>
+                                        <option value='<%- element._id %>' class="text-center">
+                                            <%- element.name %>
+                                        </option>
+                                    <%})%>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="selectpicker" id="filter_idAgent" name="filter_idAgent">
+                                    <option value='' selected class="text-center">Tất cả</option>
+                                    <% agents.forEach(function(element, index) { %>
+                                        <option value='<%- element._id %>' class="text-center">
+                                            <%- element.displayName %>
+                                        </option>
+                                    <%})%>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <input type="text" id="filter_fromDate" name="filter_fromDate" class="form-control pull-right multi-date-picker searchColumn">
+                                    <span class="input-group-addon p-l-10 bgm-gray c-white">
+                                        <i role="button" class="zmdi zmdi-calendar"></i>
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <input type="text" id="filter_fromTime" name="filter_fromTime" class="form-control pull-right time-picker searchColumn">
+                                    <span class="input-group-addon bgm-gray c-white" style="padding: 0 5px !important">
+                                        <i role="button" class="zmdi zmdi-time"></i>
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <input type="text" id="filter_toDate" name="filter_toDate" class="form-control pull-right multi-date-picker searchColumn">
+                                    <span class="input-group-addon p-l-10 bgm-gray c-white">
+                                        <i role="button" class="zmdi zmdi-calendar"></i>
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <input type="text" id="filter_toTime" name="filter_toTime" class="form-control pull-right time-picker searchColumn">
+                                    <span class="input-group-addon bgm-gray c-white" style="padding: 0 5px !important">
+                                        <i role="button" class="zmdi zmdi-time"></i>
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-block waves-effect btn-filter">
+                                    <i class="zmdi zmdi-search" style="font-size: 15px;bottom: -2px;position: relative;font-weight: bold;"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="lv-header-alt clearfix">
+            <h2 class="lvh-label hidden-xs">BÁO CÁO TỔNG QUÁT</h2>
+            <ul class="lv-actions actions">
+                <li>
+                    <button type="button" class="btn btn-primary btn-block waves-effect" id="btn-search" name="btn-search">
+                        <i class="fa fa-file-excel-o m-r-5"></i> Xuất excel
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-fix" id="tbl-ticket">
+                <thead>
+                    <tr>
+                        <th class="bgm-orange c-white text-center">NGÀY</th>
+                        <th class="bgm-orange c-white text-center">TỔNG SỐ MAIL</th>
+                        <th class="bgm-orange c-white text-center">TỔNG SỐ THỜI GIAN</th>
+                        <th class="bgm-orange c-white text-center">THỜI GIAN CHỜ</th>
+                        <th class="bgm-orange c-white text-center">HOÀN THÀNH</th>
+                        <th class="bgm-orange c-white text-center">ĐANG XỬ LÝ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tbody id="tbl-body">
+                        <% total.forEach(function(el, i) { %>
+                            <tr>
+                                <td class="text-center"><%-el._id%></td>
+                                <td class="text-center"><%-el.mail%></td>
+                                <td class="text-center">0</td>
+                                <td class="text-center"><%-el.totalMinites%></td>
+                                <td class="text-center">0</td>
+                                <td class="text-center">0</td>
+                            </tr>
+                        <%})%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="lv-header-alt clearfix">
+            <h2 class="lvh-label hidden-xs">BÁO CÁO CHI TIẾT</h2>
+            <ul class="lv-actions actions">
+                <li>
+                    <button type="button" class="btn btn-primary btn-block waves-effect" id="btn-search" name="btn-search">
+                        <i class="fa fa-file-excel-o m-r-5"></i> Xuất excel
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-fix" id="tbl-ticket">
+                <thead>
+                    <tr>
+                        <th class="bgm-orange c-white text-center">SĐT
+                            <br>KHÁCH HÀNG</th>
+                        <th class="bgm-orange c-white text-center">TÊN KHÁCH HÀNG</th>
+                        <th class="bgm-orange c-white text-center">ĐIỆN THOẠI VIÊN</th>
+                        <th class="bgm-orange c-white text-center">TRẠNG THÁI</th>
+                        <th class="bgm-orange c-white text-center">THỜI GIAN NHẬN MAIL</th>
+                        <th class="bgm-orange c-white text-center">THỜI GIAN TRẢ LỜI MAIL</th>
+                        <th class="bgm-orange c-white text-center">TỔNG<br>SỐ PHIẾU</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tbody id="tbl-body">
+                    <% reports.forEach(function(el, i) { %>
+                        <tr>
+                            <td class="text-center"><%-el._id.customer.field_so_dien_thoai%></td>
+                            <td class="text-center"><%-el._id.customer.field_ho_ten%></td>
+                            <td class="text-center"><%-el._id.agent%></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"><%-el.ticket%></td>
+                        </tr>
+                    <%})%>
+                </tbody>
+            </table>
+            <% if(paging.pageCount > 1){ %>
+                <% include('../paging.ejs') %>
+            <% } %>
+        </div>
+    </div>
+
+    <style>
+        .bootstrap-select {
+            width: 220px;
+            background-color: white;
+        }
+
+        .bootstrap-datetimepicker-widget .timepicker-hour,
+        .bootstrap-datetimepicker-widget .timepicker-minute,
+        .bootstrap-datetimepicker-widget .timepicker-second {
+            width: 34px;
+            font-weight: bold;
+            font-size: 1em;
+            margin: 0;
+        }
+
+        .bootstrap-datetimepicker-widget table td {
+            height: auto;
+            line-height: normal;
+            width: 54px;
+        }
+
+        .bootstrap-datetimepicker-widget table td span {
+            display: inline-block;
+            width: 54px;
+            height: auto;
+            line-height: normal;
+            margin: 2px 1.5px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .bootstrap-datetimepicker-widget button[data-action] {
+            padding: 2px;
+        }
+
+        .bootstrap-select.btn-group .dropdown-menu li a {
+            padding-right: 40px;
+            text-align: left !important;
+        }
+
+        .bootstrap-select.btn-group .dropdown-menu li[data-original-index="0"] a {
+            padding-right: 17px;
+            text-align: center !important
+        }
+
+        .bootstrap-select .check-mark {
+            top: 10px;
+            right: 10px;
+        }
+    </style>

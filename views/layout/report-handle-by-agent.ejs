@@ -1,0 +1,120 @@
+<%-breadcrumb%>
+<script>
+    var Type_Reviews = JSON.parse('<%- JSON.stringify(Type_Reviews)%>');
+</script>
+    <div class="card">
+        <div class="lv-header-alt clearfix m-b-5">
+            <h2 class="lvh-label hidden-xs">
+                <%- title %>
+            </h2>
+            <ul class="lv-actions actions">
+                <li>
+                    <a data-toggle="tooltip" data-placement="top" data-original-title="Tải file báo cáo" id="exportexcel"><i class="zmdi zmdi-cloud-download"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="panel panel-default">
+            <div>
+                <div class="panel-body p-0 c-overflow">
+                    <div class="tab-content">
+                        <div role="tabpanel" style="height: 100%" class="tab-pane animated active">
+                            <form role="form" id="frm-report-handle-by-agent">
+                                <table class="table table-bordered table-fix">
+                                    <thead>
+                                        <tr>
+                                            <th class="bgm-orange c-white text-center">
+                                                <span class="TXT_CUSTOMER_NAME"></span>
+                                            </th>
+                                            <th class="bgm-orange c-white text-center">
+                                                <span class="TXT_CUSTOMER_PHONE"></span>
+                                            </th>
+                                            <th class="bgm-orange c-white text-center">
+                                                <span class="TXT_TIME_CALL"></span>
+                                            </th>
+                                            <th class="bgm-orange c-white text-center">
+                                                <span class="TXT_AGENT"></span>
+                                            </th>
+                                            <th class="bgm-orange c-white text-center">
+                                                <span class="TXT_TIME_CALLED"></span>
+                                            </th>
+                                            <th class="bgm-orange c-white text-center">
+                                                <span class="TXT_TIME_CONVERSATION"></span>
+                                            </th>
+                                            <th class="bgm-orange c-white text-center">
+                                                <span class="TXT_REASON"></span>
+                                            </th>
+                                            <th class="bgm-orange c-white text-center">
+                                                <span class="TXT_NOTE"></span>
+                                            </th>
+                                            <th class="bgm-orange c-white text-center">
+                                                <span class="TXT_CUSTOMER_REVIEWS"></span>
+                                            </th>
+                                            <th class="bgm-orange c-white text-center">
+                                                <span class="TXT_ACTION"></span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="filter">
+                                            <td>
+                                                <input type="text" class="form-control input-sm input" name="field_ten_KH" placeholder="VD:Nguyen Van A">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control input-sm input" name="field_so_dien_thoai" placeholder="VD:085367xxx">
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control pull-right multi-date-picker input" id="time_call" name="time_call">
+                                                    <span class="input-group-addon p-l-10 bgm-gray c-white">
+                                                      <i role="button" class="zmdi zmdi-calendar"></i>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control input-sm input" name="agent" placeholder="VD:Nguyen Van A">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control input-sm" disabled style="background-color: #D1CDCD;">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control input-sm" disabled style="background-color: #D1CDCD;">
+                                            </td>
+                                            <td>
+                                                <select name="ticketReasons" id="ticketReasons" class="selectpicker input" multiple data-live-search="true"> 
+                                                    <% _.each(result.ticketReasonCategory.tr, function(o){%>
+                                                    <option value=<%- o._id%>><%- o.name%></option>
+                                                    <%})%>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control input-sm input" name="note" placeholder="VD:Ghi chu">
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <select class="input selectpicker" name="customer_reviews" multiple data-live-search="true">
+                                                        <option value="<%- Type_Reviews.HaiLong.value %>"><%- Type_Reviews.HaiLong.name %></option>
+                                                        <option value="<%- Type_Reviews.KhongHaiLong.value %>"><%- Type_Reviews.KhongHaiLong.name %></option>
+                                                    </select>
+                                                  </div>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary btn-block waves-effect" id="btn-search" name="btn-search">
+                                                    <i class="zmdi zmdi-filter-list m-r-5"></i> Lọc
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <tbody id="body-table">
+
+                                    </tbody>
+                                </table>
+                                <div class="text-center" id="totalpage" style="color: red;">
+                                </div>
+                                <div class="text-center" id="paging"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

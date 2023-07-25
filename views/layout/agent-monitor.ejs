@@ -1,0 +1,256 @@
+<%-breadcrumb%>
+    <div class="lv-header-alt clearfix">
+        <h2 class="lvh-label hidden-xs">
+            <%- title %>
+        </h2>
+        <ul class="lv-actions actions">
+            <li>
+                <a id="setting-btn" data-toggle="tooltip" data-placement="top" data-original-title="Cấu hình cảnh báo">
+                    <i class="zmdi zmdi-refresh"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="card">
+        <div class="card-body table-responsive">
+            <table class="table table-bordered table-fix" id="tbl-agent-monitor">
+                <thead>
+                    <tr class="f-12">
+                        <th class="bgm-orange c-white text-center w-200">Agent</th>
+                        <th class="bgm-orange c-white text-center">Voice</th>
+                        <th class="bgm-orange c-white text-center">Thời gian tình trạng</th>
+                        <th class="bgm-orange c-white text-center">Chat</th>
+                        <th class="bgm-orange c-white text-center">Thời gian tình trạng</th>
+                        <th class="bgm-orange c-white text-center">Mail</th>
+                        <th class="bgm-orange c-white text-center">Thời gian tình trạng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% agents.forEach(function(a, i) { %>
+                        <tr class="filter <%- a.isOnline ? '' : 'offline' %>" id="<%- a._id%>">
+                            <td>
+                                <b>
+                                    <%- a.displayName %>
+                                </b>
+                            </td>
+                            <!-- v-s : voice status -->
+                            <!-- v-t : voice time -->
+                            <td class="">
+                                <div>
+                                    <select class="selectpicker" id="v-s-<%- a._id %>" name="voice-status">
+                                        <option value="">UNKNOW</option>
+                                        <% voiceStatus.forEach(function(stt, i) { %>
+                                            <option value=<%- stt.statusCode %>
+                                            <%- a.voiceStatus == stt.statusCode ? 'selected' : '' %> >
+                                                <%- stt.name %>
+                                        </option>
+                                        <%})%>
+                                    </select>
+                                </div>
+                            </td>
+                            <td class="text-center" id="v-t-<%- a._id %>" time="<%- a.voiceStatusChange%>"></td>
+                            <!-- c-s : mail status -->
+                            <!-- c-t : mail time -->
+                            <td class="<%- a.chatStatus ? '' : 'offline' %>">
+                                <div>
+                                    <select class="selectpicker" id="c-s-<%- a._id %>" name="chat-status">
+                                        <option value="1" <%- a.chatStatus ? 'selected' : '' %>>Online</option>
+                                        <option value="0" <%- a.chatStatus ? '' : 'selected' %>>Offline</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td class="text-center" id="c-t-<%- a._id %>" time="<%- a.chatStatusChange%>"></td>
+                            <!-- m-s : mail status -->
+                            <!-- m-t : mail time -->
+                            <td class="<%- a.emailStatus ? '' : 'offline' %>">
+                                <div>
+                                    <select class="selectpicker" id="m-s-<%- a._id %>" name="mail-status">
+                                        <option value="1" <%- a.emailStatus ? 'selected' : '' %>>Online</option>
+                                        <option value="0" <%- a.emailStatus ? '' : 'selected' %>>Offline</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td class="text-center" id="m-t-<%- a._id %>" time="<%- a.emailStatusChange %>"></td>
+                        </tr>
+                        <%})%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <h2 class="lvh-label hidden-xs m-b-30">
+        CÓ
+        <b>0</b> AGENT ĐANG VI PHẠM
+    </h2>
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-md-4">
+            <div class="lv-header-alt clearfix">
+                <h2 class="lvh-label hidden-xs">
+                    THIẾT LẬP CẢNH BÁO KÊNH VOICE
+                </h2>
+                <table class="table table-fix m-t-20" id="tbl-agent-monitor-voice-setting">
+                    <tr>
+                        <td>Số lượng Agent nghỉ quá</td>
+                        <td width="85">
+                            <input class="form-control disabled" type="number" min="0" id="input-voice-setting-agent" value="<%- voiceSettings.agent %>"
+                            />
+                        </td>
+                        <td width="50">người</td>
+                    </tr>
+                </table>
+                <p class="m-t-10 m-b-10">
+                    <strong>Thời gian của tình trạng</strong>
+                </p>
+                <table class="table table-fix" id="tbl-agent-monitor-voice-setting">
+                    <tr>
+                        <td>
+                            <b>SẴN SÀNG PHỤC VỤ</b> không quá</td>
+                        <td width="85">
+                            <input class="form-control disabled" type="number" min="0" id="input-voice-setting-san_sang_phuc_vu" value="<%- voiceSettings.san_sang_phuc_vu %>"
+                            />
+                        </td>
+                        <td width="50">phút</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>KHÔNG SẴN SÀNG PHỤC VỤ</b> không quá</td>
+                        <td width="85">
+                            <input class="form-control disabled" type="number" min="0" id="input-voice-setting-khong_san_sang_phuc_vu" value="<%- voiceSettings.khong_san_sang_phuc_vu %>"
+                            />
+                        </td>
+                        <td width="50">phút</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>NGHỈ TRƯA</b> không quá</td>
+                        <td width="85">
+                            <input class="form-control disabled" type="number" min="0" id="input-voice-setting-nghi_trua" value="<%- voiceSettings.nghi_trua %>"
+                            />
+                        </td>
+                        <td width="50">phút</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>MEETING</b> không quá</td>
+                        <td width="85">
+                            <input class="form-control disabled" type="number" min="0" id="input-voice-setting-meeting" value="<%- voiceSettings.meeting %>"
+                            />
+                        </td>
+                        <td width="50">phút</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>AUTODIALING</b> không quá</td>
+                        <td width="85">
+                            <input class="form-control disabled" type="number" min="0" id="input-voice-setting-autodialing" value="<%- voiceSettings.autodialing %>"
+                            />
+                        </td>
+                        <td width="50">phút</td>
+                    </tr>
+                </table>
+                <div class="row m-t-40">
+                    <div class="col-md-6 p-r-5">
+                        <button type="button" class="btn btn-info btn-block" id="btn-voice-setting-edit">THAY ĐỔI</button>
+                    </div>
+                    <div class="col-md-6 p-l-10">
+                        <button type="button" class="btn btn-default btn-block disabled" id="btn-voice-setting-save">LƯU</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="lv-header-alt clearfix">
+                <h2 class="lvh-label hidden-xs">
+                    THIẾT LẬP CẢNH BÁO KÊNH CHAT
+                </h2>
+                <table class="table table-fix m-t-20" id="tbl-agent-monitor-chat-setting">
+                    <tr>
+                        <td>Số lượng Agent nghỉ quá</td>
+                        <td width="85">
+                            <input class="form-control disabled" type="number" min="0" id="input-chat-setting-agent" value="<%- chatSettings.agent %>"
+                            />
+                        </td>
+                        <td width="50">người</td>
+                    </tr>
+                </table>
+                <p class="m-t-10 m-b-10">
+                    <strong>Thời gian của tình trạng</strong>
+                </p>
+                <table class="table table-fix" id="tbl-agent-monitor-chat-setting">
+                    <tr>
+                        <td>
+                            <b>ONLINE</b> không quá</td>
+                        <td width="85">
+                            <input class="form-control disabled" type="number" min="0" id="input-chat-setting-online" value="<%- chatSettings.online %>"
+                            />
+                        </td>
+                        <td width="50">phút</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>OFFLINE</b> không quá</td>
+                        <td width="85">
+                            <input class="form-control disabled" type="number" min="0" id="input-chat-setting-offline" value="<%- chatSettings.offline %>"
+                            />
+                        </td>
+                        <td width="50">phút</td>
+                    </tr>
+                </table>
+                <div class="row m-t-40">
+                    <div class="col-md-6 p-r-5">
+                        <button type="button" class="btn btn-info btn-block" id="btn-chat-setting-edit">THAY ĐỔI</button>
+                    </div>
+                    <div class="col-md-6 p-l-10">
+                        <button type="button" class="btn btn-default btn-block disabled" id="btn-chat-setting-save">LƯU</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="lv-header-alt clearfix">
+                <h2 class="lvh-label hidden-xs">
+                    THIẾT LẬP CẢNH BÁO KÊNH MAIL
+                </h2>
+                <table class="table table-fix m-t-20" id="tbl-agent-monitor-mail-setting">
+                    <tr>
+                        <td>Số lượng Agent nghỉ quá</td>
+                        <td width="85">
+                            <input class="form-control disabled" type="number" min="0" id="input-mail-setting-agent" value="<%- emailSettings.agent %>"
+                            />
+                        </td>
+                        <td width="50">người</td>
+                    </tr>
+                </table>
+                <p class="m-t-10 m-b-10">
+                    <strong>Thời gian của tình trạng</strong>
+                </p>
+                <table class="table table-fix" id="tbl-agent-monitor-mail-setting">
+                    <tr>
+                        <td>
+                            <b>ONLINE</b> không quá</td>
+                        <td width="85">
+                            <input class="form-control disabled" type="number" min="0" id="input-mail-setting-online" value="<%- emailSettings.online %>"
+                            />
+                        </td>
+                        <td width="50">phút</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>OFFLINE</b> không quá</td>
+                        <td width="85">
+                            <input class="form-control disabled" type="number" min="0" id="input-mail-setting-offline" value="<%- emailSettings.offline %>"
+                            />
+                        </td>
+                        <td width="50">phút</td>
+                    </tr>
+                </table>
+                <div class="row m-t-40">
+                    <div class="col-md-6 p-r-5">
+                        <button type="button" class="btn btn-info btn-block" id="btn-mail-setting-edit">THAY ĐỔI</button>
+                    </div>
+                    <div class="col-md-6 p-l-10">
+                        <button type="button" class="btn btn-default btn-block disabled" id="btn-mail-setting-save">LƯU</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

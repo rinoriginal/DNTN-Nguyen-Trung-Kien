@@ -1,0 +1,49 @@
+<style>
+    #sltCampains{
+        padding: 6.5px 0;
+        border: 1px solid #cccccc;
+        box-sizing: content-box;
+        text-indent: 10px;
+    }
+</style>
+<!-- Modal -->
+<div class="modal fade" id="quickCallGGG" role="dialog">
+    <div class="modal-dialog">
+<!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="padding: 15px 15px 0 15px;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="apmHeader">
+                    <strong id="titlePop">Gọi nhanh theo chiến dịch</strong>
+                </h4>
+                <hr style="margin-top: 5px;margin-bottom: 0px;">
+            </div>
+            <div class="modal-body">
+                <div class="panel-body p-5 p-b-10">
+                    <div class="p-l-5 p-r-5 col-xs-4 col-sm-4 col-md-5 p-t-10">
+                        <label class="control-label f-13">Số điện thoại: </label>
+                        <div class="">
+                            <input class="form-control" type="text" id="txtUserMobile" placeholder="Nhập tên hoặc số điện thoại">
+                        </div>
+                    </div>
+                    <div class="p-l-5 p-r-5 col-xs-4 col-sm-4 col-md-7 p-t-10">
+                        <label class="control-label f-13">Hướng gọi ra: </label>
+                        <div class="">
+                            <select name="sltCampains" id="sltCampains" class="input" title="---- Chọn hướng gọi ra ----">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                    <div class="panel-body p-5 p-b-10">
+                        <span style="font-style:italic;font-size:8pt">
+                                Nếu khách hàng chưa tồn tại, hệ thống sẽ tự động tạo mới KH theo số điện thoại tương ứng!
+                        </span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary f-12 btn-save waves-effect" id="quickCallSubmit"><i class="zmdi zmdi-check-all m-r-5"></i>Xác nhận gọi ra</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,178 @@
+<%- breadcrumb %>
+<% let convertMail = function(lstMail,type){
+        var _email = '';
+        var _email1 = '';
+        var _email2 = '';
+        var _email3 = '';
+        _.each(lstMail,function(el){
+            switch(Number(el.type)){
+                case 1:
+                    if(_email1 == ''){
+                        _email1 += el.email;
+                    }else{
+                        _email1 += ', ' + el.email
+                    }
+                    break;
+                case 2:
+                    if(_email2 == ''){
+                        _email2 += el.email;
+                    }else{
+                        _email2 += ', ' + el.email
+                    }
+                    break;
+                case 3:
+                    if(_email3 == ''){
+                        _email3 += el.email;
+                    }else{
+                        _email3 += ', ' + el.email
+                    }
+                    break;
+            }
+        })
+        if(type == 1){
+            return _email1;
+        }else if(type == 2){
+            return _email2;
+        }else if(type == 3){
+            return _email3;
+        }else{
+            return _email;
+        }
+    }
+
+    let splitEmailType3 = function(n){
+        let email = n.filter(function(o){ return o.type==3})[0].email
+        return email.split(',')
+    }%>
+
+<div class="card">
+    <div class="lv-header-alt clearfix">
+        <h2 class="lvh-label hidden-xs">Quản lý email tiếp nhận tư vấn</h2>
+        <ul class="lv-actions actions">
+            <li>
+                <!-- <a href="/#articles/new" data-toggle="tooltip" data-placement="top" data-original-title="Tạo mới">
+            <i class="zmdi zmdi-plus"></i>
+        </a> -->
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 p-l-30 m-b-50">
+
+                <div class="panel panel-default m-l-10 m-r-10">
+                    <div class="panel-heading p-0">
+                        <h5 class="panel-title">
+                            <div data-id="showCustomer" class="btn-block p-10 bgm-orange c-white text-uppercase">Email
+                                tiếp nhận tư vấn
+                            </div>
+                        </h5>
+                    </div>
+
+                    <div id="collapseOne" class="panel-collapse collapse in ticketCustomerCollapse">
+                        <form class="form-horizontal" role="form" id="frm-mail-advisory">
+
+                            <div class="form-body">
+                                <div class="row m-0 p-10">
+
+                                    <div class="panel-heading p-0 border">
+                                        <h5 class="panel-title bgm-silver">
+                                            <div class="row  flex-box">
+                                                <div class="col-md-2 p-5 bgm-blue-ocean c-black text-uppercase text-center"
+                                                    data-toggle="collapse" href="#collapse1">Thông tin liên hệ
+                                                </div>
+                                                <div class="col-md-10 p-5 bgm-blue-ocean c-black text-uppercase text-center"
+                                                    data-toggle="collapse" href="#collapse1">Email
+                                                </div>
+                                            </div>
+
+                                        </h5>
+                                    </div>
+
+                                    <div class="panel-body p-5 p-b-10 div-case-history in border m-b-50" id="collapse1">
+
+                                        <div class="row m-20 flex-box">
+                                            <label class="control-label col-sm-2 col-md-2 text-left">
+                                                Tuyển dụng:
+                                            </label>
+                                            <div class="col-md-10 col-sm-10 text-left">
+                                                <input
+                                                    value="<%=  mailadvisory ? mailadvisory.emails.filter(function(n){ return n.type==1})[0].email : '' %>"
+                                                    class="form-control validate[custom[email]]" type="text"
+                                                    name="tuyendung">
+                                            </div>
+                                        </div>
+                                        <div class="row m-20 flex-box">
+                                            <label class="control-label col-sm-2 col-md-2 text-left">
+                                                Đề xuất hợp tác:
+                                            </label>
+                                            <div class="col-md-10 col-sm-10 text-left">
+                                                <input
+                                                    value="<%=  mailadvisory ? mailadvisory.emails.filter(function(n){ return n.type==2})[0].email : '' %>"
+                                                    class="form-control validate[custom[email]]" type="text" name="dexuat">
+                                            </div>
+                                        </div>
+                                        <div class="row m-20 flex-box">
+                                            <label class="control-label col-sm-2 col-md-2 text-left">
+                                                Vấn đề khác:
+                                            </label>
+                                            <div class="col-md-10 col-sm-10 text-left">
+                                                <input
+                                                    value="<%=  mailadvisory ? splitEmailType3(mailadvisory.emails)[0] : '' %>"
+                                                    class="form-control validate[custom[email]]" type="text" name="khac1">
+                                            </div>
+                                        </div>
+                                        <div class="row m-20 flex-box">
+                                            <label class="control-label col-sm-2 col-md-2 text-left">
+                                            </label>
+                                            <div class="col-md-10 col-sm-10 text-left">
+                                                <input
+                                                    value="<%=  mailadvisory ? splitEmailType3(mailadvisory.emails)[1] : '' %>"
+                                                    class="form-control validate[custom[email]]" type="text" name="khac2">
+                                            </div>
+                                        </div>
+                                        <div class="row m-20 flex-box">
+                                            <label class="control-label col-sm-2 col-md-2 text-left">
+                                                Ghi chú:
+                                            </label>
+                                            <div class="col-md-10 col-sm-10 text-left">
+                                                <textarea value="" class="form-control" type="text"
+                                                    name="note"><%=  mailadvisory ? mailadvisory.note : '' %></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row m-20 flex-box">
+                                            <button type="submit" class="btn btn-primary f-12 btn-save waves-effect"
+                                                id="btnSave" data-target="#frm-mail-advisory"><i
+                                                    class="zmdi zmdi-check-all m-r-5"></i>Xác
+                                                nhận</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+            <!-- <div class="box-loading" style="display: none">
+            <div class="box-line-df"></div>
+            <div class="box-line-lgx"></div>
+            <div class="box-line-lg"></div>
+        </div> -->
+        </div>
+    </div>

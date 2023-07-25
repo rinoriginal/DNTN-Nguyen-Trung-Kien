@@ -1,0 +1,172 @@
+<%- breadcrumb %>
+<script>
+    var provinceExistRestaurant = `<%- encodeURIComponent(JSON.stringify(province)) %>`;
+</script>
+<div class="card">
+    <div class="lv-header-alt clearfix">
+        <h2 class="">BRAND: <span class="btn btn-success"><%- brand.name%></span></h2>
+        <h2 class="lvh-label hidden-xs"><%- title %></h2>
+        <ul class="lv-actions actions d-none">
+            <li>
+                <button class="btn btn-danger btn-block waves-effect" id="btn-create-brand" name="btn-create-brand"
+                    data-toggle="modal" href="#modal_create_brand" type="button">
+                    Thêm nhãn hiệu
+                </button>
+            </li>
+            <li>
+                <button class="btn btn-primary btn-block waves-effect" id="btn-create-restaurant"
+                    name="btn-create-restaurant" data-toggle="modal" href="#modal_create_restaurant" type="button">
+                    Thêm nhà hàng
+                </button>
+            </li>
+            <li class="hidden" id="li-hidden">
+                <a role="button" data-toggle="tooltip" data-placement="top" data-original-title="Xóa các mục đánh dấu"
+                    id="btn-delSelection">
+                    <i class="zmdi zmdi-delete"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-3 col-md-3 p-l-20 p-r-0">
+            <div class="bg-black-trp text-center p-10 m-b-5 ">Khu vực</div>
+            <input class="form-control filter" type="text" id="searchArea" name="searchArea" disabled>
+
+            <ul class="list-group list-result-filter" id="listArea">
+                <% for(var i = 0; i < areas.length; i++) {%>
+                <li class="list-group-item" typeArea="<%- areas[i].value %>">
+                    <span><%- areas[i].name%></span>
+                </li>
+                <%}%>
+            </ul>
+
+        </div>
+        <div class="col-sm-3 col-md-3 p-l-20 p-r-0">
+            <div class="bg-black-trp text-center p-10 m-b-5 ">Tỉnh thành</div>
+            <div class="input-group m-b-5">
+                <input class="form-control filter" type="text" id="searchProvince" name="searchProvince">
+                <span class="input-group-addon p-l-10 bgm-gray c-white">
+                    <i role="button" class="zmdi zmdi-search"></i>
+                </span>
+            </div>
+
+            <ul class="list-group list-result-filter" id="listProvince">
+
+            </ul>
+
+        </div>
+        <div class="col-sm-6 col-md-6 p-l-20 p-r-20">
+            <div class="bg-black-trp text-center p-10 m-b-5 ">Nhà hàng</div>
+            <div class="input-group m-b-5">
+                <input class="form-control filter" type="text" id="searchRestaurant" name="searchRestaurant">
+                <span class="input-group-addon p-l-10 bgm-gray c-white">
+                    <i role="button" class="zmdi zmdi-search"></i>
+                </span>
+                
+            </div>
+
+            <ul class="list-group list-result-filter" id="listRestaurant"></ul>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="modal_create_brand" tabindex="-1" role="dialog" aria-hidden="true">
+    <form class="form-horizontal m-t-30" id="form-create-brand">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tạo mới nhãn hiệu</h4>
+                    <div class="text-center" id="ticket-total"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body" style="overflow-y: auto;overflow-x: hidden; max-height: 350px;">
+                        <div class="form-group">
+                            <label for="modal_create_brand_name" class="col-sm-3 control-label">Nhãn hiệu<span class="required">*</span>:</label>
+                            <div class="col-sm-8">
+                                <div class="fg-line">
+                                    <input type="text" value=""
+                                        class="form-control input-sm required"
+                                        id="modal_create_brand_name" name="modal_create_brand_name">
+                                </div>
+                                <div class="p-t-5 p-b-5 text-danger validate-message" id="modal_create_brand_name_validate">Trường này bắt buộc</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="modal_status" class="col-sm-3 control-label">Trạng thái:</label>
+                            <div class="col-sm-8">
+                                <div class="toggle-switch">
+                                    <input id="modal_create_brand_status" type="checkbox" hidden="hidden" checked>
+                                    <label for="modal_create_brand_status" class="ts-helper"></label>
+                                    <strong class="m-l-20">
+                                        <span id="modal_create_brand_status_text"></span>
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center col-sm-12 col-md-12 text-center">
+                            <button type="submit" class="btn btn-primary waves-effect"
+                                    id="btnCreateBrand">
+                                Xác nhận
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="modal_update_brand" tabindex="-1" role="dialog" aria-hidden="true">
+    <form class="form-horizontal m-t-30" id="form-update-brand">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Sửa nhãn hiệu</h4>
+                    <div class="text-center" id="ticket-total"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body" style="overflow-y: auto;overflow-x: hidden; max-height: 350px;">
+                        <input type="hidden" id="modal_update_brand_ID" name="modal_update_brand_ID">
+                        <div class="form-group">
+                            <label for="modal_update_brand_name" class="col-sm-3 control-label">Nhãn hiệu<span class="required">*</span>:</label>
+                            <div class="col-sm-8">
+                                <div class="fg-line">
+                                    <input type="text" value=""
+                                        class="form-control input-sm required"
+                                        id="modal_update_brand_name" name="modal_update_brand_name">
+                                </div>
+                                <div class="p-t-5 p-b-5 text-danger validate-message" id="modal_update_brand_name_validate">Trường này bắt buộc</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="modal_status" class="col-sm-3 control-label">Trạng thái:</label>
+                            <div class="col-sm-8">
+                                <div class="toggle-switch">
+                                    <input id="modal_update_brand_status" type="checkbox" hidden="hidden" checked>
+                                    <label for="modal_update_brand_status" class="ts-helper"></label>
+                                    <strong class="m-l-20">
+                                        <span id="modal_update_brand_status_text"></span>
+                                    </strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center col-sm-12 col-md-12 text-center" id="frmUpdateBrand">
+                            <button type="submit" class="btn btn-primary waves-effect"
+                                    id="btnUpdateBrand">
+                                Xác nhận
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>

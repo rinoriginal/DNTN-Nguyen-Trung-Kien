@@ -1,0 +1,275 @@
+<%-breadcrumb%>
+<%
+var _time = function(i){
+    if(i < 10){
+        return '0' + i;
+    }else{
+        return i;
+    }
+}
+%>
+<div class="card">
+    <div class="card-body card-padding">
+        <div class="lv-header-alt clearfix m-l-10">
+            <h2 class="lvh-label hidden-xs">
+                <%= title %>
+            </h2>
+            <ul class="lv-actions actions">
+                <!-- <li>
+                    <a href="/#ticket-advisory/new" data-toggle="tooltip" data-placement="top" id="addTernal"
+                        data-original-title="Tạo mới">
+                        <i class="zmdi zmdi-plus"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a data-toggle="tooltip" data-placement="top" data-original-title="Refresh" id="reload"><i
+                            class="zmdi zmdi-refresh"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="p-30 flex-space-between" style="width:100%">
+            <div class="box-shadow2 p-20" style="width:20%">
+                <h4 class="col-md-12 m-b-15 m-t-15 lbc-silver">
+                    <strong>Tổng Số Luồng Mail</strong>
+                </h4>
+                <div class="col-md-12">
+                    <strong class="f-24" id="sumHead1">--</strong>
+                </div>
+                <div class="col-md-12 m-t-15 flex-box-align">
+                    <div class="col-md-5 p-0">
+                        <p class="m-0"><strong class="f-18" id="rateHead1">--</strong></p>
+                    </div>
+                    <div class="col-md-7 p-0 lbc-silver">
+                        <p class="m-0 f-12">Since Last Month</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="box-shadow2 p-20" style="width:20%">
+                <h4 class="col-md-12 m-b-15 m-t-15 lbc-silver">
+                    <strong>Tổng Số Mail</strong>
+                </h4>
+                <div class="col-md-12">
+                    <strong class="f-24" id="sumHead2">--</strong>
+                </div>
+                <div class="col-md-12 m-t-15 flex-box-align">
+                    <div class="col-md-5 p-0">
+                        <p class="m-0">
+                            <strong class="f-18" id="rateHead2">--</strong>
+                        </p>
+                    </div>
+                    <div class="col-md-7 p-0 lbc-silver">
+                        <p class="m-0 f-12">Since Last Month</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="box-shadow2 p-20" style="width:20%">
+                <h4 class="col-md-12 m-b-15 m-t-15 lbc-silver">
+                    <strong>Đã Hoàn Thành</strong>
+                </h4>
+                <div class="col-md-12">
+                    <strong class="f-24" id="sumHead3">--</strong>
+                </div>
+                <div class="col-md-12 m-t-15 flex-box-align">
+                    <div class="col-md-5 p-0">
+                        <p class="m-0"><strong class="f-18" id="rateHead3">--</strong></p>
+                    </div>
+                    <div class="col-md-7 p-0 lbc-silver">
+                        <p class="m-0 f-12">Since Last Month</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="box-shadow2 p-20" style="width:20%">
+                <h4 class="col-md-12 m-b-15 m-t-15 lbc-silver">
+                    <strong>Chưa hoàn thành</strong>
+                </h4>
+                <div class="col-md-12">
+                    <strong class="f-24" id="sumHead4">--</strong>
+                </div>
+                <div class="col-md-12 m-t-15 flex-box-align">
+                    <div class="col-md-5 p-0">
+                        <p class="m-0"><strong class="f-18" id="rateHead4">--</strong></p>
+                    </div>
+                    <div class="col-md-7 p-0 lbc-silver">
+                        <p class="m-0 f-12">Since Last Month</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row m-l-30 m-r-30" style="display: flex;">
+            <div class="col-md-3 m-b-20 box-shadow2 p-t-10 m-r-20" id="">
+
+                <div class="portlet-title flex-box">
+                    <div class="lv-header-alt clearfix">
+                        <h2 class="lvh-label hidden-xs c-black">
+                            Campaign
+                        </h2>
+                    </div>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default timeDonut active" type-id="day">
+                            <input type="radio" name="options" autocomplete="off" checked>To day
+                        </label>
+                        <label class="btn btn-default timeDonut" type-id="week">
+                            <input type="radio" name="options" autocomplete="off"> Weekly
+                        </label>
+                        <label class="btn btn-default timeDonut" type-id="month">
+                            <input type="radio" name="options" autocomplete="off"> Month
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-12" id="chartDonut">
+                </div>
+                <div class="col-md-12 m-b-20">
+                    <div class="col-md-6 text-center">
+                        <strong class="f-24" id="donutTotalComplete"> -- </strong>
+                        <div class="m-t-7"><i class="zmdi zmdi-circle" style="color: #FC8E10;"></i> <span
+                                class="f-14">Hoàn thành</span></div>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <strong class="f-24" id="donutTotalInprogress"> -- </strong>
+                        <div class="m-t-7"><i class="zmdi zmdi-circle" style="color: #C3E0EF;
+                            ;"></i> <span class="f-14">Chưa hoàn thành</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 m-b-20 box-shadow2 p-t-10 m-l-20" id="">
+                <div class="portlet-title flex-box">
+                    <div class="lv-header-alt clearfix">
+                        <h2 class="lvh-label hidden-xs c-black">
+                            Total number of mail stream
+                        </h2>
+                    </div>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-default timeBar active" type-id="day">
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked>To day
+                        </label>
+                        <label class="btn btn-default timeBar" type-id="week">
+                            <input type="radio" name="options" id="option2" autocomplete="off"> Weekly
+                        </label>
+                        <label class="btn btn-default timeBar" type-id="month">
+                            <input type="radio" name="options" id="option3" autocomplete="off"> Month
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-12" id="chart">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default m-l-30 m-r-30">
+            <div class="panel-heading p-0 box-shadow2">
+                <h5 class="panel-title p-l-10">
+                    <div data-id="showCustomer" class="btn-block p-10 bgm-orange c-white text-uppercase">monitor - mail
+                        channel</div>
+                </h5>
+            </div>
+            <div class="row m-l-0 m-r-0 p-10 box-shadow2" style="display: flex;">
+                <div class="col-md-6 m-b-20 m-t-20 flex-box-align">
+                    <label for="name" class="col-sm-3 control-label"><strong> TRA CỨU AGENT</strong></label>
+                    <div class="col-sm-6 p-0">
+                        <select name="agent" class="selectpicker input" data-live-search="true" data-actions-box="true"
+                            title="---Chọn---" multiple>
+                            <% _.each(agent,function(el){ %>
+                            <option value="<%- el._id %>"><%- el.agent.displayName + ` (`+ el.agent.name +`)`%></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="col-sm-3 p-0 text-center">
+                        <button class="btn f-12 btn-save waves-effect text-uppercase border-radius m-r-10 c-white"
+                            style="background-color:#5AAFC8 " id="searchAgent">
+                            Tìm kiếm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="channelMail">
+        </div>
+
+        <!-- start modal -->
+        <div class="modal fade" id="modal-channel-mail" tabindex="-1" role="dialog"
+            aria-labelledby="modal-form-box-chat-label" aria-hidden="true">
+            <div class="modal-dialog" style="width: 80%; ;padding-top:80px" role="document">
+                <div class="modal-content">
+                    <div class="modal-header modal-popup-store p-10" style="background-color: #5AAFC8 ;">
+                        <div class="row m-t-0 m-b-0 flex-box-align">
+                            <div class="col-sm-8">
+                                <h4 class="modal-title c-white" id="modal-form-input-complaint-label">Danh sách phiếu
+                                    liên quan </h4>
+                            </div>
+                            <div class="col-md-4 col-xs-4" style="text-align: right;">
+                                <a href="javascript:void(0)"><span data-dismiss="modal" aria-label="Close"
+                                        class="btn-resta-modal-form-close glyphicon glyphicon-remove icon_close c-white"
+                                        data-id="mail_window"></span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body p-0">
+                        <div class="tableFixHeadModal">
+                            <table class="table table-striped">
+                                <thead id="tbl-label">
+                                </thead>
+                                <tbody id="tbl-data">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end modal -->
+
+        <!-- start modal -->
+        <div class="modal fade" id="modal-form-box-mail" tabindex="-1" role="dialog"
+            aria-labelledby="modal-form-box-mail-label" aria-hidden="true">
+            <div class="modal-dialog" style="width: 1000px;" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header modal-popup-store p-10" style="background-color: #5AAFC8 ;">
+                        <div class="row m-t-0 m-b-0 flex-box-align">
+                            <div class="col-sm-8">
+                                <h4 class="modal-title c-white" id="modal-form-input-complaint-label">CHI TIẾT NỘI DUNG
+                                    MAIL</h4>
+                            </div>
+                            <div class="col-md-4 col-xs-4" style="text-align: right;">
+                                <a href="javascript:void(0)"><span data-dismiss="modal" aria-label="Close"
+                                        class="btn-resta-modal-form-close glyphicon glyphicon-remove icon_close c-white"
+                                        data-id="ticket_mail_window"></span></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body p-0" style="height: 800px;">
+                        <div class="tab-content" id="pills-tabContent" style="height: 770px;">
+                        </div>
+                        <div class="panel-footer">
+                            <ul class="tab-nav tn-justified tabList" role="tablist">
+                                <li role="presentation" class="active" data-id="1">
+                                    <a class="col-sm-6 p-5 f-13" href="#tab-list-mail" aria-controls="tab-list-mail"
+                                        role="tab" data-toggle="tab" id="first-tab" aria-expanded="false">NỘI DUNG
+                                        MAIL</a>
+                                </li>
+                                <li role="presentation" class="" data-id="2">
+                                    <a class="col-sm-6 p-5 f-13" href="#tab-info-mail" aria-controls="tab-info-mail"
+                                        role="tab" data-toggle="tab" aria-expanded="false">THÔNG TIN TICKET</a>
+                                </li>
+                                <!-- <li role="presentation" data-id="3">
+                            <a class="col-sm-6 p-5 f-13" href="#tab-detail-chat" aria-controls="tab-detail-chat"
+                                role="tab" data-toggle="tab" aria-expanded="false"><i
+                                    class="zmdi zmdi-alert-circle c-white f-17"></i></a>
+                        </li> -->
+                            </ul>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end modal -->
+
+    </div>

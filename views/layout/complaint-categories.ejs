@@ -1,0 +1,307 @@
+<!-- { author: Thuận Boss } -->
+<%- breadcrumb %>
+
+<script>
+    var data = JSON.parse('<%- JSON.stringify(data)%>');
+</script>
+<div class="card">
+    <div class="card-header p-10">
+        <h4 class="lvh-label hidden-xs text-uppercase"><%- title %></h4>
+        <div style="float: right;margin-top:-25px">
+            <a class="btn btn-success" id="btn-create-complaint" data-form="complaint" href="javascript:void(0)"
+                data-toggle="tooltip" data-placement="top" data-original-title="Thêm mới loại khiếu nại"><i
+                    class="fa fa-plus-circle"></i> Thêm loại khiếu nại</a>
+            <a class="btn btn-info" id="btn-create-problem" data-form="problem" href="javascript:void(0)"
+                data-toggle="tooltip" data-placement="top" data-original-title="Thêm mới vấn đề"><i
+                    class="fa fa-plus-circle"></i> Thêm vấn đề</a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="card-body">
+        <div class="form-horizontal">
+            <div class="row m-l-5 m-r-5">
+                <div class="col-md-6">
+                    <div class="title"><span style="font-family: Arial, Helvetica, sans-serif;"
+                            class="m-t-10 f-20">Khiếu nại</span></div>
+
+                    <table cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>
+                                <table class="table table-hover table-bordered table-fix" id="table-complaint">
+                                    <thead>
+                                        <tr>
+                                            <input type="text" name="complaint"
+                                                placeholder="Nhập tên loại khiếu nại để tìm kiếm"
+                                                class="form-control searchColumn"
+                                                style="height: 37px;width: 95%;display: inline-block;">
+                                            <button id="btn-search"
+                                                class="input-group-addon p-l-10 p-r-16 p-t-10 p-b-10 bgm-white c-black"><i
+                                                    role="button" class="zmdi zmdi-search"></i></button>
+
+                                        </tr>
+                                        <tr>
+                                            <th class="c-white text-center">Loại khiếu nại</th>
+                                            <th class="c-white text-center">Trạng thái</th>
+                                            <th class="c-white text-center">SLA</th>
+                                            <th class="c-white text-center">Tác vụ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="max-height: 320px;overflow:auto ;">
+                                <table class="table table-hover table-bordered table-fix" >
+                                    <thead>
+
+                                    </thead>
+                                    <tbody>
+                                        <script> var isEmptyData = false; </script>
+                                        <% if (data.length == 0) { %>
+                                        <script> isEmptyData = true; </script>
+                                        <% } else {
+                                         data.forEach(function(item, i) {
+                                        %>
+                                        <tr class="complaint" data-id="<%- item._id%>">
+                                            <td class="text-center"> <span
+                                                    title="<%= item.nameComplaint ? item.nameComplaint : '' %>"><%= item.nameComplaint ? item.nameComplaint : '' %></span>
+                                            </td>
+                                            <td class="text-center">
+                                                <span><%- item.status == 1 ? '<i class="fa fa-check text-success"></i>':''%></span>
+                                            </td>
+                                            <td class="text-center">
+                                                <span><%= item.slaComplaint ? item.slaComplaint : 0 %></span>
+                                            </td>
+                                            
+                                            <td class="text-center">
+                                                <a role="button" data-id="<%- item._id %>" data-form="complaint"
+                                                    href="javascript:void(0)" class="p-t-3 btn-flat-bg btn-edit"
+                                                    data-toggle="tooltip" data-placement="top"
+                                                    data-original-title="Sửa"><i
+                                                        class="zmdi zmdi-edit c-green f-17"></i></a>
+                                                <a role="button" data-id="<%- item._id %>" data-form="problem"
+                                                    href="javascript:void(0)"
+                                                    class="p-t-3 btn-flat-bg btn-create text-danger"
+                                                    data-toggle="tooltip" data-placement="top"
+                                                    data-original-title="Thêm mới vấn đề"><i
+                                                        class="zmdi zmdi-plus-square c-green f-17"></i></a>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <div class="title"><span style="font-family: Arial, Helvetica, sans-serif;" class="m-t-10 f-20">Vấn
+                            đề gặp phải</span></div>
+                    <table cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>
+                                <table class="table table-hover table-bordered table-fix" id="table-problem">
+                                    <thead>
+                                        <tr>
+                                            <input type="text" name="problem" placeholder="Nhập tên vấn đề để tìm kiếm"
+                                                class="form-control searchColumn"
+                                                style="height: 37px;width: 95%;display: inline-block;">
+                                            <button id="btn-search-problem"
+                                                class="input-group-addon p-l-10 p-r-16 p-t-10 p-b-10 bgm-white c-black"><i
+                                                    role="button" class="zmdi zmdi-search"></i></button>
+
+                                        </tr>
+                                        <tr>
+                                            <th class="w-160 c-white text-center">Vấn đề gặp phải</th>
+                                            <th class="c-white text-center">Trạng thái</th>
+                                            <th class="c-white text-center">SLA</th>
+                                            <th class="c-white text-center">Tác vụ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="max-height: 320px;overflow:auto ;">
+                                    <table id="table-problem-content" class="table " cellspacing="0" cellpadding="1">
+
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <!-- id complaint here -->
+        <input type="hidden" name="complaintId" id="complaintId">
+    </div>
+
+
+</div>
+</div>
+
+<!-- modal complaint here -->
+<div class="modal fade" id="modal-form-input-complaint" tabindex="-1" role="dialog"
+    aria-labelledby="modal-form-input-complaint-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-popup-store">
+                <div class="row m-t-0 m-b-0">
+                    <div class="col-sm-10">
+                        <h4 class="modal-title c-white" id="modal-form-input-complaint-label"></h4>
+                    </div>
+                    <div class="col-sm-2"><button type="button" class="close btn-resta-modal-form-close"
+                            data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span><span
+                                class="sr-only">Close</span> </button></div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="panel-body p-b-0">
+                        <div class="text-center alert hide" id="text-form-input-alert"></div>
+                        <form id="form-modal-complaint-custom" class="form-horizontal">
+
+                            <div class="form-group m-b-0">
+                                <label class="col-sm-3 control-label" for="name">Loại khiếu nại<span
+                                        class="c-red">*</span></label>
+                                <div class="col-sm-9">
+                                    <input tabindex="1" type="text" class="form-control validate[required]"
+                                        id="edit-nameComplaint" name="nameComplaint" autocomplete="off"
+                                        placeholder="Nhập loại khiếu nại">
+                                </div>
+                            </div>
+                            <div class="form-group m-b-0">
+                                <label class="col-sm-3 control-label" for="name">SLA </label>
+                                <div class="col-sm-9">
+                                    <input tabindex="1" type="number" class="form-control validate[number]"
+                                        id="edit-slaComplaint" name="slaComplaint" autocomplete="off"
+                                        placeholder="Nhập SLA">
+                                </div>
+                            </div>
+                            <div class="form-group m-b-0">
+                                <label class="col-sm-3 control-label" for="name">Trạng thái </label>
+                                <div class="col-sm-9">
+                                    <div class="col-sm-12 p-l-0 p-t-5">
+                                        <input type="checkbox" value="1" name="status" id="edit-status">
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="complaintId" name="complaintId">
+                            <input type="hidden" id="form-modal-complaint-name" name="form-modal-complaint-name">
+                            <input type="hidden" id="form-modal-complaint-type">
+                            <div class="modal-footer p-t-0">
+                                <button id="btn-modal-form-complaint-submit" type="submit"
+                                    class="btn btn-primary btn-icon-text waves-effect"><i
+                                        class="zmdi zmdi-check"></i>&nbsp;Xác
+                                    nhận</button>
+                                <button type="button"
+                                    class="btn btn-default btn-icon-text waves-effect btn-resta-modal-form-close"
+                                    data-dismiss="modal"><i class="zmdi zmdi-close"></i>&nbsp;Đóng</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- modal problem here -->
+<div class="modal fade" id="modal-form-input-problem" tabindex="-1" role="dialog"
+    aria-labelledby="modal-form-input-problem-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-popup-store">
+                <div class="row m-t-0 m-b-0">
+                    <div class="col-sm-10">
+                        <h4 class="modal-title c-white" id="modal-form-input-problem-label"></h4>
+                    </div>
+                    <div class="col-sm-2"><button type="button" class="close btn-resta-modal-form-close"
+                            data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span><span
+                                class="sr-only">Close</span> </button></div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="panel-body p-b-0">
+                        <div class="text-center alert hide" id="text-form-input-alert"></div>
+                        <form id="form-modal-problem-custom" class="form-horizontal">
+
+                            <div class="form-group m-b-0">
+                                <label class="col-sm-3 control-label" for="name">Vấn đề gặp phải<span
+                                        class="c-red">*</span></label>
+                                <div class="col-sm-9">
+                                    <input tabindex="1" type="text" class="form-control validate[required]"
+                                        id="edit-nameProblem" name="nameProblem" autocomplete="off"
+                                        placeholder="Nhập tên vấn đề">
+                                </div>
+                            </div>
+
+                            <div class="form-group m-b-0">
+                                <label class="col-sm-3 control-label" for="name">SLA <span
+                                        class="c-red">*</span></label>
+                                <div class="col-sm-9">
+                                    <input tabindex="1" type="number" class="form-control validate[required]"
+                                        id="edit-slaProblem" name="slaProblem" autocomplete="off" placeholder="Nhập SLA">
+                                </div>
+                            </div>
+                            <div class="form-group m-b-0">
+                                <label class="col-sm-3 control-label" for="name">Loại khiếu nại<span
+                                        class="c-red">*</span></label>
+                                <div class="col-sm-9">
+                                    <!-- <input tabindex="1" type="text" class="form-control validate[required]"
+                                        id="edit-LOAI_KHIEUNAI" name="LOAI_KHIEUNAI" autocomplete="off"
+                                        placeholder="Nhập loại khiếu nại"> -->
+                                    <select class="selectpicker validate[required]" id="edit-idComplaint"
+                                        name="idComplaint">
+                                        <option value="" selected>----Chọn----</option>
+                                        <% data.forEach(function(el){ %>
+                                        <option value="<%- el._id %>"><%- el.nameComplaint %></option>
+                                        <% }) %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group m-b-0">
+                                <label class="col-sm-3 control-label" for="name">Trạng thái </label>
+                                <div class="col-sm-9">
+                                    <div class="col-sm-12 p-l-0 p-t-5">
+                                        <input type="checkbox" value="1" name="status" id="edit-status-problem">
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="form-modal-problem-name" name="form-modal-problem-name">
+                            <input type="hidden" id="form-modal-problem-type">
+                            <input type="hidden" id="problemId" name="problemId">
+                            <div class="modal-footer p-t-0">
+                                <button id="btn-modal-form-problem-submit" type="submit"
+                                    class="btn btn-primary btn-icon-text waves-effect"><i
+                                        class="zmdi zmdi-check"></i>&nbsp;Xác
+                                    nhận</button>
+                                <button type="button"
+                                    class="btn btn-default btn-icon-text waves-effect btn-resta-modal-form-close"
+                                    data-dismiss="modal"><i class="zmdi zmdi-close"></i>&nbsp;Đóng</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end modal -->

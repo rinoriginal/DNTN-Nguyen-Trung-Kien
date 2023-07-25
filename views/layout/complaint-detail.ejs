@@ -1,0 +1,231 @@
+<%-breadcrumb%>
+<script>
+    var data = JSON.parse('<%- JSON.stringify(data) %>');
+</script>
+<style>
+    .content-format table td {
+        border: 1px solid #4C4C4C;
+        padding: 2px;
+    }
+</style>
+<div class="card" id="ticket-edit">
+    <div class="card-header">
+        <h2 class="m-b-5"><%- title %> </h2>
+    </div>
+
+    <div class="card-body card-padding">
+        <section id="main">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="form-horizontal bgm-white flex-row">
+                            <div class="panel-group m-0 p-b-5" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading p-0">
+                                        <h5 class="panel-title">
+                                            <a data-id="showCustomer"
+                                                class="btn-block p-10 bgm-orange c-white text-uppercase TXT_CUSTOMER_INFO"><i
+                                                    class="zmdi zmdi-account-circle"></i>
+                                                Thông tin khách hàng</a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body c-overflow p-5 p-b-10">
+                                            <table class="table table-striped table-bordered">
+                                                <%  for(var i = 0; i < fields.length; i++){ %>
+                                                <div class="row m-20">
+                                                    <label
+                                                        class="control-label col-md-3 text-left"><%- fields[i].displayName %>
+                                                        <%- _switch(fields[i].isRequired, [0, 1], ['', '<span class="c-red">*</span>']) %>
+                                                    </label>
+                                                    <% {%>
+                                                    <div class="col-md-9 text-left">
+                                                        <%- fnInfo(fields[i], data.customer); %>
+                                                    </div>
+                                                    <%}%>
+                                                        </div>
+                                                        <% } %>
+                                            </table>
+                                            <input type="hidden" name="idCustomer" id="idCustomer"
+                                                value="<%- data.customer._id%>">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+
+                        <div class="form-horizontal bgm-white flex-row">
+                            <div class="panel-group m-0" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading p-0">
+                                        <h5 class="panel-title">
+                                            <a data-id="showCustomer"
+                                                class="btn-block p-10 timelineTag c-white text-uppercase "><i
+                                                    class="zmdi zmdi-collection-text"></i>
+                                                Phiếu khiếu nại
+
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body c-overflow p-5 p-b-10">
+                                            <form id="form-new-complaint" class="form-horizontal">
+
+                                                <table class="table table-striped table-bordered">
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Nhãn hiệu:<span class="required" style="color: red;">
+                                                                *</span>
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <input class="form-control"
+                                                                value="<%- data.brand ? data.brand : '' %>" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Tỉnh thành:<span class="required" style="color: red;">
+                                                                *</span>
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <input class="form-control"
+                                                                value="<%- data.province ? data.province : '' %>"
+                                                                readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Nhà hàng:<span class="required" style="color: red;">
+                                                                *</span>
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <input class="form-control"
+                                                                value="<%- data.restaurant ? data.restaurant : '' %>"
+                                                                readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Source:<span class="required" style="color: red;"> *</span>
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <input class="form-control"
+                                                                value="<%- data.channelType ? data.channelType : '' %>"
+                                                                readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Loại khiếu nại:<span class="required" style="color: red;">
+                                                                *</span>
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <input class="form-control"
+                                                                value="<%- data.complaintType ? data.complaintType : '' %>"
+                                                                readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Vấn đề gặp phải:
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <input class="form-control"
+                                                                value="<%- data.problem ? data.problem : '' %>"
+                                                                readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Category:
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <input class="form-control"
+                                                                value="<%- data.category ? data.category : '' %>"
+                                                                readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Sub Category:
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                            <input class="form-control"
+                                                                value="<%- data.subCategories ? data.subCategories : '' %>"
+                                                                readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Nội dung:<span class="required" style="color: red;">
+                                                                *</span>
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+
+                                                            <input type="text" class="form-control" id="content"
+                                                                name="content" value="<%- data.content%>" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20 flex-box">
+                                                        <label class="control-label col-sm-2 col-md-2 text-left">
+                                                            Đính kèm:
+                                                        </label>
+                                                        <div class="col-md-10 col-sm-10 text-left">
+                                                            <div class="preview-files-zone-uploadFile overflow-scroll ">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Trạng thái:
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+
+                                                            <span style="text-decoration: underline;"
+                                                                class="f-15 text-info">
+                                                                <%if(data.status == 0){%>
+                                                                Đang xử lý
+                                                                <%}%>
+                                                            <%if(data.status == 1){%>
+                                                                Tạm dừng xử lý
+                                                                <%}%>
+                                                            <%if(data.status ==2){%>
+                                                                Đã xử lý
+                                                                <%}%>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <label class="control-label col-md-2 text-left">
+                                                            Thời hạn xử lý:
+                                                        </label>
+                                                        <div class="col-md-10 text-left">
+                                                                <input type="text" class="form-control" value="<%- data.deadline ? _moment(data.deadline).format('DD/MM/YYYY HH:mm A') : '';%>"
+                                                                readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row m-20">
+                                                        <div class="col-sm-offset-5 col-sm-10">
+                                                            <button type="button" id="back"
+                                                                class="btn btn-primary btn-icon-text m-t-10 waves-effect" <i
+                                                                    class="m-r-5 zmdi zmdi-arrow-back" ></i>Quay lại</button>
+                                                        </div>
+                                                    </div>
+                                                </table>
+                                            </form>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+        </section>
+    </div>
+</div>

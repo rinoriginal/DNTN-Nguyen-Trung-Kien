@@ -1,0 +1,38 @@
+<%- breadcrumb %>
+<div class="card">
+    <div class="lv-header-alt clearfix">
+        <h2 class="lvh-label hidden-xs"><%- title %></h2>
+        <ul class="lv-actions actions">
+            <li>
+                <a href="/#manage-skill-groups/new" data-toggle="tooltip" data-placement="top" data-original-title="Tạo mới">
+                    <i class="zmdi zmdi-plus"></i>
+                </a>
+            </li>
+            <li>
+                <a id="refresh" data-toggle="tooltip" data-placement="top" data-original-title="Làm mới">
+                    <i class="zmdi zmdi-refresh"></i>
+                </a>
+            </li>
+            <!-- <li class="hidden" id="li-hidden">
+                <a role="button" data-toggle="tooltip" data-placement="top" data-original-title="Xóa các mục đánh dấu" id="btn-delSelection">
+                    <i class="zmdi zmdi-delete"></i>
+                </a>
+            </li> -->
+        </ul>
+    </div>
+    <div class="card-body">
+        <form id="form-articles">
+            <table class="table table-bordered" id="tbl-articles">
+                <thead>
+                    <tr>
+                        <th role="button" class="bgm-orange c-white text-center sort" id="sortByTitle" name="sortByTitle" data-sort="none" data-field="title" value="title"><i class="zmdi zmdi-hc-fw p-r-10 c-white" data-toggle="tooltip" data-placement="top"></i>Tên nhóm kỹ năng</th>
+                        <th class="w-100 bgm-orange c-white text-center">Tác vụ</th>
+                    </tr>
+                </thead>
+                <tbody id="tbBody">
+                </tbody>
+            </table>
+            <div class="text-center" ><div id="paging"></div></div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,133 @@
+<!-- { author: Thuận Boss } -->
+<%- breadcrumb %>
+
+<div class="card">
+    <div class="card-header p-10">
+        <h4 class="lvh-label hidden-xs text-uppercase"><%- title %></h4>
+        <small class="text-muted">Danh mục loại tư vấn</small>
+        <div style="float: right;margin-top:-25px">
+            <a class="btn btn-success" id="btn-create" href="javascript:void(0)" data-toggle="tooltip"
+                data-placement="top" data-original-title="Thêm mới loại tư vấn"><i class="fa fa-plus-circle"></i> Thêm loại tư vấn</a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="card-body">
+        <div class="panel panel-default table-responsive" style="min-height: 500px;">
+            <table class="table table-hover table-bordered table-fix" id="table-products">
+                <thead>
+                    <tr>
+                        <th class="c-white text-center w-p-10">Loại tư vấn</th>
+                        <th class="w-50 c-white text-center">Trạng thái</th>
+                        <th class="w-50 c-white text-center">Tác vụ</th>
+                    </tr>
+                    <tr id="searchForm" class="filter">
+                        
+                        <td class="text-left">
+                            <div>
+                                <input type="text" class="form-control searchColumn" name="nameAdvice"
+                                    placeholder="Lọc theo loại tư vấn" id="filter-nameAdvice">
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <select tabindex="2" class="selectpicker searchColumn" data-live-search="true"
+                                    id="filter-status" name="status">
+                                    <option value="">All</option>
+                                    <option value="1">Kích hoạt</option>
+                                    <option value="0">Không kích hoạt</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-icon-text btn-block btn-primary waves-effect" id="btn-search"
+                                name="btn-search"><i class="zmdi zmdi-filter-list m-r-5"></i> Lọc</button>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- data here -->
+                    <script> var isEmptyData = false; </script>
+                    <% if (data.length == 0) { %>
+                    <script> isEmptyData = true; </script>
+                    <% } else {
+                    data.forEach(function(item, i) {
+                    %>
+                    <tr class="">
+                        <td class="text-center"> <span><%= item.nameAdvice ? item.nameAdvice : '' %></span> </td>
+                        <td class="text-center">
+                            <span><%- item.status == 1 ? '<i class="fa fa-check text-success"></i>':''%></span> </td>
+                        <td class="text-center">
+                            <a role="button" data-id="<%- item._id %>" href="javascript:void(0)"
+                                class="p-t-3 btn-flat-bg btn-edit" data-toggle="tooltip" data-placement="top"
+                                data-original-title="Sửa"><i class="zmdi zmdi-edit c-green f-17"></i></a>
+                        </td>
+                    </tr>
+                    <% }); %>
+                    <% } %>
+                </tbody>
+            </table>
+            <% if(paging.pageCount > 1){ %>
+            <% include('../paging.ejs') %>
+            <% } %>
+        </div>
+
+    </div>
+</div>
+
+<!-- modal here -->
+<div class="modal fade" id="modal-form-input" tabindex="-1" role="dialog" aria-labelledby="modal-form-input-label"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-popup-store">
+                <div class="row m-t-0 m-b-0">
+                    <div class="col-sm-10">
+                        <h4 class="modal-title c-white" id="modal-form-input-label"></h4>
+                    </div>
+                    <div class="col-sm-2"><button type="button" class="close btn-resta-modal-form-close"
+                            data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span><span
+                                class="sr-only">Close</span> </button></div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="panel-body p-b-0">
+                        <div class="text-center alert hide" id="text-form-input-alert"></div>
+                        <form id="form-modal-custom" class="form-horizontal">
+
+                            <div class="form-group m-b-0">
+                                <label class="col-sm-3 control-label" for="name">Tên loại tư vấn<span
+                                        class="c-red">*</span></label>
+                                <div class="col-sm-9">
+                                    <input tabindex="1" type="text" class="form-control validate[required]"
+                                        id="edit-nameAdvice" name="nameAdvice" autocomplete="off"
+                                        placeholder="Nhập loại tư vấn">
+                                </div>
+                            </div>
+
+                            <div class="form-group m-b-0">
+                                <label class="col-sm-3 control-label" for="name">Trạng thái </label>
+                                <div class="col-sm-9">
+                                    <div class="col-sm-12 p-l-0 p-t-5">
+                                        <input type="checkbox" value="1" name="status" id="edit-status">
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="adviceId" name="adviceId">
+                            <input type="hidden" id="form-modal-type">
+                            <div class="modal-footer p-t-0">
+                                <button id="btn-modal-form-submit" type="submit"
+                                    class="btn btn-primary btn-icon-text waves-effect"><i
+                                        class="zmdi zmdi-check"></i>&nbsp;Xác nhận</button>
+    
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end modal -->

@@ -1,0 +1,236 @@
+<%- breadcrumb %>
+<script>
+    var areasProvinces = JSON.parse('<%- JSON.stringify(areasProvinces) %>')
+    var areas = JSON.parse('<%- JSON.stringify(areas) %>')
+</script>
+<div class="card">
+    <div class="portlet-title">
+        <div class="lv-header-alt clearfix">
+            <h2 class="lvh-label hidden-xs">
+                BÁO CÁO XỬ LÝ KHIẾU NẠI
+            </h2>
+            <ul class="lv-actions actions">
+                <li>
+                    <a data-toggle="tooltip" data-placement="top" data-original-title="Refresh" id="reload"><i
+                            class="zmdi zmdi-refresh"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+
+
+        <div class="panel panel-default m-l-10 m-r-10">
+            <div class="panel-heading p-0">
+                <h5 class="panel-title">
+                    <div data-id="showCustomer" class="btn-block p-10 bgm-orange c-white text-uppercase">Tra cứu</div>
+                </h5>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in ticketCustomerCollapse">
+                <form class="form-horizontal" role="form" id="form-filter">
+                    <div class="form-body">
+                        <div class="row m-0 p-10">
+
+
+
+                            <div class="form-group m-10">
+                                <div class="col-md-2 m-b-20">
+                                    <label for="created" class="control-label f-13"><span>Thời gian tạo
+                                            phiếu</span></label>
+                                    <div class="input-group">
+                                        <input type="text"
+                                            class="form-control pull-right search-field multi-date-picker filter-campain input"
+                                            id="created" name="created" placeholder=" VD: 01/01/2020">
+                                        <span class="input-group-addon p-l-10 bgm-gray c-white"><i role="button"
+                                                class="zmdi zmdi-calendar"></i></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 m-b-20">
+                                    <label for="complaintTypeId" class="control-label f-13"><span>Loại khiếu
+                                            nại</span></label>
+                                    <select name="complaintTypeId" class="selectpicker input" data-live-search="true"
+                                        data-actions-box="true" title="Chọn loại khiếu nại" multiple>
+                                        <option value="">---- Chọn ----</option>
+                                        <%complaintCategory.forEach(function(item){%>
+                                        <option value="<%- item._id%>"><%- item.nameComplaint%></option>
+                                        <%})%>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 m-b-20">
+                                    <label for="problemId" class="control-label f-13"><span>Vấn đề gặp
+                                            phải</span></label>
+                                    <select name="problemId" class="selectpicker input" data-live-search="true"
+                                        data-actions-box="true" title="Chọn vấn đề gặp phải" multiple>
+                                        <option value="">---- Chọn ----</option>
+                                        <%problemCategory.forEach(function(item){%>
+                                        <option value="<%- item._id%>"><%- item.nameProblem%></option>
+                                        <%})%>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 m-b-20">
+                                    <label for="customerPhone" class="control-label f-13"><span>Số điện
+                                            thoại</span></label>
+                                    <input class="form-control input" name="customerPhone" type="text"
+                                        placeholder="Nhập SĐT khách hàng">
+                                </div>
+
+                                <div class="col-md-2 m-b-20">
+                                    <label for="customerName" class="control-label f-13"><span>Khách hàng</span></label>
+                                    <input class="form-control input" name="customerName" type="text"
+                                        placeholder="Nhập tên khách hàng">
+                                </div>
+                                <div class="col-md-2 m-b-20">
+                                    <label for="agentId" class="control-label f-13"><span>Agent</span></label>
+                                    <select name="agentId" class="selectpicker input" data-live-search="true"
+                                        data-actions-box="true" title="Chọn điện thoại viên" multiple>
+                                        <option value="">---- Chọn ----</option>
+                                        <%agent.forEach(function(item){%>
+                                        <option value="<%- item._id%>"><%- item.displayName%></option>
+                                        <%})%>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group m-10">
+
+                                <div class="col-md-2 m-b-20">
+                                    <label for="status" class="control-label f-13"><span>Trạng thái</span></label>
+                                    <select name="status" class="selectpicker input" title="Chọn trạng thái" multiple>
+                                        <option value="0">Đang xử lý</option>
+                                        <option value="1">Tạm dừng xử lý</option>
+                                        <option value="2">Đã xử lý</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 m-b-20">
+                                    <label for="brand" class="control-label f-13"><span>Nhãn hiệu</span></label>
+                                    <select name="brand" class="selectpicker input" data-live-search="true"
+                                        data-actions-box="true" title="Chọn brand" multiple>
+                                        <%brands.forEach(function(item){%>
+                                        <option value="<%- item._id%>"><%- item.name%></option>
+                                        <%})%>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 m-b-20">
+                                    <label for="provinceId" class="control-label f-13"><span>Tỉnh thành</span></label>
+                                    <select name="provinceId" class="selectpicker input" data-live-search="true"
+                                        data-actions-box="true" title="Chọn tỉnh thành" multiple>
+                                        <%provinces.forEach(function(item){%>
+                                        <option value="<%- item._id%>"><%- item.name%></option>
+                                        <%})%>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 m-b-20">
+                                    <label for="restaurantId" class="control-label f-13"><span>Nhà hàng</span></label>
+                                    <select name="restaurantId" class="selectpicker input" data-live-search="true"
+                                        data-actions-box="true" title="Chọn nhà hàng" multiple>
+                                        <%restaurants.forEach(function(item){%>
+                                        <option value="<%- item._id%>"><%- item.name%></option>
+                                        <%})%>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 m-b-20">
+                                    <label for="tag" class="control-label f-13"><span>SBU</span></label>
+                                    <select name="tag" class="selectpicker input" data-live-search="true"
+                                        data-actions-box="true" title="Chọn SBU" multiple>
+                                        <%SBU.forEach(function(item){%>
+                                        <option value="<%- item%>"><%- item%></option>
+                                        <%})%>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 m-b-20">
+                                    <label for="channelType" class="control-label f-13"><span>Source</span></label>
+                                    <select name="channelType" class="selectpicker input" data-live-search="true"
+                                        data-actions-box="true" title="Chọn Source" multiple>
+                                        <option value="1">Social Listening </option>
+                                        <option value="2">Social Comment </option>
+                                        <option value="3">Email survey</option>
+                                        <option value="4">Email support</option>
+                                        <option value="5">Hotline 19006622 </option>
+                                        <option value="6">Others</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group m-10">
+                                <div class="col-md-2 m-b-20">
+                                    <label for="deadline" class="control-label f-13"><span>Thời hạn xử lý</span></label>
+                                    <div class="input-group">
+                                        <input type="text"
+                                            class="form-control pull-right search-field multi-date-picker filter-campain input"
+                                            id="deadline" name="deadline" placeholder=" VD: 01/01/2020">
+                                        <span class="input-group-addon p-l-10 bgm-gray c-white"><i role="button"
+                                                class="zmdi zmdi-calendar"></i></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 m-b-20">
+                                    <label for="content" class="control-label f-13"><span>Nội dung khiếu
+                                            nại</span></label>
+                                    <input class="form-control input" name="content" type="text"
+                                        placeholder="Nhập nội dung khiếu nại">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-md-5"></div>
+                            <div class="col-md-2 m-b-20">
+                                <div class="btn-group btn-group btn-group-justified">
+                                    <a type="submit" id='searchComplaint' class="btn bgm-blue uppercase c-white"
+                                        style="width:auto">
+                                        <i class="fa fa-search m-r-10"></i>
+                                        <strong>Tra cứu</strong></a>
+                                </div>
+                            </div>
+                            <div class="col-md-5"></div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+    <div class="div_table p-10">
+        <table class="table table-hover table-condensed table-bordered table-fix" id="exceldata">
+            <thead id="thead-table">
+                <!-- <tr>
+                    <th class="bgm-orange c-white text-center"><span class="TXT_ADVISORY_TYPE"></span></th>
+                    <th class="bgm-orange c-white text-center"><span class="TXT_ADVISORY_CONTENT"></span></th>
+                    <th class="bgm-orange c-white text-center"><span class="TXT_CUSTOMER"></span></th>
+                    <th class="bgm-orange c-white text-center"><span class="TXT_PHONENUMBER"></span></th>
+                    <th class="bgm-orange c-white text-center"><span class="TXT_AGENT"></span></th>
+                    <th class="bgm-orange c-white text-center"><span class="TXT_CREATED_TIME"></span></th>
+                    <th class="bgm-orange c-white text-center"><span class="TXT_OPTION"></span></th>
+                </tr> -->
+                <tr>
+                    <th class="bgm-orange c-white text-center">Thời gian tạo phiếu</th>
+                    <th class="bgm-orange c-white text-center">Trạng thái xử lý</th>
+                    <th class="bgm-orange c-white text-center">Source</th>
+                    <th class="bgm-orange c-white text-center">Khu vực</th>
+                    <th class="bgm-orange c-white text-center">Nhãn hiệu</th>
+                    <th class="bgm-orange c-white text-center">Nhà hàng
+                    </th>
+                    <th class="bgm-orange c-white text-center">Loại khiếu nại</th>
+                    <th class="bgm-orange c-white text-center">Vấn đề gặp phải</th>
+                    <th class="bgm-orange c-white text-center">Nội dung khiếu nại</th>
+                    <th class="bgm-orange c-white text-center">Khách hàng
+                    </th>
+                    <th class="bgm-orange c-white text-center">Số điện thoại
+                    </th>
+                    <th class="bgm-orange c-white text-center">Agent</th>
+                    <th class="bgm-orange c-white text-center">Thời hạn xử lý
+                    </th>
+
+                </tr>
+            </thead>
+
+            <tbody id="tbBody">
+            </tbody>
+        </table>
+
+        <div class="text-center" id="paging"></div>
+        <div id="container"></div>
+    </div>
+</div>

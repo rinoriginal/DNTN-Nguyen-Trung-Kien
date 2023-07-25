@@ -1,0 +1,178 @@
+<%- breadcrumb %>
+
+<script>
+    var restaurantsData = JSON.parse('<%- JSON.stringify(data.promotion.idRestaurants); %>')
+</script>
+<div class="card">
+    <div class="lv-header-alt clearfix">
+        <h2 class="lvh-label hidden-xs d-none"></h2>
+    </div>
+
+    <!-- start card filter dữ liệu -->
+    <div class="card m-15">
+
+        <div class="panel panel-default">
+
+            <div class="panel-heading p-0" id="product-anchor">
+                <h5 class="panel-title">
+                    <div data-id="showCustomer" class="btn-block p-10 bgm-green c-white text-uppercase ">
+                        <%- title %>
+                        <span id="btn-toggle-filter" class="d-none"
+                            style="float:right;cursor: pointer;text-transform: none">
+                            Lọc dữ liệu <i class="fa fa-chevron-circle-down"></i>
+                        </span>
+                    </div>
+
+                </h5>
+            </div>
+
+            <!-- start panel-body -->
+            <div class="panel-body p-30 p-b-15">
+                <div class="panel-filter" id="transaction-filter">
+
+                    <div class="row form-group">
+                        <div class="col-xs-4 col-sm-12 col-md-12 m-b-15">
+                            <h3><%- data.promotion.title %> </h3>
+                        </div>
+                        <div class="col-xs-8 col-sm-12 col-md-12">
+                            <p>
+                                <%- data.promotion.content %>
+                            </p>
+                        </div>
+                    </div>
+                   
+                    <table id="tblRestaurantSelected" data-type="cquest" data-unique-id="id"
+                                    data-toggle="table" data-filter-control="true" data-pagination="true"
+                                    data-page-size="15" class="table table-fix table-bordered f-13 table-customize">
+                                    <thead>
+                                        <tr>
+                                           
+                                            <th data-field="brand" data-filter-control="input"
+                                                data-sortable="true"
+                                                style="background-color: rgba(237, 236, 236, 0.6);"><i
+                                                    class="zmdi zmdi-globe c-gray f-14 p-relative t-1 m-r-5 d-none"></i>Brand
+                                            </th>
+                                            <th data-field="area" data-filter-control="input"
+                                                data-sortable="true"
+                                                style="background-color: rgba(237, 236, 236, 0.6);"><i
+                                                    class="zmdi zmdi-globe c-gray f-14 p-relative t-1 m-r-5 d-none"></i>Khu Vực
+                                            </th>
+                                            <th data-field="province"
+                                                style="background-color: rgba(237, 236, 236, 0.6);"><i
+                                                    class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5 d-none"></i> Tỉnh Thành
+                                            </th>
+                                            <th data-field="name"
+                                                data-filter-control="input"
+                                                data-sortable="true"
+                                                style="background-color: rgba(237, 236, 236, 0.6);">
+                                                <i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10 d-none">
+                                                </i>Nhà hàng
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+            <!-- end panel-body -->
+
+        </div>
+
+    </div>
+    <!-- end card filter dữ liệu -->
+
+
+    <!-- start card danh sách file đính kèm -->
+    <div class="card m-15">
+
+        <div class="panel panel-default">
+
+            <div class="panel-heading p-0" id="product-anchor">
+                <h5 class="panel-title">
+                    <div data-id="showCustomer" class="btn-block p-10 bgm-green c-white text-uppercase ">
+                        Văn bản - Tài liệu
+                        <span id="btn-toggle-filter" class="d-none"
+                            style="float:right;cursor: pointer;text-transform: none">
+                            Lọc dữ liệu <i class="fa fa-chevron-circle-down"></i>
+                        </span>
+                    </div>
+
+                </h5>
+            </div>
+
+            <div class="panel-body p-15">
+                <div class="panel-filter" id="transaction-filter">
+
+                    <table id="tblListFile" data-type="cquest" data-unique-id="id" data-toggle="table"
+                        data-filter-control="true" data-pagination="true" data-page-size="15"
+                        class="table table-fix table-bordered f-13 table-customize">
+                        <thead>
+                            <tr>
+                                <th data-field="name" data-filter-control="input" data-sortable="true"
+                                    style="background-color: rgba(237, 236, 236, 0.6);">
+                                    <i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10 d-none">
+                                    </i>Tài liệu
+                                </th>
+                                <th data-field="updated" data-filter-control="input" data-sortable="true"
+                                    style="background-color: rgba(237, 236, 236, 0.6);"><i
+                                        class="zmdi zmdi-globe c-gray f-14 p-relative t-1 m-r-5 d-none"></i>Thời gian
+                                    cập nhật
+                                </th>
+                                <th data-field="fileName" style="background-color: rgba(237, 236, 236, 0.6);"><i
+                                        class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5 d-none"></i> File đính
+                                    kèm
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if(data.promotion.files){ %>
+                                <% for(var i = 0; i < data.promotion.files.length; i++){ %>
+                                    <% if(data.promotion.files[i]){ %>
+                                    <tr>
+                                        <td>Tên tài liệu</td>
+                                        <td class="text-center"><%-_moment(data.promotion.files[i].created).format('HH:mm DD/MM/YYYY')%></td>
+                                        <td>
+                                            <a href="<%-data.promotion.files[i].url%>" download><%-data.promotion.files[i].name%></a>
+                                        </td>
+                                    </tr>
+                                    <%}%>
+                                <%}%>
+                            <%}%>
+                        </tbody>
+                    </table>
+
+
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- end card danh sách file đính kèm -->
+
+    <!-- start card trạng thái thoạt động và nút submit -->
+    <div class="card m-15 p-b-5">
+
+        <div class="panel panel-default">
+
+            <div class="panel-heading p-0 d-none" id="product-anchor">
+                <h5 class="panel-title">
+                    <div data-id="showCustomer" class="btn-block p-10 bgm-green c-white text-uppercase ">
+                        Trạng thái hoạt động
+                    </div>
+
+                </h5>
+            </div>
+            
+        </div>
+
+    </div>
+    <!-- end card danh sách file đính kèm -->
+
+</div>

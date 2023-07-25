@@ -1,0 +1,118 @@
+{
+	"app": {
+		"_id": "621f1717399b2a76cbeee7a2",
+		"ip": "localhost",
+		"port": 6120,
+		"name": "PVI-HN",
+		"exec_mode": "fork",
+		"instances": 1,
+		"codeCompany": "6120"
+	},
+	"database": {
+		"name": "pvi-hn",
+		"ip": "172.16.85.196",
+		"port": 27017,
+		"user": "",
+		"pwd": ""
+	},
+	"database-core": {
+		"ip": "172.16.85.196",
+		"port": 27017,
+		"name": "telehubCore",
+		"user": "adminTelehubCore",
+		"pwd": "telehubCore123",
+		"mechanism": "",
+		"digestPassword": false
+	},
+	"core-app": {
+		"ip": "127.0.0.1",
+		"port": 6002,
+		"public-ip": "127.0.0.1",
+		"public-port": 6002
+	},
+	"services": {
+		"voice": 6010,
+		"chat": 6011,
+		"email": 6012
+	},
+	"activemq": {
+		"ip": "172.16.85.196",
+		"port": "61613",
+		"user": "admin",
+		"pwd": "admin",
+		"queueName": "pvi-hn-queue"
+	},
+	"redis": {
+		"host": "localhost",
+		"port": "6379"
+	},
+	"cisco": {
+		"ipApi": "https://172.16.86.244",
+		"username": "ccadmin@bhs.local",
+		"password": "Bhs24hs@123",
+		"auth": {
+			"username": "ccadmin@bhs.local",
+			"password": "Bhs24hs@123",
+			"sendImmediately": true
+		},
+		"apiCisco": {
+			"ip": "http://172.16.85.199:4242",
+			"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhcGkiLCJwd2QiOiJBUEllckAxMjMifQ.zbcraPNh7IvmAFX0D2dBjVfRB_vRzkAJA6P3BU3dh2E",
+			"callType": {
+				"voice": 5016,
+				"mail": 5013,
+				"chat": 5012,
+				"CT_IVR": 5016,
+				"CT_ToAgentGroup1": 5018,
+				"CT_ToAgentGroup2": 5025,
+				"CT_ToAgentGroup3": 5026,
+				"CT_Queue1": 5019,
+				"CT_Queue2": 5023,
+				"CT_Queue3": 5024
+			},
+			"callTypeTranfer": {
+				"voice": 5015,
+				"mail": 5016,
+				"chat": 5017
+			},
+			"skillGroup": {
+				"SG_Voice_1": 5158,
+				"SG_Voice_2": 5171,
+				"SG_Voice_3": 5171
+			}
+		}
+	},
+	"replicaSet": {
+		"replicaSetName": "mongo_rs",
+		"dbName": "pvi-hn",
+		"listMember": [
+			{
+				"ip": "172.16.86.162",
+				"port": 27017
+			},
+			{
+				"ip": "172.16.86.165",
+				"port": 27017
+			},
+			{
+				"ip": "172.16.86.166",
+				"port": 27017
+			}
+		],
+		"user": "crm",
+		"pwd": "ok110000"
+	},
+	"BREAKFIELDAPI": {
+		"url": {
+			"updateCustomer": "https://financialfield.vn/wp-json/frm/v2/entries/"
+		},
+		"import": {
+			"companyId": "6260c3a6ae5c8e650f33d130",
+			"groupId": "60ebb69d706afac44365ec36",
+			"sourceId": "60ebb6ae706afac44365ec3b"
+		},
+		"auth": {
+			"basicAuth": "D07H-7A9F-VZGY-27UL:x"
+		}
+	}
+}

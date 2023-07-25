@@ -1,0 +1,32 @@
+ul.list-result-filter {
+    max-height: 300px !important;
+    overflow-y: auto;
+}
+.validate-message{
+    display: none !important;
+}
+
+.validate-message.active{
+    display: block !important;
+}
+
+.edit{
+    padding: 5px;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+}
+
+/* .list-group-item span{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 200px;
+} */
+.list-group-item.active,
+.list-group-item.active:hover,
+.list-group-item.redirect-manager:hover{
+    background-color: #74b23b;
+    cursor: pointer;
+}
+

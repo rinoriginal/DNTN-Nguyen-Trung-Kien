@@ -1,0 +1,99 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>{{titleEmail}}</title>
+</head>
+
+<body
+    style="-webkit-text-size-adjust: none; box-sizing: border-box; color: #74787E; font-family: Helvetica Neue,Helvetica,Lucida Grande,tahoma,verdana,arial,sans-serif; height: 100%; line-height: 1.4; margin: 0; width: 100% !important;"
+    bgcolor="#F2F4F6">
+    <style type="text/css">
+        body {
+            width: 100% !important;
+            height: 100%;
+            margin: 0;
+            line-height: 1.4;
+            background-color: #F2F4F6;
+            color: #74787E;
+            -webkit-text-size-adjust: none;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .email-body_inner {
+                width: 100% !important;
+            }
+
+            .email-footer {
+                width: 100% !important;
+            }
+        }
+
+        @media only screen and (max-width: 500px) {
+            .button {
+                width: 100% !important;
+            }
+        }
+    </style>
+    <div>
+        <div>Dear anh/chị,</div>
+        <div>Customer Service Team gửi anh/chị trường hợp khách hàng KHIẾU NẠI về {{typeComplaint.name}}</div>
+        <p>
+        <div>Thông tin khách hàng :</div> 
+        <div>
+            <div>Họ tên : </div>
+            <div>SĐT : </div>
+            <div>Email : </div>
+            <div>Tỉnh thành : </div>
+        </div>
+
+
+        </p>
+
+        <p>
+        <div>Thông tin nhà hàng :</div>
+        <div>
+            <div>Nhà hàng : {{restaurant.name}}</div>
+            <div>Nhãn hiệu : {{restaurant.brand}}</div>
+            <div>Tỉnh thành : {{restaurant.province}}</div>
+        </div>
+
+
+        </p>
+
+
+
+        template={
+        typeComplaint:{
+        name: '',
+        }
+        customer:{
+        name: data.customer[0].field_ho_ten ? data.customer[0].field_ho_ten : '',
+        phone: data.customer[0].field_so_dien_thoai,
+        email: data.customer[0].field_e_mail?data.customer[0].field_e_mail:'',
+        province: data.customer[1] ? data.customer[1].name : '',
+        }
+        }
+
+        Thông tin phản ánh :
+        Source :
+        Loại khiếu nại :
+        Vấn đề gặp phải :
+        SLA :
+        Nội dung :
+
+        Anh/chị vui lòng liên hệ xử lý gấp!
+        Xin cảm ơn.
+        * This is auto-email from system. Please do not reply.
+
+        File đính kèm :
+        Khiếu nại về nhà hàng abc.pdf
+        Hình ảnh 1.png
+        Word1.doc
+        Excel1.xlsx
+    </div>
+
+</body>
+
+</html>

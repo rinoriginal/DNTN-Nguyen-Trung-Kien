@@ -1,0 +1,21 @@
+.searchBox{
+    margin: 15px;
+    border: 1px solid black;
+}
+.title{
+    background-color: rgb(70, 70, 69);
+    padding-bottom: 5px;
+    padding-left: 20px;
+    margin-top: 0;
+    padding-top: 5px;
+}
+.over-deadline{
+    background:rgb(240, 120, 120);
+}
+
+.warning-deadline{
+    background-color: rgb(247, 198, 65);
+}
+.new-ticket{
+    background-color: rgb(147, 236, 236);
+}

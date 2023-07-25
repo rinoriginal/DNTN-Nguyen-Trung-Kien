@@ -1,0 +1,24 @@
+<div class="paginate text-center">
+    <%
+    var _startSymbol = paging.prelink.indexOf('?') >= 0 ? '&' : '?';
+    %>
+    <ul class="pagination ">
+        <% if (paging.first) { %>
+        <li><a href="<%= paging.prelink + _startSymbol + 'page=' + paging.first %>">&laquo;</a></li>
+        <% } %>
+        <% if (paging.previous) { %>
+        <li><a href="<%= paging.prelink + _startSymbol + 'page=' + paging.previous %>">&lsaquo;</a></li>
+        <% } %><% for ( var i = 0; i < paging.range.length; i++ ) { %>
+        <% if(paging.range[i] == paging.current){ %>
+        <li class="active"><span><%= paging.range[i] %></span></li>
+        <% }else{ %>
+        <li><a href="<%= paging.prelink + _startSymbol %>page=<%= paging.range[i] %>"><%= paging.range[i] %></a></li>
+        <% } %><% } %>
+        <% if (paging.next) { %>
+        <li><a href="<%= paging.prelink + _startSymbol + 'page=' + paging.next %>">&rsaquo;</a></li>
+        <% } %>
+        <% if (paging.last) { %>
+        <li><a href="<%= paging.prelink + _startSymbol + 'page=' + paging.last %>">&raquo;</a></li>
+        <% } %>
+    </ul>
+</div>

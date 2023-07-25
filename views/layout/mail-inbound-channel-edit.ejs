@@ -1,0 +1,118 @@
+<%-breadcrumb%>
+    <script>
+        var idAgentsInChannel = JSON.parse('<%- JSON.stringify(idAgentS)%>');
+    </script>
+    <div class="card">
+        <div class="card-header">
+            <h2 class="m-b-5">
+                <%- title %>
+            </h2>
+            <small class="text-muted"><i>Những trường có dấu <span class="c-red">*</span> là bắt buộc nhập.</i></small>
+        </div>
+        <div class="card-body card-padding">
+            <form role="form" class="form-horizontal" id="update-channel">
+                <div class="form-group">
+                    <label for="group" class="col-sm-3 control-label">Công ty</label>
+                    <div class="col-sm-6">
+                        <div class="p-relative">
+                            <select class="selectpicker" id="idCompany" name="idCompany">
+                                <optgroup label="" id="group-company">
+                                    <% companies.forEach(function(company, i) { %>
+                                        <option value="<%- company._id %>" <% if (_.isEqual(company._id,
+                                            channel.idCompany)){%> selected <%}%>><%- company.name %>
+                                        </option>
+                                        <%});%>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="group" class="col-sm-3 control-label">Nhóm agent<span class="required">*</span></label>
+                    <div class="col-sm-6">
+                      <div class="fg-line select ">
+                        <select class="selectpicker validate[required]" id="agentGroups" name="agentGroups[]" multiple data-live=true >
+                          <% agentGroups.forEach(function(el, i) {%>
+                            <option value="<%- el._id %>" <%- (_.includes(_.map(channel.idAgentGroups, (item) => item.toString()), el._id.toString()) ? 'selected' : ''); %>>
+                              <%- el.name%>
+                            </option>
+                            <%})%>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                <div class="form-group">
+                    <label for="group" class="col-sm-3 control-label">Tên<span class="required">*</span></label>
+                    <div class="col-sm-6">
+                        <div class="fg-line">
+                            <input type="text" class="form-control validate[required]" id="name" name="name"
+                                placeholder="VD: Hỗ trợ dự án" value="<%- channel.name %>">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="group" class="col-sm-3 control-label">Tên queue<span class="required">*</span></label>
+                    <div class="col-sm-6">
+                        <div class="fg-line">
+                            <input type="text" class="form-control validate[required]" id="idQueue" name="idQueue"
+                                value="<%- channel.idQueue %>">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="group" class="col-sm-3 control-label">SLA hội thoại<span
+                            class="required">*</span></label>
+                    <div class="col-sm-6">
+                        <div class="fg-line">
+                            <input type="number" class="form-control validate[required]" id="slaTimeConversation"
+                                name="slaTimeConversation" value="<%- channel.slaTimeConversation %>">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="group" class="col-sm-3 control-label">SLA thời gian tiếp nhận
+                        <span class="required">*</span></label>
+                    <div class="col-sm-6">
+                        <div class="fg-line">
+                            <input type="number" class="form-control validate[required]" id="slaTimeReceive"
+                                name="slaTimeReceive" value="<%- channel.slaTimeReceive %>">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="group" class="col-sm-3 control-label">SLA thời gian chờ giữa các tin nhắn
+                        <span class="required">*</span></label>
+                    <div class="col-sm-6">
+                        <div class="fg-line">
+                            <input type="number" class="form-control validate[required]" id="slaTimeWait"
+                                name="slaTimeWait" value="<%- channel.slaTimeWait %>">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="status" class="col-sm-3 control-label">Trạng thái</label>
+                    <div class="col-sm-6">
+                        <div class="checkbox m-b-15">
+                            <label>
+                                <input type="checkbox" id="status" name="status" <% if (channel.status==1){ %> checked
+                                <%}%>>
+                                    <i class="input-helper"></i>
+                                    <span class="p-l-10" data-text-on="Không kích hoạt"
+                                        data-text-off="Kích hoạt"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group m-b-0">
+                    <div class="col-sm-offset-3 col-sm-10">
+                        <a class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect waves-effect" id="btn-back"
+                            name="btn-back" href="#mail-inbound-channel"><i class="m-r-5 zmdi zmdi-arrow-left"></i>Quay
+                            lại</a>
+                        <button type="submit" class="btn btn-primary btn-icon-text m-t-10 waves-effect submit-edit"
+                            currWebsite="<%- channel.website %>" currName="<%- channel.name %>"><i
+                                class="m-r-5 zmdi zmdi-plus-circle-o"></i>Xác nhận</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

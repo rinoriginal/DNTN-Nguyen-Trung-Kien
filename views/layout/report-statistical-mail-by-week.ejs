@@ -1,0 +1,188 @@
+<%-breadcrumb%>
+<div class="card">
+    <div class="portlet-title">
+        <div class="lv-header-alt clearfix m-l-10">
+            <h2 class="lvh-label hidden-xs">
+                <%= title %>
+            </h2>
+            <ul class="lv-actions actions">
+                <!-- <li>
+                    <a href="/#ticket-advisory/new" data-toggle="tooltip" data-placement="top" id="addTernal"
+                        data-original-title="Tạo mới">
+                        <i class="zmdi zmdi-plus"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a data-toggle="tooltip" data-placement="top" data-original-title="Refresh" id="reload"><i
+                            class="zmdi zmdi-refresh"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+
+
+        <div class="panel panel-default m-l-30 m-r-30 box-shadow">
+            <div class="panel-heading p-0">
+                <h5 class="panel-title p-l-10">
+                    <div data-id="showCustomer" class="btn-block p-10 bgm-orange c-white text-uppercase">Tra cứu</div>
+                </h5>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in ticketCustomerCollapse">
+                <div id="form-filter">
+                    <div class="form-body">
+                        <div class="row m-l-0 m-r-0 m-t-20 m-b-0 p-10" style="display: flex;">
+                            <div class="col-md-3 ">
+                                <label for="created" class="control-label f-13"><span>Khoảng thời gian</span></label>
+                                <div class="input-group">
+                                    <input type="text"
+                                        class="form-control pull-right search-field multi-date-picker filter-campain input"
+                                        id="created" name="created" placeholder=" VD: 01/01/2020 - 01/01/2021">
+                                    <span class="input-group-addon p-l-10 bgm-gray c-white"><i role="button"
+                                            class="zmdi zmdi-calendar"></i></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 m-b-20">
+                                <label for="source" class="control-label f-13"><span>Nguồn Mail</span></label>
+                                <select name="source" class="selectpicker input" data-live-search="true"
+                                    data-actions-box="true" title="Chọn nguồn" multiple>
+                                    <% Source.forEach(function(item){%>
+                                    <option value="<%- item._id%>"><%- item.name%></option>
+                                    <%})%>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3 m-b-20">
+                                <label for="status" class="control-label f-13"><span>Trạng thái</span></label>
+                                <select name="status" class="selectpicker input" data-live-search="true"
+                                    data-actions-box="true" title="Chọn trạng thái" multiple>
+                                    <option value="1">Chưa hoàn thành</option>
+                                    <option value="2">Hoàn thành</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 m-b-20">
+                                <label for="reasonCategories" class="control-label f-13"><span>Nhóm tình
+                                        trạng</span></label>
+                                <select name="reasonCategories" id="reasonCategories" class="selectpicker input"
+                                    data-live-search="true" data-actions-box="true" title="Chọn nhóm tình trạng"
+                                    multiple>
+                                    <% reasonCategories.forEach(function(item){%>
+                                    <option value="<%- item._id%>"><%- item.name%></option>
+                                    <%})%>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row m-l-0 m-r-0 m-t-20 m-b-0 p-10" style="display: flex;">
+                            <div class="col-md-3 m-b-20">
+                                <label for="ticketreasons" class="control-label f-13"><span>Tình trạng</span></label>
+                                <select name="ticketreasons" id="reason" class="selectpicker input"
+                                    data-live-search="true" data-actions-box="true" title="Chọn tình trạng" multiple>
+
+
+                                </select>
+                            </div>
+
+
+
+                        </div>
+                        <div class="row m-0 m-t-20">
+
+                            <input type="hidden" class="input" name='sumMail' id="sumMail">
+                            <input type="hidden" class="input" name='sumDone' id="sumDone">
+                            <input type="hidden" class="input" name='sumUnDone' id="sumUnDone">
+                            <input type="hidden" class="input" name='sumSource' id="sumSource">
+                        </div>
+
+                        <div class="row m-0 m-b-10">
+                            <div class="col-md-5"></div>
+                            <div class="col-md-2 m-b-20 text-center">
+                                <button
+                                    class="btn f-12 waves-effect text-uppercase  bgm-btn-search c-white border-radius"
+                                    id="searchTernal">
+                                    Tra cứu</button>
+                            </div>
+                            <div class="col-md-5"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-20 m-b-10 m-r-30 text-right">
+        <button class="btn btn-warning f-12 btn-save waves-effect text-uppercase  border-radius m-r-15"
+            id="exportexcel">
+            export</button>
+    </div>
+    <div class="div_table m-l-30 m-r-30 box-shadow">
+        <table class="table table-hover table-condensed table-bordered table-fix" id="exceldata">
+            <thead id="thead-table" class="m-t-5 m-r-5">
+                <tr>
+                    <th class="bgm-orange c-white text-center bgm-confix-header"><span class="TXT_STT"></span>
+                    </th>
+                    <th class="bgm-orange c-white text-center bgm-confix-header"><span class="TXT_WEEK"></span>
+                    </th>
+                    <th class="bgm-orange c-white text-center bgm-confix-header"><span class="TXT_SOURCE_MAIL"></span>
+                    </th>
+                    <th class="bgm-orange c-white text-center bgm-confix-header"><span class="TXT_SUM_FLOW_MAIL"></span>
+                    </th>
+                    <th class="bgm-orange c-white text-center bgm-confix-header"><span class="TXT_SUM_MAIL"></span></th>
+                    <th class="bgm-orange c-white text-center bgm-confix-header"><span class="TXT_UNDONE"></span></th>
+                    <th class="bgm-orange c-white text-center bgm-confix-header"><span class="TXT_DONE"></span>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody id="tbBody">
+
+            </tbody>
+        </table>
+
+
+        <div id="container">
+        </div>
+        <div class="text-center" style="display: none;" id="paging"></div>
+    </div>
+
+
+    <!-- Biểu đồ -->
+    <div class="row m-l-20 m-r-20 m-t-50">
+        <div class="portlet-title flex-box">
+            <div class="lv-header-alt clearfix">
+                <h2 class="lvh-label hidden-xs">
+                    BIỂU ĐỒ THÔNG TIN
+                </h2>
+            </div>
+            <!-- <div data-toggle="tooltip" data-placement="top" class="dropdown flex-end showHideFields m-r-30">
+                <ul class="dropdown-menu pull-right p-0 bgm-showFields" id="showHideFields">
+                    <li class="p-l-15 p-r-20 b-b">
+                        <div class=" m-0 p-t-5 p-b-5">
+                            <label class="dp-block">
+                                <i class="input-helper c-white"></i>
+                                <a class="p-l-5 text-capitalize text-nowrap c-white dp-block">Export PNG</a>
+                            </label>
+                        </div>
+                    </li>
+                    <li class="p-l-15 p-r-20 b-b">
+                        <div class=" m-0 p-t-5 p-b-5">
+                            <label class="dp-block">
+                                <i class="input-helper c-white"></i>
+                                <a class="p-l-5 text-capitalize text-nowrap c-white dp-block">Export PDF</a>
+                            </label>
+                        </div>
+                    </li>
+                </ul>
+                <button data-toggle="dropdown" aria-expanded="false" aria-haspopup="true"
+                    class="btn btn-light f-25 flex-box p-t-0 p-b-0" title="Cột hiển thị">
+                    <i class="zmdi zmdi-menu"></i>
+                </button>
+            </div> -->
+        </div>
+        <div class="col-md-12" id="chart">
+        </div>
+        <div class="col-md-12 m-b-20 text-center" id="title_chart">
+            <span><strong>Báo cáo thống kê mail theo tuần</strong></span>
+        </div>
+    </div>
+</div>

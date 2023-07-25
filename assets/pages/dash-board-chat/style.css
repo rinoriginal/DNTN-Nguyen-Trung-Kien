@@ -1,0 +1,207 @@
+.container-fluid {
+    margin-left: 100px !important;
+    margin-right: 100px !important;
+}
+
+.flex-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-box-align {
+    display: flex;
+    align-items: center;
+}
+
+.flex-space-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.border {
+    border: 1px solid #eaecee;
+}
+
+.border-left {
+    border-left: 1px solid #eaecee;
+}
+
+.border-right {
+    border-right: 1px solid #eaecee;
+}
+
+.overflow-scroll {
+    max-height: 150px !important;
+    overflow: auto !important;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.full-width {
+    width: 100% !important;
+}
+
+.set-w {
+    width: 80% !important;
+}
+
+.set-p {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+.bgm-silver {
+    background-color: silver !important;
+}
+
+.bgm-confix-header {
+    background-color: #7297a2 !important;
+}
+
+.bgm-btn-search {
+    background-color: #38a33e !important;
+}
+
+.border-radius {
+    border-radius: 2px;
+}
+
+.bgm-create {
+    background-color: #2e6bb9 !important
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.lbc-silver {
+    color: #878787 !important;
+}
+
+.lbc-green {
+    color: #1ABC9E;
+}
+
+.lbc-orange {
+    color: #f29915;
+}
+
+.lbc-blue {
+    color: #007bff;
+}
+
+.text-lbbg-green {
+    color: #38a33e;
+}
+
+.text-lbbg-orange {
+    color: #f29915;
+}
+
+.text-lbbg-blue {
+    color: #007bff;
+}
+
+.box-shadow {
+    -webkit-box-shadow: 5px 5px 10px 0px rgba(171,171,171,1);
+  -moz-box-shadow: 5px 5px 10px 0px rgba(171,171,171,1);
+  box-shadow: 1px 0px 7px 0px rgba(171,171,171,1);
+}
+
+.box-shadow1 {
+    -webkit-box-shadow: 5px 5px 10px 0px rgba(171,171,171,1);
+  -moz-box-shadow: 5px 5px 10px 0px rgba(171,171,171,1);
+  box-shadow: 1px 0px 7px 0px rgba(171,171,171,1);
+}
+
+.bgm-header2 {
+    background-color: #ecedef !important;
+}
+
+.table-realtime-agent tbody td{
+    text-align: center !important;
+    font-size: 20px !important;
+    border-right: 1px solid #eaecee !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+}
+.name-channel{
+
+    font-size: 18px;
+    display: inline-block; /* so height and width actually take affect */
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* important to show ellipsis, or words will just be broken off */
+}
+.name-agent{
+    display: inline-block; /* so height and width actually take affect */
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* important to show ellipsis, or words will just be broken off */
+}
+/* style scroll bar */
+
+.tableFixHead {
+    overflow-y: auto;
+    max-height: 200px;
+}
+
+.tableFixHead thead th {
+    position: sticky;
+    top: 0;
+}
+
+.tableFixHead::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+}
+
+.tableFixHead::-webkit-scrollbar {
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+.tableFixHead::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #555;
+}
+
+/* end style scroll bar */
+/* style scroll bar */
+
+.tableFixHeadPopup {
+    overflow-y: auto;
+    max-height: 408px;
+}
+
+.tableFixHeadPopup thead th {
+    position: sticky;
+    top: 0;
+}
+
+.tableFixHeadPopup::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+}
+
+.tableFixHeadPopup::-webkit-scrollbar {
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+.tableFixHeadPopup::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #555;
+}
+
+/* end style scroll bar */
+.over-deadline{
+    background:rgb(240, 120, 120);
+}

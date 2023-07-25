@@ -1,0 +1,179 @@
+<%- breadcrumb %>
+<script>
+    var ticketAdvisory = JSON.parse('<%- JSON.stringify(ticket) %>');
+    var emailAdvisory = JSON.parse('<%- JSON.stringify(email) %>');
+    var adviceCategory = JSON.parse('<%- JSON.stringify(advice) %>');
+    var checkVoice = JSON.parse('<%- JSON.stringify(checkVoice) %>');
+    var _urlUpload = JSON.parse('<%- JSON.stringify(_url) %>');
+    console.log('ahihihihihii', checkVoice);
+
+</script>
+<div class="card">
+    <div class="lv-header-alt clearfix">
+        <h2 class="lvh-label hidden-xs"><%- title %></h2>
+        <!-- <ul class="lv-actions actions">
+            <li>
+                <a href="/#ticket-advisory/new" data-toggle="tooltip" data-placement="top"
+                    data-original-title="Tạo mới">
+                    <i class="zmdi zmdi-plus"></i>
+                </a>
+            </li>
+        </ul> -->
+    </div>
+    <div class="card-body">
+        <div class="row">
+
+
+            <form role="form" id="" class="col-sm-5 col-md-4 p-l-30 m-b-50"
+                style=<%= checkVoice ? 'display:none' : '' %>>
+                <div class=" m-b-50 box-shadow">
+                    <div class="panel-heading p-0">
+                        <h5 class="panel-title bgm-silver">
+                            <div class="btn-block p-20 bgm-blue-ocean c-black text-uppercase" data-toggle="collapse"
+                                href="#collapse11111">THÔNG TIN KHÁCH HÀNG
+                            </div>
+                        </h5>
+                    </div>
+                    <div class="panel-body p-5 p-b-10 div-case-history in" id="collapse1">
+                        <div class="row m-20 flex-box">
+                            <% if(!ticket[0].idCustomer){ %>
+                            <label class="control-label col-md-12 text-center ">
+                                Phiếu không có thông tin khách hàng
+                            </label>
+                            <% } %>
+                            <!-- <label class="control-label col-md-3 text-left ">
+                                Tìm số điện thoại
+                            </label>
+
+                            <div class="col-md-9 text-left">
+                                <div class="input-group m-b-5">
+                                    <input class="form-control filter" type="text" id="searchPhone" name="searchPhone">
+                                    <span class="input-group-addon p-l-10 bgm-gray c-white search">
+                                        <i role="button" class="zmdi zmdi-search"></i>
+                                    </span>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div id="renderCustomer">
+                            <% if(ticket[0].idCustomer){ %>
+                            <% for(var i = 0; i < fields.length; i++){ %>
+                            <div class="row m-20 flex-box">
+                                <label class="control-label col-md-3 col-sm-3 text-left "> <%- fields[i].displayName %>
+                                    <%- _switch(fields[i].isRequired, [0, 1], ['', '<span class="c-red">*</span>']) %>
+                                </label>
+                                <div class="col-md-9 col-sm-9 text-left">
+                                    <%- fnInfo(fields[i], ticket[0].idCustomer); %>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% } %>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+
+            <form role="form" id="frm-advisory"
+                class="<%= checkVoice ? 'col-sm-12 col-md-12 p-r-30 m-b-50' : 'col-sm-8 col-md-8 p-r-30 m-b-50' %>">
+                <div class=" m-b-50 box-shadow">
+                    <div class="panel-heading p-0">
+                        <h5 class="panel-title bgm-silver">
+                            <div class="btn-block p-20 bgm-blue-ocean c-black text-uppercase" data-toggle="collapse"
+                                href="#collapse12222">PHIẾU TƯ VẤN
+                            </div>
+                        </h5>
+                    </div>
+                    <div class="panel-body p-5 p-b-10 div-case-history in" id="collapse1">
+                        <div class="row m-20 flex-box">
+                            <label class="control-label col-md-2 col-sm-2 text-left">
+                                Loại tư vấn:<span class="required c-red">*</span>
+                            </label>
+                            <div class="col-md-10 col-sm-10 text-left">
+                                <select id="advisoryTypeId" name="advisoryTypeId"
+                                    class="selectpicker input  validate[required]" title="-- Chọn --">
+                                    <% _.each(advice,function(el){ %>
+                                    <option value="<%= el._id%>"
+                                        <%= JSON.stringify(el._id) == JSON.stringify(ticket[0].advisoryTypeId) ? ' selected':''%>>
+                                        <%= el.nameAdvice%>
+                                    </option>
+                                    <%})%>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row m-20 flex-box">
+                            <label class="control-label col-sm-2 col-md-2 text-left">
+                                Nội dung:<span class="required c-red">*</span>
+                            </label>
+                            <div class="col-md-10 col-sm-10 text-left">
+                                <input value="<%- ticket[0].content%>" class="form-control validate[required]"
+                                    type="text" name="content">
+                            </div>
+                        </div>
+                        <div class="row m-20 flex-box">
+                            <label class="control-label col-sm-2 col-md-2 text-left">
+                                Đính kèm:
+                            </label>
+                            <div class="col-md-10 col-sm-10 text-left">
+                                <div class="input-group">
+                                    <a href="javascript:void(0)" onclick="$(`#btnUploadFile`).click()">
+                                        <span class="btn btn-default btn-info btn-sm btn-file m-r-10 waves-effect">
+                                            <span class="fileinput-new">
+                                                <i class="zmdi zmdi-upload p-r-10 w-13"></i> Chọn file
+                                            </span>
+                                        </span>
+                                    </a>
+                                    <input type="file" id="btnUploadFile" name="" style="display: none"
+                                        class="form-control orange" data-show="uploadFile" multiple>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-20 flex-box">
+                            <label class="control-label col-md-2 col-sm-2 text-left">
+                            </label>
+                            <div class="col-md-10 col-sm-10 text-left">
+                                <div class="preview-files-zone-uploadFile overflow-scroll ">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class=" m-b-50 box-shadow">
+                    <div class="panel-heading p-0">
+                        <h5 class="panel-title bgm-silver">
+                            <div class="btn-block p-20 bgm-blue-ocean c-black text-uppercase bold"
+                                data-toggle="collapse" href="#collapse1333">Email
+                            </div>
+                        </h5>
+                    </div>
+                    <div class="panel-body p-5 p-b-10 div-case-history in" id="collapse1">
+                        <div class="row m-20 flex-box">
+                            <label class="control-label col-md-2 col-sm-2 text-left">
+                                Địa chỉ email:
+                            </label>
+                            <div class="col-md-10 col-sm-10 text-left">
+                                <select id="emailTo" name="emailTo" class="selectpicker input" title="-- Chọn --"
+                                    multiple>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-heading p-0 text-center">
+                    <button type="submit" class="btn btn-primary f-12 btn-save waves-effect" id="btnSave"
+                        data-id="<%- ticket[0]._id%>" data-target="#frm-advisory"><i
+                            class="zmdi zmdi-check-all m-r-5"></i>Xác
+                        nhận</button>
+                </div>
+
+            </form>
+        </div>
+        <!-- <div class="box-loading" style="display: none">
+            <div class="box-line-df"></div>
+            <div class="box-line-lgx"></div>
+            <div class="box-line-lg"></div>
+        </div> -->
+    </div>
+</div>

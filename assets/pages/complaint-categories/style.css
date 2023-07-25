@@ -1,0 +1,139 @@
+/* { author: Thuận Boss } */
+table.table-fix > thead tr > th::-moz-selection {
+    background: transparent;
+}
+
+table.table-fix > thead tr > th::selection {
+    background: transparent;
+}
+
+table.table-fix > thead tr > th i.zmdi {
+    display: none;
+    font-size: 22px;
+    position: relative;
+    margin-right: 10px;
+    top: 3px;
+    line-height: 10px;
+}
+
+table.table-fix > thead tr > th[data-sort="asc"] i.zmdi-sort-asc {
+    display: initial;
+}
+
+table.table-fix > thead tr > th[data-sort="desc"] i.zmdi-sort-desc {
+    display: initial;
+}
+
+.breadcrumb {
+    margin-bottom: 10px;
+}
+
+#searchForm {
+    border-bottom: 1px solid #576268;
+    background: #EEEEF3;
+}
+/* complaint here */
+#modal-form-input-complaint {
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    text-align: center;
+    padding: 0!important;
+}
+
+#modal-form-input-complaint:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+}
+
+#modal-form-input-complaint .modal-header {
+    border-bottom: 1px solid #576268;
+    padding: 15px 15px;
+}
+
+#modal-form-input-complaint .modal-title {
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+#modal-form-input-complaint .modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}
+
+#modal-form-input-complaint .modal-body .form-group .control-label {
+    text-align: right;
+    padding-bottom: 15px;
+}
+/* problem here */
+#modal-form-input-problem {
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    text-align: center;
+    padding: 0!important;
+}
+
+#modal-form-input-problem:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+}
+
+#modal-form-input-problem .modal-header {
+    border-bottom: 1px solid #576268;
+    padding: 15px 15px;
+}
+
+#modal-form-input-problem .modal-title {
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+#modal-form-input-problem .modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}
+
+#modal-form-input-problem .modal-body .form-group .control-label {
+    text-align: right;
+    padding-bottom: 15px;
+}
+
+table.table tr:not(.filter) td:not(:last-child):not(.inlineEditButton) {
+    white-space: normal;
+}
+
+#table-problem >thead>tr>th{
+    background: #787f83;
+}
+#table-complaint >thead>tr>th{
+    background: #787f83;
+}
+
+.modal-popup-store{
+    background: #74b23b
+}
+#modal-form-input-complaint-label{
+    font-weight: normal !important;
+}
+.working-time{
+    border-bottom: 1px solid #c5bdbd;
+    color: #d00c14;
+}
+.title{
+    background-color: #576268;
+    color: white;
+    height: 40px;
+    text-align: center;
+}
+.click-complaint{
+    background-color: lightblue;
+}

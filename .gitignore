@@ -1,0 +1,16 @@
+node_modules
+# Logs
+/logs
+*.log
+*.log*
+
+*/temp
+*/log
+/assets/attachment-files
+/assets/export/*.xls
+/assets/export/result-import/*.xlsx
+/assets/recording
+/assets/uploads
+/.vscode/launch.json
+
+.env.local

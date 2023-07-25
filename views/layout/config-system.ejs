@@ -1,0 +1,114 @@
+<%-breadcrumb%>
+<div class="card">
+    <div class="card-body card-padding">
+        <div class="lv-header-alt clearfix m-l-10">
+            <h2 class="lvh-label hidden-xs">
+                <%= title %>
+            </h2>
+            <ul class="lv-actions actions">
+                <!-- <li>
+                    <a href="/#ticket-advisory/new" data-toggle="tooltip" data-placement="top" id="addTernal"
+                        data-original-title="Tạo mới">
+                        <i class="zmdi zmdi-plus"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a data-toggle="tooltip" data-placement="top" data-original-title="Refresh" id="reload"><i
+                            class="zmdi zmdi-refresh"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+        
+        <div class="panel panel-default m-l-30 m-r-30">
+            <div class="panel-heading p-0 box-shadow">
+                <h5 class="panel-title p-l-10">
+                    <div data-id="showCustomer" class="btn-block p-10 bgm-orange c-white text-uppercase">IP Cisco Report && Recording</div>
+                </h5>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in ticketCustomerCollapse box-shadow1">
+
+                <div class="form-horizontal p-15">
+                    <div class="form-group">
+                      <label class="control-label col-sm-2" for="prefix">prefix:</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="prefix" placeholder="Enter prefix" value="<%- config ? config.prefix: '' %>">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-sm-2" for="Agent_Team">Agent_Team:</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="Agent_Team" placeholder="Enter Agent_Team" value="<%- config ? config.Agent_Team: '' %>">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-sm-2" for="ipCiscoReport">ipCiscoReport:</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="ipCiscoReport" placeholder="Enter ipCiscoReport" value="<%- config ? config.ipCiscoReport: '' %>">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-sm-2" for="ipRecording">ipRecording:</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="ipRecording" placeholder="Enter ipRecording" value="<%- config ? config.ipRecording: '' %>">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-sm-2" for="tokenDefault">Token:</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="tokenDefault" placeholder="Enter token" value="<%- config ? config.tokenDefault: '' %>">
+                      </div>
+                    </div>
+                   
+                    <div class="form-group">
+                      <div class="col-sm-offset-2 col-sm-10">
+                        <button class="btn f-12 waves-effect text-uppercase  bgm-btn-search c-white border-radius"
+                            data-id="<%- config ? config._id: null %>" id="updateTelehubCiscoAPI">Update</button>
+                      </div>
+                    </div>
+                  </form>
+                  
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default m-l-30 m-r-30">
+            <div class="panel-heading p-0 box-shadow">
+                <h5 class="panel-title p-l-10">
+                    <div data-id="showCustomer" class="btn-block p-10 bgm-orange c-white text-uppercase">Survey</div>
+                </h5>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in ticketCustomerCollapse box-shadow1">
+                <div id="form-filter">
+                    <div class="form-body">
+
+                        <div class="row m-l-0 m-r-0 p-10 p-t-20 p-b-20" style="display: flex;">
+                            <div class="col-md-6 flex-align">
+                                <label for="name" class="col-sm-3 control-label">Survey</label>
+                                <div class="col-sm-6">
+                                    <select name="survey" id="survey" data-actions-box="true"
+                                        class="selectpicker search-field input bs-select-hidden" title="---Chọn---">
+                                        <% _.each(survey,function(el){ %>
+                                        <option value="<%- el %>"
+                                            <%- config && config.survey && config.survey.code === el ? ' selected':'' %>>
+                                            <%- el %></option>
+                                        <% }) %>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 text-center">
+                                    <button
+                                        class="btn f-12 waves-effect text-uppercase  bgm-btn-search c-white border-radius"
+                                        data-id=<%- config ? config._id: '' %> id="updateSurvey">
+                                        Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+    </div>
+</div>

@@ -1,0 +1,172 @@
+<%- breadcrumb %>
+<script>
+    var _urlUpload = JSON.parse('<%- JSON.stringify(_url) %>');
+</script>
+
+<div class="card">
+    <div class="lv-header-alt clearfix">
+        <h2 class="lvh-label hidden-xs">Quản lý tài liệu quy trình</h2>
+        <ul class="lv-actions actions">
+            <!-- <li>
+                <button class="btn btn-danger btn-block waves-effect" id="btn-create-restaurant" name="btn-create-restaurant"
+                    data-toggle="modal" href="#news_support" type="button">
+                    Thêm nhãn hiệu
+                </button>
+            </li>
+            <li>
+                <button class="btn btn-primary btn-block waves-effect" id="btn-create-restaurant"
+                    name="btn-create-restaurant" data-toggle="modal" href="#news_support" type="button">
+                    Thêm nhà hàng
+                </button>
+            </li>
+            <li class="hidden" id="li-hidden">
+                <a role="button" data-toggle="tooltip" data-placement="top" data-original-title="Xóa các mục đánh dấu"
+                    id="btn-delSelection">
+                    <i class="zmdi zmdi-delete"></i>
+                </a>
+            </li> -->
+        </ul>
+    </div>
+
+    <!-- start card filter dữ liệu -->
+    <div class="card m-15">
+
+        <div class="panel panel-default">
+
+            <div class="panel-heading p-0" id="product-anchor">
+                <h5 class="panel-title">
+                    <div data-id="showCustomer" class="btn-block p-10 bgm-green c-white text-uppercase ">
+                        Tra cứu
+                        <span id="btn-toggle-filter" class="d-none"
+                            style="float:right;cursor: pointer;text-transform: none">
+                            Lọc dữ liệu <i class="fa fa-chevron-circle-down"></i>
+                        </span>
+                    </div>
+
+                </h5>
+            </div>
+
+            <div class="panel-body p-30 p-b-15">
+                <div class="panel-filter" id="transaction-filter">
+                    <div class="row form-group">
+                        
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="searchByName" class="control-label f-16">Tiêu đề bài viết</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="fg-line">
+                                        <input type="text" value="" class="form-control input" id="searchByName" name="title">
+                                    </div>
+
+                                    <!-- <div class="input-group m-b-5">
+                                        <span class="input-group-addon p-l-10 bgm-gray c-white">
+                                            <i role="button" class="zmdi zmdi-search" id="btnSearchByName"></i>
+                                        </span>
+                                        <input class="form-control filter" type="text" id="searchByName" name="searchByName">
+                                    </div> -->
+                                </div>
+
+                                <button class="btn btn-gray waves-effect bgm-gray c-white" id="btnSearchByName">
+                                        <i class="zmdi zmdi-search"></i>
+                                </button>
+                            </div>
+
+                        </div>               
+                        
+
+                    </div>
+
+                    <!-- <div class="row">
+                        
+                    </div> -->
+                    
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- </div> -->
+    <!-- end card filter dữ liệu -->
+
+
+    <!-- start card danh sách file đính kèm -->
+    <div class="card m-15">
+
+        <div class="panel panel-default">
+
+            <div class="panel-heading p-0" id="product-anchor">
+                <h5 class="panel-title">
+                    <div data-id="showCustomer" class="btn-block p-10 bgm-green c-white text-uppercase d-none">
+                        Văn bản - Tài liệu
+                        <span id="btn-toggle-filter" class="d-none"
+                            style="float:right;cursor: pointer;text-transform: none">
+                            Lọc dữ liệu <i class="fa fa-chevron-circle-down"></i>
+                        </span>
+                    </div>
+
+                </h5>
+            </div>
+
+            <div class="panel-body p-15"  id="form-promotions-search">
+                <div class="panel-filter" id="transaction-filter">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <% if(!isRoleAgent) { %> 
+                            <button class="btn btn-primary pull-right  waves-effect m-b-15" id="createPromotion"
+                                name="createPromotion" data-toggle="modal"  type="button">
+                                <a href="/#manage-procedure-document/new" class="c-white">Thêm bài viết</a>
+                                
+                            </button>
+                            <% } %>
+                        </div>
+                    </div>
+
+                    <table id="tblDocument" data-type="cquest" data-unique-id="id" data-toggle="table"
+                        data-filter-control="true" data-pagination="true" data-page-size="15"
+                        class="table table-fix table-bordered f-13 table-customize">
+                        <thead>
+                            <tr>
+                                <th data-field="name" data-filter-control="input" data-sortable="true"
+                                    style="background-color: rgba(237, 236, 236, 0.6);">
+                                    <i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10 d-none">
+                                    </i>Tiêu đề
+                                </th>
+                                <th data-field="updated" data-filter-control="input" data-sortable="true"
+                                    style="background-color: rgba(237, 236, 236, 0.6);"><i
+                                        class="zmdi zmdi-globe c-gray f-14 p-relative t-1 m-r-5 d-none"></i>nội dung
+                                </th>
+                                <th data-field="updated" data-filter-control="input" data-sortable="true"
+                                    style="background-color: rgba(237, 236, 236, 0.6);"><i
+                                        class="zmdi zmdi-globe c-gray f-14 p-relative t-1 m-r-5 d-none"></i>File đính kèm
+                                </th>
+                                <th data-field="actions" style="background-color: rgba(237, 236, 236, 0.6);"><i
+                                        class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5 d-none"></i>Tác vụ
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                      
+                            
+                        </tbody>
+                    </table>
+
+                    <div class="text-center" >
+                        <div id="paging">
+                        </div>
+                    </div>
+                    
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- end card danh sách file đính kèm -->
+
+</div>
