@@ -1,26 +1,26 @@
 {
 	"app": {
-		"_id": "621f1717399b2a76cbeee7a2",
+		"_id": "632a86ebacdc0a575ba383b3",
 		"ip": "localhost",
-		"port": 6120,
-		"name": "PVI-HN",
+		"port": 6129,
+		"name": "do-an",
 		"exec_mode": "fork",
 		"instances": 1,
 		"codeCompany": "6120"
 	},
 	"database": {
-		"name": "pvi-hn",
-		"ip": "172.16.85.196",
+		"name": "do-an",
+		"ip": "54.199.202.46",
 		"port": 27017,
-		"user": "",
-		"pwd": ""
+		"user": "kiennt",
+		"pwd": "123456"
 	},
 	"database-core": {
-		"ip": "172.16.85.196",
+		"ip": "54.199.202.46",
 		"port": 27017,
-		"name": "telehubCore",
-		"user": "adminTelehubCore",
-		"pwd": "telehubCore123",
+		"name": "do-an",
+		"user": "kiennt",
+		"pwd": "123456",
 		"mechanism": "",
 		"digestPassword": false
 	},
@@ -36,11 +36,11 @@
 		"email": 6012
 	},
 	"activemq": {
-		"ip": "172.16.85.196",
+		"ip": "13.231.80.13",
 		"port": "61613",
 		"user": "admin",
 		"pwd": "admin",
-		"queueName": "pvi-hn-queue"
+		"queueName": "do-an"
 	},
 	"redis": {
 		"host": "localhost",
@@ -56,7 +56,7 @@
 			"sendImmediately": true
 		},
 		"apiCisco": {
-			"ip": "http://172.16.85.199:4242",
+			"ip": "http://172.16.86.186:4242",
 			"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhcGkiLCJwd2QiOiJBUEllckAxMjMifQ.zbcraPNh7IvmAFX0D2dBjVfRB_vRzkAJA6P3BU3dh2E",
 			"callType": {
 				"voice": 5016,
@@ -80,39 +80,6 @@
 				"SG_Voice_2": 5171,
 				"SG_Voice_3": 5171
 			}
-		}
-	},
-	"replicaSet": {
-		"replicaSetName": "mongo_rs",
-		"dbName": "pvi-hn",
-		"listMember": [
-			{
-				"ip": "172.16.86.162",
-				"port": 27017
-			},
-			{
-				"ip": "172.16.86.165",
-				"port": 27017
-			},
-			{
-				"ip": "172.16.86.166",
-				"port": 27017
-			}
-		],
-		"user": "crm",
-		"pwd": "ok110000"
-	},
-	"BREAKFIELDAPI": {
-		"url": {
-			"updateCustomer": "https://financialfield.vn/wp-json/frm/v2/entries/"
-		},
-		"import": {
-			"companyId": "6260c3a6ae5c8e650f33d130",
-			"groupId": "60ebb69d706afac44365ec36",
-			"sourceId": "60ebb6ae706afac44365ec3b"
-		},
-		"auth": {
-			"basicAuth": "D07H-7A9F-VZGY-27UL:x"
 		}
 	}
 }

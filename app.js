@@ -1,6 +1,5 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var sqlsv = require("mssql");
 var Stomp = require('stomp-client');
 var fs = require('fs')
 var fsg = require('graceful-fs')
@@ -18,25 +17,7 @@ const nameFolder = {
 
 require('colors');
 
-var config = {
-    user: 'sa',
-    password: 'Bhs24hs@123',
-    server: '172.16.86.220',
-    database: 'eGActiveDB',
-    options: {
-        enableArithAbort: false, // ko hiểu, chỉ là thêm vào config mssql cho ko báo warning khi running
-    }
-};
 
-// connect to your database
-sqlsv.connect(config, function (err) {
-
-    if (err) return console.log(err);
-    console.log('connected')
-    // create Request object
-    global._requestMssql = new sqlsv.Request();
-
-});
 global._socketUsers = {};
 global.path = require('path');
 global.fsx = require('fs.extra');
