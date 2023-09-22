@@ -22,7 +22,7 @@ var DFT = function ($) {
     };
 
     /**
-     * 27.Feb.2023 hoan
+     * 27.Feb.2023 kiennt
      * locker remove duplicate request login
      * @type {boolean}
      */

@@ -8,7 +8,7 @@ var assignInterval = 5 * 1000; // <=> 5mins = 900000
 var agentStatus = {};
 
 exports.assignWhenOnline = function (agentId, callback) {
-    //hoan fixed: Trạng thái nhận đơn hàng tự động mặc định false
+    //kiennt fixed: Trạng thái nhận đơn hàng tự động mặc định false
     agentStatus[agentId] = false;
     // dummy
     if (!isAgentEnable(agentId)) {

@@ -24,7 +24,7 @@ module.exports = function init(socket) {
         //_socketUsers[data._id] = {sid: data.sid};
         //1 agent nhieu socket
 
-        /* hoan join socket to room, room name is agentId*/
+        /* kiennt join socket to room, room name is agentId*/
         socket.join(data._id);
 
         //TODO: lưu socket id của user để quản lý

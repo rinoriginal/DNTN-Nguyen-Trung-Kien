@@ -1,6 +1,6 @@
 const { DAU_CACH } = require("../constants");
 
-exports.chuanHoaName = (name) => {
+exports.chuankienntame = (name) => {
   let searchReg = new RegExp(DAU_CACH, "g");
   if (!name) return "";
   return name.trim().replace(searchReg, " ");

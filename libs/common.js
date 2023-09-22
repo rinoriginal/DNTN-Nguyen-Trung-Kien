@@ -1216,7 +1216,7 @@ module.exports = {
                 _attr = {
                     class: 'input-group fg-line'
                 };
-                // 19.Mar.2023 hoan click to creat new ticket
+                // 19.Mar.2023 kiennt click to creat new ticket
                 var clickToCreateTicket = {
                     tag: 'span'
                 };

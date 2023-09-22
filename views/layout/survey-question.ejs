@@ -98,7 +98,7 @@
                 <td class="text-center"><%- (el.createBy ? el.createBy.name : '') %></td>
                 <td class="text-center"><%- (el.created ? _moment(el.created).format("DD/MM/YYYY") : '') %></td>
                 <td class="text-center">
-                    <!-- 03 Mar 2023 hoan only clear isStart of questions in this survey -->
+                    <!-- 03 Mar 2023 kiennt only clear isStart of questions in this survey -->
                     <a href="/#survey-question/<%- el._id %>/edit?idSurvey=<%- survey%>" class="p-t-3 btn-flat-bg"><i class="zmdi zmdi-edit m-r-10"></i></a>
                     <a role="button" type="click" class="btn-remove btn-flat-bg" data-id="<%- el._id %>"><i class="zmdi zmdi-close m-r-10"></i></a>
                 </td>

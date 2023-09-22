@@ -1,5 +1,5 @@
 /**
- * 18.Mar.2023 hoan
+ * 18.Mar.2023 kiennt
  * @type {{init, uncut}}
  */
 var DFT = function($) {

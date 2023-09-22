@@ -186,7 +186,7 @@ var DFT = function ($) {
                 if (currentTicket.idService) {
                     serviceId = currentTicket.idService._id;
                 }
-                // 21.Mar.2023 hoan Thực hiện gọi ra trên ticket gọi vào, hỏi có tạo ticket hay không?
+                // 21.Mar.2023 kiennt Thực hiện gọi ra trên ticket gọi vào, hỏi có tạo ticket hay không?
                 if (currentTicket && currentTicket.idService && !currentTicket.idCampain) {
                     // là ticket gọi vào - confirm tạo ticket
                     swal({
@@ -253,7 +253,7 @@ var DFT = function ($) {
         });
 
         /**
-         * 22.Mar.2023 hoan Mở cửa newtab thực hiện tạo ticket dựa trên số điện thoại
+         * 22.Mar.2023 kiennt Mở cửa newtab thực hiện tạo ticket dựa trên số điện thoại
          * Nếu không có số điện thoại -> mở tab mới với thông tin số điện thoại trống
          * @param phoneNumber Số điện thoại
          */

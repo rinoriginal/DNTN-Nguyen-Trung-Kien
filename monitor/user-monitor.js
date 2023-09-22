@@ -154,7 +154,7 @@ function init() {
     };
 
 	/**
-     * 27.Feb.2023 hoan
+     * 27.Feb.2023 kiennt
 	 * Cập nhật trạng thái làm việc của agent
 	 * @param newSts
 	 * @param reason loại thay đổi trạng thái login | logout | change_status

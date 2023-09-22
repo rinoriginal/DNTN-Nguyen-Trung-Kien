@@ -66,7 +66,7 @@ exports.index = function (req, res) {
             ofs = result.order.orderFields,
             ocs = result.orderCards;
 
-        // hoan remove special charactors in note ticket history
+        // kiennt remove special charactors in note ticket history
         var htmlProtect = function (str) {
             return str.replace(/(?:\r\n|\r|\n)/g, '&#13;').replace(/\t/g, '&#9;').replace(/'/g, '&#39;').replace(/"/g, '&#34;').replace(/\\/g, '&#92;');
         };

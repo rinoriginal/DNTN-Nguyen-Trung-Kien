@@ -125,7 +125,7 @@ var DFT = function ($) {
 
                     $('.page-loader').show();
                     if ($('#typeServiceMail').val()) {
-                        console.log('hoangkem')
+                        console.log('kienntgkem')
                         _AjaxData(window.location.hash.replace('/edit','').replace('#', ''), 'PUT', $('#update-service').getData(), function (resp) {
                             if (_.isEqual(resp.code, 200)) {
                                 window.location.hash = '#services-mail';

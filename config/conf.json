@@ -1,25 +1,25 @@
 {
 	"app": {
-		"_id": "60cab8641d4d596e36bce3af",
+		"_id": "632a86ebacdc0a575ba383b3",
 		"ip": "localhost",
 		"port": 6129,
-		"name": "ICall",
+		"name": "do-an",
 		"exec_mode": "fork",
 		"instances": 1,
-		"codeCompany": "6129"
+		"codeCompany": "6120"
 	},
 	"database": {
-		"name": "icall",
-		"ip": "43.198.91.139",
+		"name": "do-an",
+		"ip": "54.199.202.46",
 		"port": 27017,
-		"user": "bvhoan",
+		"user": "kiennt",
 		"pwd": "123456"
 	},
 	"database-core": {
-		"ip": "18.162.150.80",
+		"ip": "54.199.202.46",
 		"port": 27017,
-		"name": "icall",
-		"user": "bvhoan",
+		"name": "do-an",
+		"user": "kiennt",
 		"pwd": "123456",
 		"mechanism": "",
 		"digestPassword": false
@@ -36,148 +36,50 @@
 		"email": 6012
 	},
 	"activemq": {
-		"ip": "43.198.183.238",
+		"ip": "13.231.80.13",
 		"port": "61613",
 		"user": "admin",
 		"pwd": "admin",
-		"queueName": "icall"
+		"queueName": "do-an"
+	},
+	"redis": {
+		"host": "localhost",
+		"port": "6379"
 	},
 	"cisco": {
-    "ipApi": "https://172.16.86.244",
-    "username": "ccadmin@bhs.local",
-    "password": "Bhs24hs@123",
-    "auth": {
-      "username": "ccadmin@bhs.local",
-      "password": "Bhs24hs@123",
-      "sendImmediately": true
-    },
-    "apiCisco": {
-      "ip": "http://172.16.86.186:4242",
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhcGkiLCJwd2QiOiJBUEllckAxMjMifQ.zbcraPNh7IvmAFX0D2dBjVfRB_vRzkAJA6P3BU3dh2E",
-      "callType": {
-        "voice": 5094,
-        "mail": 5013,
-        "chat": 5012,
-        "CT_IVR": 5094,
-        "CT_ToAgentGroup1": 5096,
-        "CT_ToAgentGroup2": 5100,
-        "CT_ToAgentGroup3": 5101,
-        "CT_ToAgentGroup4": 5102,
-        "CT_ToAgentGroup5": 5102,
-        "CT_ToAgentGroup6": 5102,
-        "CT_ToAgentGroup7": 5102,
-        "CT_ToAgentGroup8": 5102,
-        "CT_ToAgentGroup9": 5102,
-        "CT_ToAgentGroup10": 5102,
-        "CT_ToAgentGroup11": 5102,
-        "CT_ToAgentGroup12": 5102,
-        "CT_ToAgentGroup13": 5102,
-        "CT_ToAgentGroup14": 5102,
-        "CT_ToAgentGroup15": 5102,
-        "CT_ToAgentGroup16": 5102,
-        "CT_ToAgentGroup17": 5102,
-        "CT_Queue1": 5095,
-        "CT_Queue2": 5097,
-        "CT_Queue3": 5098,
-        "CT_Queue4": 5099,
-        "CT_Queue5": 5099,
-        "CT_Queue6": 5099,
-        "CT_Queue7": 5099,
-        "CT_Queue8": 5099,
-        "CT_Queue9": 5099,
-        "CT_Queue10": 5099,
-        "CT_Queue11": 5099,
-        "CT_Queue12": 5099,
-        "CT_Queue13": 5099,
-        "CT_Queue14": 5099,
-        "CT_Queue15": 5099,
-        "CT_Queue16": 5099,
-        "CT_Queue17": 5099
-      },
-      "callType1800": {
-        "voice": 5094,
-        "mail": 5013,
-        "chat": 5012,
-        "CT_IVR": 5094,
-        "CT_ToAgentGroup1": 5096,
-        "CT_ToAgentGroup2": 5100,
-        "CT_ToAgentGroup3": 5101,
-        "CT_ToAgentGroup4": 5102,
-        "CT_ToAgentGroup5": 5102,
-        "CT_ToAgentGroup6": 5102,
-        "CT_ToAgentGroup7": 5102,
-        "CT_ToAgentGroup8": 5102,
-        "CT_ToAgentGroup9": 5102,
-        "CT_ToAgentGroup10": 5102,
-        "CT_ToAgentGroup11": 5102,
-        "CT_ToAgentGroup12": 5102,
-        "CT_ToAgentGroup13": 5102,
-        "CT_ToAgentGroup14": 5102,
-        "CT_ToAgentGroup15": 5102,
-        "CT_ToAgentGroup16": 5102,
-        "CT_ToAgentGroup17": 5102,
-        "CT_Queue1": 5095,
-        "CT_Queue2": 5097,
-        "CT_Queue3": 5098,
-        "CT_Queue4": 5099,
-        "CT_Queue5": 5099,
-        "CT_Queue6": 5099,
-        "CT_Queue7": 5099,
-        "CT_Queue8": 5099,
-        "CT_Queue9": 5099,
-        "CT_Queue10": 5099,
-        "CT_Queue11": 5099,
-        "CT_Queue12": 5099,
-        "CT_Queue13": 5099,
-        "CT_Queue14": 5099,
-        "CT_Queue15": 5099,
-        "CT_Queue16": 5099,
-        "CT_Queue17": 5099
-      },
-      "callTypeTranfer": {
-        "voice": 5015,
-        "mail": 5016,
-        "chat": 5017
-      },
-      "skillGroup": {
-        "SG_Voice_1": 5014,
-        "SG_Voice_2": 5024,
-        "SG_Voice_3": 5025,
-        "SG_Voice_4": 5026,
-        "SG_Voice_5": 5027,
-        "SG_Voice_6": 5065,
-        "SG_Voice_7": 5066,
-        "SG_Voice_8": 5067,
-        "SG_Voice_9": 5068,
-        "SG_Voice_10": 6269,
-        "SG_Voice_11": 6270,
-        "SG_Voice_12": 6271,
-        "SG_Voice_13": 6272,
-        "SG_Voice_14": 6334,
-        "SG_Voice_15": 6335,
-        "SG_Voice_16": 6336,
-        "SG_Voice_17": 6337
-      },
-      "skillGroup1800": {
-        "SG_Voice_1": 5014,
-        "SG_Voice_2": 5024,
-        "SG_Voice_3": 5025,
-        "SG_Voice_4": 5026,
-        "SG_Voice_5": 5027,
-        "SG_Voice_6": 5065,
-        "SG_Voice_7": 5066,
-        "SG_Voice_8": 5067,
-        "SG_Voice_9": 5068,
-        "SG_Voice_10": 6269,
-        "SG_Voice_11": 6270,
-        "SG_Voice_12": 6271,
-        "SG_Voice_13": 6272,
-        "SG_Voice_14": 6334,
-        "SG_Voice_15": 6335,
-        "SG_Voice_16": 6336,
-        "SG_Voice_17": 6337
-      },
-      "Agent_Team": "5001"
-    }
-  }
+		"ipApi": "https://172.16.86.244",
+		"username": "ccadmin@bhs.local",
+		"password": "Bhs24hs@123",
+		"auth": {
+			"username": "ccadmin@bhs.local",
+			"password": "Bhs24hs@123",
+			"sendImmediately": true
+		},
+		"apiCisco": {
+			"ip": "http://172.16.86.186:4242",
+			"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJhcGkiLCJwd2QiOiJBUEllckAxMjMifQ.zbcraPNh7IvmAFX0D2dBjVfRB_vRzkAJA6P3BU3dh2E",
+			"callType": {
+				"voice": 5016,
+				"mail": 5013,
+				"chat": 5012,
+				"CT_IVR": 5016,
+				"CT_ToAgentGroup1": 5018,
+				"CT_ToAgentGroup2": 5025,
+				"CT_ToAgentGroup3": 5026,
+				"CT_Queue1": 5019,
+				"CT_Queue2": 5023,
+				"CT_Queue3": 5024
+			},
+			"callTypeTranfer": {
+				"voice": 5015,
+				"mail": 5016,
+				"chat": 5017
+			},
+			"skillGroup": {
+				"SG_Voice_1": 5158,
+				"SG_Voice_2": 5171,
+				"SG_Voice_3": 5171
+			}
+		}
+	}
 }
