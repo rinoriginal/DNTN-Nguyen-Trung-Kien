@@ -1,5 +1,4 @@
 
-
 var manager = require(path.join(_rootPath, 'monitor', 'manager.js'));
 
 exports.index = {

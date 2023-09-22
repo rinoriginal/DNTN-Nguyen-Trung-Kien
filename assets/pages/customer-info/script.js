@@ -692,7 +692,6 @@ var DFT = function ($) {
     //Tạo global function để đóng modal từ iframe
     window.closeModalAdvisory = function () {
         $('#newAdvisoryPopup').modal('hide');
-        getFilterAdvisoryTicket(false);
     };
 
 
@@ -714,91 +713,9 @@ var DFT = function ($) {
         });
     };
 
-    var bindClickAdvisory = function () {
-        // Chuyển trang
-        $(document).on('click', '#pagingAdvisory .pagination li a', function (e) {
-            e.preventDefault();
-            let url = e.target.getAttribute('href')
-            let i = url.indexOf("?page=");
-            let page = i === -1 ? 1 : url.substring(i + 6);
-            _page = page;
-            getFilterAdvisoryTicket(false, page);
-        });
-        // Click tìm kiếm
-        $('#searchAdvisoryTicket').click(function () {
-            console.log(1111111111);
-
-            getFilterAdvisoryTicket(true);
-        });
-        // Làm mới trang
-        $(document).on('click', '.zmdi-refresh', function () {
-            _.LoadPage(window.location.hash);
-        });
-    };
-
-    // Lấy dữ liệu lọc và truy vấn server
-    var getFilterAdvisoryTicket = function (load, page) {
-        var filter = _.chain($('.input'))
-            .reduce(function (memo, el) {
-                if (!_.isEqual($(el).val(), '') && !_.isEqual($(el).val(), null)) memo[el.name] = $(el).val();
-                return memo;
-            }, {}).value();
-        console.log('filter', filter);
-
-        if (page) filter['page'] = page;
-        filter['idCustomer'] = currentTicket.idCustomer;
-        if (load) {
-            _Ajax("/ticket-advisory?search=ticket&" + $.param(filter), 'GET', {}, function (resp) {
-                if (resp.code == 200) {
-                    $('#body-table').empty();
-                    if (resp.data.length) {
-                        console.log(resp.data.length);
-                        let total = document.querySelector('.totalAdvisory');
-                        if (total) {
-                            total.remove();
-                        }
-                        $('#pagingAdvisory').empty();
-                        loadDataAdvisory(resp);
-                        $('#pagingAdvisory').append(_.paging('#ticket-advisory', resp.paging));
-                    } else {
-                        swal({
-                            title: "Thông báo",
-                            text: "Không tìm thấy các trường phù hợp",
-                            type: "warning",
-                            confirmButtonColor: "#DD6B55",
-                            confirmButtonText: "Xác nhận!",
-                            closeOnConfirm: true
-                        });
-                    }
-                } else {
-                    swal({ title: 'Cảnh báo!', text: resp.message });
-                }
-            })
-        } else {
-            _Ajax("/ticket-advisory?search=ticket&" + $.param(filter), 'GET', {}, function (resp) {
-                if (resp.code == 200) {
-                    $('#body-table').empty();
-                    if (resp.data.length) {
-                        console.log(resp.data.length);
-                        let total = document.querySelector('.totalAdvisory');
-                        if (total) {
-                            total.remove();
-                        }
-                        $('#pagingAdvisory').empty();
-                        loadDataAdvisory(resp);
-                        $('#pagingAdvisory').append(_.paging('#ticket-advisory', resp.paging));
-                    }
-                } else {
-                    swal({ title: 'Cảnh báo!', text: resp.message });
-                }
-            })
-        }
-    };
-
 
     // Hiển thị dữ liệu lên giao diện
     var loadDataAdvisory = function (resp) {
-        console.log(1111, resp);
 
         var template = '<tr>' +
             '<td>{0}</td>' +
@@ -865,7 +782,6 @@ var DFT = function ($) {
     //Tạo global function để đóng modal từ iframe
     window.closeModalAdvisoryEdit = function () {
         $('#editAdvisoryPopup').modal('hide');
-        getFilterAdvisoryTicket(false);
     };
     function disableComplaint() {
         $('#btn-new-complaint').attr('style', 'display:none')
@@ -887,12 +803,6 @@ var DFT = function ($) {
 
             showTicket();
             $('#searchTicket').trigger('click');
-
-            //ticketAvisory
-            bindValueAdvisory();
-            bindClickAdvisory();
-            getFilterAdvisoryTicket(false);
-            $('#btn-addTicketAdvisory').attr('style', 'display:none')
             $('#khachhang').attr('style', 'display:none')
 
 

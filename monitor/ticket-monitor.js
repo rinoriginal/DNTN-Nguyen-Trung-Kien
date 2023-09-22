@@ -1,8 +1,4 @@
 
-
-
-var manager = require(path.join(_rootPath, 'monitor', 'manager.js'));
-
 module.exports = function() {
     return new init();
 }
@@ -91,54 +87,6 @@ function init() {
                         });
                     });
                 },
-                function(next){
-                    //Tìm ticket chat tới hạn xử lý để notify
-                    _TicketsChat.aggregate([
-                        {$match: {$and: [
-                            {_id: {$nin: _.arrayObjectId(noNotifyIdChat)}},
-                            {idAgent: {$in: _.arrayObjectId(usersId)}},
-                            {deadline: {$ne: null}},
-                            {status: {$ne: 2}},
-                        ]}},
-                        {$limit: 5000}
-                    ], function(err, tickets){
-                        next(null);
-                        _.each(tickets, function(ticket){
-                            var _socket = _socketUsers[ticket.idAgent.toString()];
-                            var monitor = _socket ? _socket.monitor : null;
-                            if(monitor){
-                                var notifyTime = monitor.getUserData().notifDeadline;
-                                if(curDate - ticket.deadline > notifyTime*1000){
-                                    _.pushNotification(0, 'ticket-chat-edit?ticketID='+ticket._id, ticket.idAgent.toString());
-                                }
-                            }
-                        });
-                    });
-                },
-                function(next){
-                    //Tìm ticket mail tới hạn xử lý để notify
-                    _TicketsMail.aggregate([
-                        {$match: {$and: [
-                            {_id: {$nin: _.arrayObjectId(noNotifyIdMail)}},
-                            {idAgent: {$in: _.arrayObjectId(usersId)}},
-                            {deadline: {$ne: null}},
-                            {status: {$ne: 2}},
-                        ]}},
-                        {$limit: 5000}
-                    ], function(err, tickets){
-                        next(null);
-                        _.each(tickets, function(ticket){
-                            var _socket = _socketUsers[ticket.idAgent.toString()];
-                            var monitor = _socket ? _socket.monitor : null;
-                            if(monitor){
-                                var notifyTime = monitor.getUserData().notifDeadline;
-                                if(curDate - ticket.deadline > notifyTime*1000){
-                                    _.pushNotification(0, 'ticket-mail-edit?ticketID='+ticket._id, ticket.idAgent.toString());
-                                }
-                            }
-                        });
-                    });
-                }
             ]);
         }
         timer--;

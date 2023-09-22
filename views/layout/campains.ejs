@@ -39,9 +39,6 @@
                         Công ty
                     </th>
                     <th class="bgm-orange c-white w-60 text-center">
-                        Trunk
-                    </th>
-                    <th class="bgm-orange c-white w-60 text-center">
                         Loại
                     </th>
                     <th class="bgm-orange c-white w-60 text-center">
@@ -106,7 +103,6 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
                     <td class="text-center">
                         <button type="button" class="btn btn-primary btn-block btn-filter"><i class="zmdi zmdi-filter-list m-r-5"></i> Lọc</button>
                     </td>
@@ -124,7 +120,6 @@
                     <td class="text-center"><%- (i+paging.fromResult)%></td>
                     <td><%- el.name %></td>
                     <td class="text-center"><%- (el.idCompany ? el.idCompany.name : '') %></td>
-                    <td class="text-center"><%- (el.trunk ? el.trunk.name + ' - ' + el.trunk.prefix : '') %></td>
                     <td class="text-center">
                         <%- (el.type ? (el.type == 1 ? 'Gọi Thủ Công' : '') : '')%>
                         <%- (el.type ? (el.type == 2 ? 'Auto Dialing' : '') : '')%>
@@ -227,16 +222,6 @@
                                         <% orgs.forEach(function(el, i) {%>
                                         <option value="<%- el._id%>"><%- el.name%></option>
                                         <%})%>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="group" class="col-sm-3 control-label">Trunk<span class="required">*</span></label>
-                            <div class="col-sm-6">
-                                <div class="fg-line select ">
-                                    <select class="selectpicker validate[required]" id="trunk" name="trunk">
-                                        <option value='' disabled selected>---- Chọn ----</option>
                                     </select>
                                 </div>
                             </div>

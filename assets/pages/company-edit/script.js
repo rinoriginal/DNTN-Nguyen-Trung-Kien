@@ -1,5 +1,4 @@
 
-    var currentTrunks=[];
 var DFT = function ($) {
 
     // Sự kiện click
@@ -27,41 +26,15 @@ var DFT = function ($) {
                     e.preventDefault();
                 });
                 if (status) {
-                    //_AjaxData(window.location.hash.replace('edit','').replace('#', ''), 'PUT', $(form).getData(), function (resp) {
-                    //    if (_.isEqual(resp.code, 200)) {
-                    //        window.location.hash = 'company';
-                    //    } else {
-                    //        swal({title: 'Thông báo !', text: resp.message});
-                    //    }
-                    //});
-                    var newTrunks= _.map($('select[name="trunks[]_helper2"] option'), function(item, index){
-                        return $(item).val()
-                    })
 
                     var diff= [];
-                    if(newTrunks.length>=currentTrunks.length){
-                        diff= _.difference(newTrunks, currentTrunks);
-                    }else{
-                        diff= _.difference(currentTrunks, newTrunks);
-                    }
-                    if(diff.length>0){
-                        var data= {trunks: diff, socketId: _socket.id};
-
-                        _socket.emit('checkTrunkReq', data);
-                        $('.page-loader').show();
-                    }else{
-                        _AjaxData(window.location.hash.replace('edit','').replace('#', ''), 'PUT', $(form).getData(), function (resp) {
-                            if (_.isEqual(resp.code, 200)) {
-                                window.location.hash = 'company';
-                            } else {
-                                swal({title: 'Thông báo !', text: resp.message});
-                            }
-                        });
-                    }
-
-                    //_socket.emit('checkTrunkReq', data);
-                    //
-                    //$('.page-loader').show();
+                    _AjaxData(window.location.hash.replace('edit','').replace('#', ''), 'PUT', $(form).getData(), function (resp) {
+                        if (_.isEqual(resp.code, 200)) {
+                            window.location.hash = 'company';
+                        } else {
+                            swal({title: 'Thông báo !', text: resp.message});
+                        }
+                    });
                 }
             }
         });
@@ -79,56 +52,12 @@ var DFT = function ($) {
         $('#txt_recipe_SLA_Chat').html(_config.MESSAGE.COMPANY.TEXT_RECIPE_SLA_CHAT);
         $('#txt_company_agent').html(_config.MESSAGE.COMPANY.TEXT_COMPANY_AGENT_GROUP);
         $('#txt_company_status').html(_config.MESSAGE.COMPANY.TEXT_STATUS);
-        $('#txt_company_trunk').html(_config.MESSAGE.COMPANY.TEXT_TRUNK + "<span class='required'>*</span>");
     }
 
     // Cấu hình nhận socket từ server
     var bindSocket= function(client){
         $('#socketId').val(_socket.id);
         // Nhận dữ liệu Trunk
-        client.on('checkTrunkResponse', function(data){
-            var result=data;
-
-            if(result.resCode==0){
-                //chưa tồn tại
-                _AjaxData(window.location.hash.replace('edit','').replace('#', ''), 'PUT', $("#edit-company").getData(), function (resp) {
-                    if (_.isEqual(resp.code, 200)) {
-                        window.location.hash = 'company';
-                    } else {
-                        swal({title: 'Thông báo !', text: resp.message});
-                    }
-                });
-            }else{
-                $('.page-loader').hide();
-                $('#trunks').validationEngine('showPrompt', 'Trunk đã được sử dụng', 'error')
-                $('html, body').animate({
-                    scrollTop: $("#trunks").offset().top-100
-                }, 500);
-            }
-        })
-    }
-
-    // Đưa dữ liệu trunk lên giao diện
-    var initTrunk= function(){
-        if(trunks){
-            var selectedTrunks= _.reduce(trunks, function(memo, trunk){
-                if(trunk.selected){
-                    return _.union(memo, [trunk._id]);
-                }else{
-                    return memo;
-                }
-            }, []);
-            $.get("/trunk", {usedByCampains:1,trunks: _.pluck(trunks, '_id')}, function(resp){
-                _.each(_.pluck(resp.datas, '_id'), function(trunk, index){
-                    $("select[name='trunks[]'] option[value='"+trunk+"']").attr("disabled","disabled");
-
-                });
-                $("select[name='trunks[]']").bootstrapDualListbox('refresh');
-            });
-
-
-        }
-
     }
 
     return {
@@ -162,12 +91,6 @@ var DFT = function ($) {
                 infoText: "<a class='c-blue' ><b>Số lượng AgentGroup: {0}</b></a>"
             });
 
-            var dualListTrunks = $('select[name="trunks[]"]').bootstrapDualListbox({
-                filterTextClear: 'Filter',
-                infoTextEmpty: "<a class='c-red' ><b>Chưa chọn giá trị</b></a>",
-                infoText: "<a class='c-blue' ><b>Số lượng Trunk: {0}</b></a>"
-            });
-
             $(".bootstrap-duallistbox-container").find(".moveall").parent().remove();
             $(".bootstrap-duallistbox-container").find(".removeall").parent().remove();
 
@@ -181,14 +104,6 @@ var DFT = function ($) {
                 "alertTextLoad": "<i class='fa fa-spinner fa-pulse m-r-5'></i> Đang kiểm tra, vui lòng đợi."
             };
 
-            $(document).ready(function(){
-
-                currentTrunks= _.map($('select[name="trunks[]_helper2"] option'), function(item, index){
-                    return $(item).val()
-                })
-
-            })
-
             bindClick();
             bindSubmit();
             bindTextValue();
@@ -200,7 +115,6 @@ var DFT = function ($) {
             $(document).off('change', '#status');
             $(document).off('click', '#cancelInput');
             $('#edit-company').validationEngine('detach');
-            delete _socket.off('checkTrunkResponse');
         }
     };
 }(jQuery);

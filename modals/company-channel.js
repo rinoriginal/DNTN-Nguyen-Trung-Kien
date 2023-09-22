@@ -1,6 +1,5 @@
 const { string } = require('underscore');
 
-
 var CompanyChannelSchema = new mongoose.Schema({
     name: {type: String, required: true},
     idCompany: {type: mongoose.Schema.Types.ObjectId, ref : 'Company', required: true},

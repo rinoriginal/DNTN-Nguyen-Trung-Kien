@@ -1,5 +1,4 @@
 
-
 module.exports = {
     sendMsg: function (queueName ,message) {
         _ActiveMQ.publish('/queue/' + queueName, JSON.stringify(message));

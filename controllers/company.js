@@ -304,28 +304,12 @@ exports.new = function (req, res) {
         companyProfile: function (callback) {
             _CompanyProfile.find({status: 1}, callback);
         },
-        trunks: function(callback){
-            //var __query = [{$match: {status: 1}}];
-            //__query.push({$match: {idCompany: null}});
-            //_Trunk.aggregate(__query, callback);
-            requestTrunks.RequestTrunk({status: 1}, function(){
-                var err = new Error('Request Trunks time out');
-                callback(err);
-            }, function(obj){
-                var err = null;
-                if (obj.error != null){
-                    err = new Error(obj.error);
-                }
-                callback(err, obj.trunks);
-            })
-        }
     }, function (error, result) {
         var obj = _.isNull(error) ? {
             title: 'Tạo mới công ty',
             users: result.user,
             agentGroup: result.agent,
             companyProfile: result.companyProfile,
-            trunks: result.trunks,
             plugins: [['bootstrap-duallistbox'], ['chosen']]
         } : {
             title: 'Tạo mới công ty',
@@ -369,16 +353,6 @@ exports.create = function (req, res) {
                 function (err, result) {
                     callback(err, org);
                 });
-        },
-        function updateTrunk(org, callback){
-            _Trunk.update(
-                {_id: {$in: req.body.trunks}},
-                {idCompany: org._id},
-                {multi:true},
-                function(err, result){
-                    callback(err, org);
-                }
-            )
         },
         function updateUser(org, callback) {
             _Users.find({'companyLeaders.company': org._id}, function (err, result) {
@@ -471,61 +445,6 @@ exports.edit = function (req, res) {
         profile: function (cb) {
             _CompanyProfile.find({status: 1}, cb);
         },
-        trunks: function(cb){
-            //var __query = [{$match: {status: 1}}];
-            //__query.push({
-            //    $match: {
-            //        $or: [
-            //            {idCompany: null},
-            //            {idCompany: new mongodb.ObjectID(companyId)},
-            //        ]
-            //    }
-            //});
-            //__query.push({
-            //    $project: {
-            //        _id: 1,
-            //        name: 1,
-            //        selected: {
-            //            $cond: [
-            //                {$eq: ['$idCompany', new mongodb.ObjectID(companyId)]},
-            //                {$literal: true},
-            //                {$literal: false}
-            //            ]
-            //        }
-            //    }
-            //})
-            //_Trunk.aggregate(__query, cb);
-
-            requestTrunks.RequestTrunk({status: 1}, function(){
-                var err = new Error('Request Trunks time out');
-                cb(err);
-            }, function(obj){
-                var err = null;
-                if (obj.error != null){
-                    err = new Error(obj.error);
-                }
-                log.debug(obj);
-                var avaiTrunks= _.map(obj.trunks, function(trunk){
-                    trunk.selected= false;
-                    return trunk;
-                });
-                log.debug(avaiTrunks);
-                _Trunk.find({idCompany: new mongodb.ObjectID(companyId)}, function(err1, selectedTrunks){
-                    //log.debug(selectedTrunks);
-                    selectedTrunks= _.map(selectedTrunks, function(trunk){
-                        var nTrunk= trunk.toObject();
-                        nTrunk.selected= true;
-                        return nTrunk;
-                    })
-                    log.debug(selectedTrunks);
-                    var trunks= _.union(avaiTrunks, selectedTrunks);
-                    log.debug(trunks);
-                    cb(err1, trunks);
-                })
-
-
-            })
-        }
     }, function (error, result) {
         if (error) return res.render('404', {title: '404 | Page not found'});
         _.render(req, res, 'company-edit', {
@@ -534,7 +453,6 @@ exports.edit = function (req, res) {
             lvlUser: result.user,
             lvlOrgAgent: result.agent,
             companyProfile: result.profile,
-            trunks: result.trunks,
             plugins: [['bootstrap-duallistbox'], ['chosen']]
         }, !_.isNull(result), error);
     })
@@ -545,29 +463,6 @@ exports.update = function (req, res) {
     req.body = _.chain(req.body).cleanRequest().replaceMultiSpaceAndTrim().value();
     var companyId = new mongodb.ObjectID(req.params.company);
     _async.waterfall([
-
-            function updateTrunk(callback){
-                _async.waterfall([
-                   function(cb){
-                       _Trunk.update({idCompany: companyId},
-                           {idCompany: null},
-                           {multi: true},
-                       function(err){
-                            cb(err);
-                       })
-                   },
-                    function(cb){
-                        _Trunk.update({_id: {$in: req.body.trunks}},
-                            {idCompany: companyId},
-                            {multi: true},
-                            function(err){
-                                cb(err);
-                            })
-                    }
-                ], function(e, result){
-                    callback(e);
-                });
-            },
             function updateCompany(callback) {
                 _Company.findByIdAndUpdate(req.params.company, {
                         $set: {

@@ -1,5 +1,4 @@
 
-
 var AgentStatusShema = new mongoose.Schema({
     name: {type: String, default: '', required: true, unique: true},
     status: {type: Number, default: 1},

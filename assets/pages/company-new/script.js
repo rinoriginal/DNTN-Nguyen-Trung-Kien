@@ -1,4 +1,3 @@
-
 var DFT = function ($) {
 
     // Sự kiện click
@@ -62,7 +61,6 @@ var DFT = function ($) {
         $('#txt_recipe_SLA_Chat').html(_config.MESSAGE.COMPANY.TEXT_RECIPE_SLA_CHAT);
         $('#txt_company_agent').html(_config.MESSAGE.COMPANY.TEXT_COMPANY_AGENT_GROUP);
         $('#txt_company_status').html(_config.MESSAGE.COMPANY.TEXT_STATUS);
-        $('#txt_company_trunk').html(_config.MESSAGE.COMPANY.TEXT_TRUNK + "<span class='required'>*</span>");
     };
 
     // Cấu hình nhận socket từ server

@@ -1,5 +1,4 @@
 
-
 var parseJSONToObject = require(path.join(_rootPath, 'queue', 'common', 'parseJSONToObject.js'));
 
 var requestKPICallback = {};

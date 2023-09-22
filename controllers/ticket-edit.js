@@ -1,5 +1,4 @@
 
-
 var zoka = require(path.join(_rootPath, 'assets', 'plugins', 'zoka', 'script.js'));
 
 
@@ -67,7 +66,7 @@ exports.index = function (req, res) {
             ofs = result.order.orderFields,
             ocs = result.orderCards;
 
-        // hoangdv remove special charactors in note ticket history
+        // hoan remove special charactors in note ticket history
         var htmlProtect = function (str) {
             return str.replace(/(?:\r\n|\r|\n)/g, '&#13;').replace(/\t/g, '&#9;').replace(/'/g, '&#39;').replace(/"/g, '&#34;').replace(/\\/g, '&#92;');
         };
@@ -97,7 +96,6 @@ exports.index = function (req, res) {
                 problemCategory: result.problemCategory,
                 brands: result.brands,
                 provinces: result.provinces,
-                restaurants: result.restaurants,
                 isEditComplaint: result.isEdit,
                 order: o,
                 orderFields: ofs,
@@ -125,7 +123,6 @@ exports.update = function (req, res) {
     //    return res.json({code: 500, message: 'Tham số truyền vào không phải ID : ' + params[1]});
 
     var _body = _.chain(req.body).cleanRequest().replaceMultiSpaceAndTrim().value();
-    // hoangdv keep format ticket note
     if (_.has(_body, 'note') && _.has(req.body, 'note')) {
         _body.note = req.body.note;
     }
@@ -210,10 +207,6 @@ function getFullTicketById(ticketId, callback) {
                         options: { sort: { weight: 1, displayName: 1 } }
                     }
                 }
-            }, {
-                path: 'trunk',
-                model: _Trunk,
-                select: 'prefix'
             }]
         })
         .populate({ path: 'updateBy', model: _Users, select: 'name displayName' })
@@ -352,141 +345,13 @@ function getOrderByTicketId(ticketId, callback) {
     });
 }
 
-//function dynamicCustomerInfo(el, v) {
-//    var _id = _.createID();
-//
-//    var _tag = '';
-//    var _attr = {};
-//    var _sattr = [];
-//    var _childs = [];
-//    var _val = (v && _.has(v, el.modalName) && !_.isEmpty(v[el.modalName]) && !_.isNull(v[el.modalName]) && v[el.modalName].length && _.has(v[el.modalName][0], 'value')) ? v[el.modalName][0].value : '';
-//    switch (el.fieldType) {
-//        case 1:
-//        case 3:
-//            _tag = 'input';
-//            _attr = {
-//                value: _val,
-//                class: 'form-control' + _.switch(el.isRequired, [0, 1], ['', ' validate[required]']),
-//                type: 'text',
-//                id: 'edit_' + el.modalName,
-//                name: el.modalName
-//            }
-//            break;
-//        case 2:
-//            _tag = 'input';
-//            _attr = {
-//                value: _val,
-//                class: 'form-control' + _.switch(el.isRequired, [0, 1], ['', ' validate[required]']),
-//                type: 'number',
-//                id: 'edit_' + el.modalName,
-//                name: el.modalName
-//            }
-//            break;
-//        case 4:
-//            _sattr.push('multiple');
-//        case 5:
-//            _tag = 'select';
-//            _attr = {
-//                class: 'selectpicker' + _.switch(el.isRequired, [0, 1], ['', ' validate[required]']),
-//                id: 'edit_' + el.modalName,
-//                name: el.modalName + '[]'
-//            };
-//            _childs.push({
-//                tag: 'option',
-//                attr: {value: ''},
-//                sattr: ['selected'],
-//                content: '---- Chọn ----'
-//            });
-//            _.each(el.fieldValue, function (ev) {
-//                _childs.push({
-//                    tag: 'option',
-//                    attr: {value: ev},
-//                    sattr: _.indexOf(_val, ev) >= 0 ? ['selected'] : [],
-//                    content: ev
-//                });
-//            });
-//            break;
-//        case 6:
-//            _tag = 'div';
-//            _attr = {class: 'input-group'};
-//            _childs = [
-//                {
-//                    tag: 'input',
-//                    attr: {
-//                        class: 'form-control date-picker' + _.switch(el.isRequired, [0, 1], ['', ' validate[required]']),
-//                        value: _moment(_val).format('DD/MM/YYYY'),
-//                        type: 'text',
-//                        id: 'edit_' + el.modalName,
-//                        name: el.modalName
-//                    }
-//                },
-//                {
-//                    tag: 'span',
-//                    attr: {class: 'input-group-addon p-l-10 bgm-gray c-white'},
-//                    childs: [{
-//                        tag: 'i',
-//                        attr: {
-//                            role: 'button',
-//                            class: 'zmdi zmdi-calendar'
-//                        }
-//                    }]
-//                }
-//            ];
-//            break;
-//        case 7:
-//            _tag = 'div';
-//            _attr = {
-//                class: 'input-group fg-line'
-//            };
-//            _childs.push(
-//                {
-//                    tag: 'input',
-//                    attr: {
-//                        value: _val,
-//                        class: 'form-control 1233333 validate[custom[number]' + _.switch(el.isRequired, [0, 1], ['', ',required']) + ']',
-//                        type: 'text',
-//                        id: 'edit_' + el.modalName,
-//                        name: el.modalName + ':string'
-//                    }
-//                },
-//                {
-//                    tag: 'span',
-//                    attr: {
-//                        class: 'input-group-btn clickToCall',
-//                        'data-phone-number': _val
-//                    },
-//                    childs: [
-//                        {
-//                            tag: 'button',
-//                            attr: {
-//                                class: 'btn btn-default reveal',
-//                                type: 'button',
-//                                style: 'max-height: 31px;'
-//                            },
-//                            childs: [{
-//                                tag: 'i',
-//                                attr: {
-//                                    class: 'zmdi zmdi-phone-in-talk green f-17'
-//                                }
-//                            }]
-//                        }
-//                    ]
-//                }
-//            );
-//            break;
-//    }
-//
-//    return _.htmlTags([{
-//        tag: _tag,
-//        attr: _attr,
-//        sattr: _sattr,
-//        childs: _childs.length ? _childs : []
-//    }]);
-//};
-
 function updateTicket(userId, ticketId, obj, callback) {
     userId = new mongodb.ObjectID(userId);
     ticketId = new mongodb.ObjectID(ticketId);
+
+    var ticketSubreason = null;
+    var ticketReasonCategory = null;
+
     if (!_.isEqual(obj.ticketSubreason, '')) {
         var reasonId = obj.ticketSubreason.split('-');
         obj['ticketReasonCategory'] = !!reasonId[0] ? new mongodb.ObjectID(reasonId[0]) : null;
@@ -496,8 +361,8 @@ function updateTicket(userId, ticketId, obj, callback) {
         obj['ticketReasonCategory'] = new mongodb.ObjectID(obj['ticketReasonCategory']);
         delete obj.ticketSubreason;
     } else {
-        delete obj.ticketSubreason;
-        delete obj.ticketReasonCategory;
+        obj.ticketSubreason = ticketSubreason;
+        obj.ticketReasonCategory = ticketReasonCategory;
     }
 
     var assignTo = null;
@@ -519,7 +384,8 @@ function updateTicket(userId, ticketId, obj, callback) {
         obj['assignBy'] = userId;
     }
 
-    if (_.isEqual(obj.assignTo, '')) delete obj.assignTo;
+    if (_.isEqual(obj.assignTo, ''))  obj['assignTo'] = null , obj['groupId'] = null;
+
 
     if (!_.isEqual(obj.deadline, '')) {
         obj['deadline'] = _moment(obj['deadline'], 'HH:mm DD/MM/YYYY')._d;
@@ -597,8 +463,7 @@ function updateTicket(userId, ticketId, obj, callback) {
 function getTicketReason(t, callback) {
     var agg = [];
     if (!_.isEmpty(t.idCampain)) {
-        agg.push({ $match: { _id: t.idCampain.idCategoryReason } });
-        //agg.push({$match: {$or: [{category: 0}, {category: 2}]}});
+        agg.push({$match: {$or: [{category: 0}, {category: 2}]}});
     } else if (!_.isEmpty(t.idService)) {
         agg.push({ $match: { $or: [{ category: 0 }, { category: 1 }] } });
     }
@@ -1030,15 +895,6 @@ function getAssignUsers(ticket, user, callback) {
             }, []);
             callback(err, temp);
         }
-    })
-};
-
-function getAgentGroup(user) {
-    if (_.isEmpty(user)) return [];
-    var memberGroup = user.agentGroupMembers ? _.pluck(user.agentGroupMembers, 'group') : [];
-    var leaderGroup = user.agentGroupLeaders ? _.pluck(user.agentGroupLeaders, 'group') : [];
-    return _.map(_.union(memberGroup, leaderGroup), function (item) {
-        return new mongodb.ObjectID(item);
     })
 };
 
@@ -1510,9 +1366,6 @@ function collectionTicketInfo(req, t, getCustomerInfo) {
         provinces: function (cb) {
             _Provinces.find({}).sort({ name: 1 }).exec(cb)
         },
-        restaurants: function (cb) {
-            _Restaurants.find({}).sort({ name: 1 }).exec(cb)
-        },
         complaintCategory: function (cb) {
             _ComplaintCategory.find({ status: 1 }, cb)
         },
@@ -1531,14 +1384,6 @@ function collectionTicketInfo(req, t, getCustomerInfo) {
             }
             else {
                 cb(null, false)
-                // _UserRestaurant.find({ idAgent: req.session.user._id }, function (err, result) {
-                //     if (result.length > 0) {
-                //         cb(null, false)
-                //     }
-                //     else {
-                //         cb(null, true)
-                //     }
-                // })
             }
 
         }

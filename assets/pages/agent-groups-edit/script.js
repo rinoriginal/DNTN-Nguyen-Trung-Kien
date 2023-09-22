@@ -1,26 +1,4 @@
-
-
 var DFT = function ($) {
-    //var addProfile = function(comId){
-    //    $('#idProfile option').each(function(i,e){
-    //        if(!_.isEqual($(e).val(),''))e.remove();
-    //    });
-    //
-    //    $('#idProfile').append(_.Tags(
-    //        _.chain(_.find(companies,function(com){
-    //                return _.isEqual(com._id.toString(), comId);
-    //            }).groupprofiles)
-    //            .reduce(function(memo,profile){
-    //                memo.push(
-    //                    {tag: 'option', attr: {value: profile._id}, content: profile.name}
-    //                );
-    //                return memo;
-    //            },[])
-    //            .value()
-    //    ));
-    //    $('#idProfile').val(currGroup.idProfile);
-    //    $('#idProfile').selectpicker('refresh');
-    //};
 
     /**
      * Tạo thẻ của option của thẻ selectpicker

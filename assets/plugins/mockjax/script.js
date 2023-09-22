@@ -3,7 +3,7 @@
  * 
  * Version: 2.1.1
  * Home: https://github.com/jakerella/jquery-mockjax
- * Copyright (c) 2016 Jordan Kasper, formerly appendTo;
+ * Copyright (c) 2023 Jordan Kasper, formerly appendTo;
  * NOTE: This repository was taken over by Jordan Kasper (@jakerella) October, 2014
  * 
  * Dual licensed under the MIT or GPL licenses.

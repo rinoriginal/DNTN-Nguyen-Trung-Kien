@@ -81,7 +81,7 @@
         //}
 
         var trc = _.reduce(ticketReasonCategory, function(memo, item) {
-            var selected = (ticket && ticket.idCampain) || _.isEqual(validObject(ticket, 'ticketReasonCategory'), item._id) ? 'selected' : '';
+            var selected = _.isEqual(validObject(ticket, 'ticketReasonCategory'), item._id) ? 'selected' : '';
             var temp = {
                 tag: 'option',
                 attr: { value: item._id },
@@ -224,6 +224,59 @@
         }, startObj);
     }
 
+    function createErrorTransferIcarHandle(ticket) {
+
+        var statusSelected = ['', '', '', ''];
+        if (!_.isEmpty(ticket)) statusSelected[ticket.errorTransferIcarHandle] = 'selected';
+        var statusContent = ['Chuyển cho TT DVKH', 'NV hỗ trợ thành công trong cuộc gọi', 'KS Chưa thành công', 'N/A'];
+        var optionArr = [{
+            tag: 'option',
+            attr: {
+                value: ''
+            },
+            sattr: [statusSelected[0]],
+            content: '--- chọn ---'
+        }];
+        for (var i = 0; i < 4; ++i) {
+            var temp = {
+                tag: 'option',
+                attr: {
+                    value: i 
+                },
+                sattr: [statusSelected[i]],
+                content: statusContent[i]
+            };
+            optionArr.push(temp);
+        }
+
+        return _.htmlTags([{
+            tag: 'div',
+            attr: { class: 'p-l-5 p-r-5 col-xs-4 col-sm-3 col-md-3' },
+            childs: [{
+                    tag: 'label',
+                    attr: { class: 'control-label f-13 TXT_ERROR_TRANSFER_ICAR_HANDLE' },
+                },{
+                    tag: 'span',
+                    attr: { class: 'required c-red' },
+                    content: '*'
+                },
+                {
+                    tag: 'div',
+                    childs: [{
+                        tag: 'select',
+                        attr: {
+                            class: 'selectpicker',
+                            name: 'errorTransferIcarHandle',
+                            id: 'errorTransferIcarHandle'
+                        },
+                        childs: optionArr
+                    }]
+                }
+            ]
+        }]);
+    }
+
+
     function createDeadLineInput(ticket) {
         var deadLineValue = !_.isEmpty(ticket) ? ticket.deadline : '';
         return _.htmlTags([{
@@ -240,12 +293,13 @@
                     childs: [{
                         tag: 'input',
                         attr: {
+                            style: 'height: 35px',
                             type: 'text',
                             class: 'form-control date-time-picker dropup',
                             'data-date-format': 'HH:mm DD/MM/YYYY',
                             id: 'deadline',
                             name: 'deadline',
-                            placeholder: 'VD: 15:23 19/01/2016',
+                            placeholder: 'VD: 15:23 19/01/2023',
                             value: moment(deadLineValue).format('HH:mm DD/MM/YYYY')
                         }
                     }]
@@ -294,6 +348,175 @@
         }]);
     }
 
+    function createDealerSatisfaction(ticket) {
+        var statusSelected = ['', ''];
+        if (!_.isEmpty(ticket)) statusSelected[ticket.dealerSatisfaction] = 'selected';
+        var statusContent = ['không', 'có'];
+        var optionArr = [{
+            tag: 'option',
+            attr: {
+                value: ''
+            },
+            sattr: [statusSelected[0]],
+            content: '--- chọn ---'
+        }];
+        for (var i = 0; i < 2; ++i) {
+            var temp = {
+                tag: 'option',
+                attr: {
+                    value: i
+                },
+                sattr: [statusSelected[i]],
+                content: statusContent[i]
+            };
+            optionArr.push(temp);
+        }
+
+        return _.htmlTags([{
+            tag: 'div',
+            attr: { class: 'p-l-5 p-r-5 col-xs-4 col-sm-3 col-md-3' },
+            childs: [{
+                    tag: 'label',
+                    attr: { class: 'control-label f-13 TXT_DEALER_SATISFACTION' }
+                },
+                {
+                    tag: 'div',
+                    childs: [{
+                        tag: 'select',
+                        attr: {
+                            class: 'selectpicker',
+                            name: 'dealerSatisfaction',
+                            id: 'dealerSatisfaction'
+                        },
+                        childs: optionArr
+                    }]
+                }
+            ]
+        }]);
+    }
+
+    function createProductSatisfaction(ticket) {
+        var statusSelected = ['', ''];
+        if (!_.isEmpty(ticket)) statusSelected[ticket.productStatisfaction] = 'selected';
+        var statusContent = ['không', 'có'];
+        var optionArr = [{
+            tag: 'option',
+            attr: {
+                value: ''
+            },
+            sattr: [statusSelected[0]],
+            content: '--- chọn ---'
+        }];
+        for (var i = 0; i < 2; ++i) {
+            var temp = {
+                tag: 'option',
+                attr: {
+                    value: i
+                },
+                sattr: [statusSelected[i]],
+                content: statusContent[i]
+            };
+            optionArr.push(temp);
+        }
+
+        return _.htmlTags([{
+            tag: 'div',
+            attr: { class: 'p-l-5 p-r-5 col-xs-4 col-sm-3 col-md-3' },
+            childs: [{
+                    tag: 'label',
+                    attr: { class: 'control-label f-13 TXT_PRODUCT_STATISFACTION' }
+                },
+                {
+                    tag: 'div',
+                    childs: [{
+                        tag: 'select',
+                        attr: {
+                            class: 'selectpicker',
+                            name: 'productStatisfaction',
+                            id: 'productStatisfaction'
+                        },
+                        childs: optionArr
+                    }]
+                }
+            ]
+        }]);
+    }
+
+    function createInfulenceLevel(ticket) {
+        var statusSelected = ['', '', ''];
+        if (!_.isEmpty(ticket)) statusSelected[ticket.influlenceLevel] = 'selected';
+        var statusContent = ['Bình thường', 'Cao', 'Nghiêm trọng'];
+        var optionArr = [{
+            tag: 'option',
+            attr: {
+                value: ''
+            },
+            sattr: [statusSelected[0]],
+            content: '--- chọn ---'
+        }];
+        for (var i = 0; i < 3; ++i) {
+            var temp = {
+                tag: 'option',
+                attr: {
+                    value: i
+                },
+                sattr: [statusSelected[i]],
+                content: statusContent[i]
+            };
+            optionArr.push(temp);
+        }
+
+        return _.htmlTags([{
+            tag: 'div',
+            attr: { class: 'p-l-5 p-r-5 col-xs-4 col-sm-3 col-md-3' },
+            childs: [{
+                    tag: 'label',
+                    attr: { class: 'control-label f-13 TXT_INFULENCE_LEVEL' }
+                },
+                {
+                    tag: 'div',
+                    childs: [{
+                        tag: 'select',
+                        attr: {
+                            class: 'selectpicker',
+                            name: 'influlenceLevel',
+                            id: 'influlenceLevel'
+                        },
+                        childs: optionArr
+                    }]
+                }
+            ]
+        }]);
+    }
+
+    function createCarCompany(ticket) {
+        var carCompany = !_.isEmpty(ticket) ? ticket.carCompany : '';
+        return _.htmlTags([{
+            tag: 'div',
+            attr: { class: 'p-l-5 p-r-5 col-xs-4 col-sm-3 col-md-3' },
+            childs: [{
+                    tag: 'label',
+                    attr: { class: 'control-label f-13 TXT_CAR_COMPANY' }
+                },
+                {
+                    tag: 'div',
+                    childs: [{
+                        tag: 'input',
+                        attr: {
+                            style: 'height: 35px',
+                            type: 'text',
+                            class: 'form-control',
+                            id: 'carCompany',
+                            name: 'carCompany',
+                            placeholder: 'VD: Roll Royce, Bugatti',
+                            value: carCompany
+                        }
+                    }]
+                }
+            ]
+        }]);
+    }
+
     function createAssign(ticket, assign) {
         var startObj = [{
             tag: 'option',
@@ -302,32 +525,37 @@
         }];
 
         var assignValue = _.isEmpty(assign) ? '' : _.reduce(assign, function(memo, ag) {
-
+            var selected = _.isEqual(validObject(ticket, 'groupId'), ag._id) ? 'selected' : '';
             memo.push({
                 tag: 'option',
                 attr: {
                     value: 'g-{0}'.zFormat(ag._id)
                 },
+                sattr: [selected],
                 content: '[Nhóm] {0}'.zFormat(ag.name)
             });
 
             _.each(ag.agl, function(leaders) {
+                var aglSelected = _.isEqual(validObject(ticket, 'assignTo'), leaders._id) ? 'selected' : '';
                 memo.push({
                     tag: 'option',
                     attr: {
                         class: 'assignLeaders m-l-20',
                         value: 'a-{0}'.zFormat(leaders._id)
                     },
+                    sattr: [aglSelected],
                     content: '{0} ({1})'.zFormat(leaders.displayName, leaders.name)
                 });
             });
             _.each(ag.agm, function(members) {
+                var agmSelected = _.isEqual(validObject(ticket, 'assignTo'), members._id) ? 'selected' : '';
                 memo.push({
                     tag: 'option',
                     attr: {
                         class: 'm-l-20',
                         value: 'a-{0}'.zFormat(members._id)
                     },
+                    sattr: [agmSelected],
                     content: '{0} ({1})'.zFormat(members.displayName, members.name)
                 });
             });
@@ -336,7 +564,7 @@
 
         return _.htmlTags([{
             tag: 'div',
-            attr: { class: 'p-l-5 p-r-5 col-xs-6 col-sm-6 col-md-6' },
+            attr: { class: 'p-l-5 p-r-5 col-xs-4 col-sm-3 col-md-3' },
             childs: [{
                     tag: 'label',
                     attr: { class: 'control-label f-13 TXT_ASSIGN' }
@@ -446,11 +674,15 @@
         var ticketSubReason = createTicketSubReason(ticket, ticketReasonCategory);
         var deadLine = createDeadLineInput(ticket);
         var status = createStatusPicker(ticket);
+        var errorTransferIcarHandle = createErrorTransferIcarHandle(ticket);
         var assignTo = createAssign(ticket, assign);
         var customerStatisfy = createCustomerStatisfy(ticket, statisfy);
         var note = createNote(ticket);
-
-        return ticketReasonCategoryHTML + ticketSubReason + deadLine + status + assignTo + customerStatisfy + note;
+        var dealerSatisfaction = createDealerSatisfaction(ticket);
+        var productSatisfaction = createProductSatisfaction(ticket);
+        var infulenceLevel = createInfulenceLevel(ticket);
+        var carCompany = createCarCompany(ticket);
+        return ticketReasonCategoryHTML + ticketSubReason + deadLine + status + errorTransferIcarHandle + dealerSatisfaction + productSatisfaction + infulenceLevel + assignTo + carCompany + customerStatisfy + note;
     };
 
     var showCallLogs = function(arr) {
@@ -762,7 +994,6 @@
                 if (data.companyOutbound && data.companyOutbound.length > 0) {
                     nameCompany = data.companyOutbound;
                 }
-                console.log('ten cong yt', nameCompany)
                 html += createRow(nameCompany);
                 html += createRow(data.channelType);
                 //trungdt jira 919
@@ -809,19 +1040,14 @@
                 html += '<tr>';
                 let nameCompany = ""
                 if (data.companyChat && data.companyChat.length > 0) {
-                    console.log('ten cong yt222')
                     nameCompany = data.companyChat;
                 }
                 if (data.companyInbound && data.companyInbound.length > 0) {
                     nameCompany = data.companyInbound;
                 }
-                if (data.companyMail && data.companyMail.length > 0) {
-                    nameCompany = data.companyMail;
-                }
                 if (data.companyOutbound && data.companyOutbound.length > 0) {
                     nameCompany = data.companyOutbound;
                 }
-                console.log('ten cong yt', nameCompany)
                 html += createRow(nameCompany);
                 html += createRow(data.channelType);
                 //trungdt jira 919

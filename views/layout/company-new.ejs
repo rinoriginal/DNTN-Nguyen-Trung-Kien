@@ -90,20 +90,6 @@
             </div>
 
             <div class="form-group">
-                <label for="group" class="col-sm-3 control-label" id="txt_company_trunk"></label>
-
-                <div class="col-sm-7">
-                    <select class="validate[required]" data-prompt-position="inline:0,10" multiple="multiple" size="10"
-                            name="trunks[]"
-                            id="trunks">
-                        <% trunks.forEach(function(element, index){ %>
-                        <option class="duallist-option" value='<%- element._id %>'>  <%- element.name %> </option>
-                        <% }) %>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group">
                 <label for="status" class="col-sm-3 control-label" id="txt_company_status"></label>
                 <div class="col-sm-6">
                     <div class="checkbox m-t-3 m-b-15">

@@ -1,4 +1,4 @@
-//created by haivh 30/09/2020
+
 const os = require('os')
 var fs = require('fs'),
     path = require('path'),
@@ -385,9 +385,6 @@ exports.create = function (req, res) {
                             }
                         }
                     )
-                    _MailService.send(sendMail, ccMail, 'Thông báo khiếu nại', mailBody, [], function (e, r) {
-                        console.log(e, r);
-                    })
                 }
 
             })
@@ -890,9 +887,6 @@ exports.update = function (req, res) {
                                     }
                                 }
                             )
-                            _MailService.send(sendMail, ccMail, 'Thông báo cập nhật khiếu nại', mailBody, [], function (e, r) {
-                                console.log(e, r);
-                            })
                         }
 
                     })

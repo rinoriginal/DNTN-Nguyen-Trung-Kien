@@ -1,21 +1,17 @@
 //{auth:loi-dev}
 var fs = require('fs');
 var fsx = require('fs.extra');
+var commonFunc = require(path.join(_rootPath, 'commons', 'functions','customer.fields.js'));
+var titleHeadTable = [];
 const excelToJson = require('convert-excel-to-json');
-var titleHeadTable = [
-    { key: 'sđt', value: 'Số điện thoại', },
-    { key: 'ho_ten', value: 'Họ tên', },
-    { key: 'tinh_thanh', value: 'Tỉnh thành', },
-    { key: 'quan_huyen', value: 'Quận huyện', },
-    { key: 'id', value: 'ID', },
-    { key: 'ghi_chu', value: 'Ghi chú', },
-    { key: 'dia_chi_chi_tiet', value: 'Địa chỉ chi tiết', },
-    { key: 'dong_xe', value: 'Dòng xe', },
-    { key: 'ket_qua', value: 'Kết quả' },
-]
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
     console.log("IMPORT_CUSTOMER start console");
     req.connection.setTimeout(20 * 60 * 1000);
+    let idCompany = req.session.auth && req.session.auth.company && req.session.auth.company._id ? req.session.auth.company._id : null;
+    let fields = await commonFunc.getCustomerFields(idCompany);
+    //gen header cho file excel kết quả
+    getTitleHeadTableExcel(fields);
+
     const {
         destination,
         originalname,
@@ -37,13 +33,10 @@ exports.create = (req, res) => {
     fs.renameSync(filePath, path.join(destination, '../assets/uploads/import-data/') + filename + '.' + fileExtension)
     console.log("IMPORT_CUSTOMER start file");
 
-    importExcelData2MongoDB((__basedir + '/assets/uploads/import-data/' + filename + '.' + fileExtension), filename, req, res);
+    importExcelData2MongoDB((__basedir + '/assets/uploads/import-data/' + filename + '.' + fileExtension), filename, fields, req, res);
 };
 
 exports.index = {
-    json: function (req, res) {
-
-    },
     html: function (req, res) {
         _CustomerGroups.aggregate([
             { $lookup: { from: 'customersources', localField: '_id', foreignField: 'group', as: 'sources' } },
@@ -64,8 +57,9 @@ exports.new = function (req, res) {
         _.render(req, res, 'customer-import', _.extend({ title: 'Tạo mới khách hàng', plugins: [['bootstrap-select']] }, result), true, error);
     });
 };
+
 // -> Import Excel File to MongoDB database
-function importExcelData2MongoDB(filePath, fileNameReal, req, res) {
+function importExcelData2MongoDB(filePath, fileNameReal, fields, req, res) {
     // -> Read Excel File to Json Data
     const excelData = excelToJson({
         sourceFile: filePath,
@@ -78,16 +72,7 @@ function importExcelData2MongoDB(filePath, fileNameReal, req, res) {
                 rows: 1,
             },
             // Mapping columns to keys
-            columnToKey: {
-                A: 'field_so_dien_thoai',
-                B: 'field_ho_ten',
-                C: 'field_tinh_thanh',
-                D: 'field_quan_huyen',
-                E: 'field_id',
-                F: 'field_ghi_chu',
-                G: 'field_dia_chi_chi_tiet',
-                H: 'field_dong_xe'
-            }
+            columnToKey: genColumnExcel(fields)
         }],
     });
     console.log("IMPORT_CUSTOMER read file done");
@@ -105,7 +90,13 @@ function importExcelData2MongoDB(filePath, fileNameReal, req, res) {
                 console.log("IMPORT_CUSTOMER checkFormatPhone");
                 let result1 = await checkFormatPhone(result)
 
-                return Promise.resolve(result1)
+                console.log("IMPORT_CUSTOMER checkDate"); //nếu thông tin customerfield k có trường date thì k cần check đoạn này
+                let result2 = await checkDate(result1, fields)
+
+                console.log("IMPORT_CUSTOMER check NĐ91");
+                let result3 = await checkDoNotCall(result2)
+
+                return Promise.resolve(result3)
             } catch (e) {
                 return Promise.reject(e)
             }
@@ -116,24 +107,33 @@ function importExcelData2MongoDB(filePath, fileNameReal, req, res) {
                     // loại bỏ những data fail
                     console.log("IMPORT_CUSTOMER loại bỏ những data fail");
                     var filtered = data.filter(function (el) {
-                        return el.status != false;
+                        return el.statusCheck != false;
                     });
 
                     //map thêm value trường nguồn khách hàng cho từng data
                     filtered.map(o => o.sources = req.body.sources)
-
+                    const sourceOrigin = req.body.sources
                     let result3 = await fnupdateCustomers(req, res, filtered);
+
+                    // update lại số lượng KH trong nguồn
+                    await Promise.all(
+                        sourceOrigin.map(async (el) => {
+                            const totalCusInSource = await _Customerindex.find({ sources: el }).count()
+                            await _CustomerSource.findByIdAndUpdate(el, { amount: totalCusInSource })
+                        })
+                    )
 
                     console.log("IMPORT_CUSTOMER loại bỏ những data fail và data đã update");
                     let filtered2 = result3.filter(function (el) {
-                        return el.status != false && el.status != "update";
+                        return el.statusCheck != false && el.statusCheck != "update";
                     });
+
                     //trường hợp filtered2.length < 0 rơi vào những data fail hoặc những data đã cập nhật
                     if (filtered2.length > 0) {
                         console.log("create customer")
-                        let result4 = await createCustomer(req, res, filtered2, fileNameReal, data);
+                        let result4 = await createCustomer(req, res, filtered2, fileNameReal, data, genColumnExcel(fields), sourceOrigin);
                     } else {
-                        exportExcel(req, res, fileNameReal, data)
+                        exportExcel(req, res, fileNameReal, data, genColumnExcel(fields))
                     }
                 } catch (err1) {
                     throw err1
@@ -141,52 +141,61 @@ function importExcelData2MongoDB(filePath, fileNameReal, req, res) {
             })
             .catch(err => {
                 console.log("đã xảy ra lỗi", err);
-                res.json({ code: 400, message: JSON.stringify(err) })
+                res.json({ code: 400, message: err && err.message ? err.message : err })
             })
     }
 }
 
 // tạo mới khách hàng
-function createCustomer(req, res, filtered2, fileNameReal, excelData) {
-    return new Promise(async (resolve, reject) => {
-        let count = await _Customerindex.find({}).count()
-        filtered2.map((el) => {
-            count++;
-            el.field_id = "KH" + count;
-            return el;
-        })
-        _Customerindex.insertMany(filtered2, function (err, result) {
-            if (err) {
-                reject(err)
-            } else {
-                result.forEach(function (item) {
-                    _Customer.create(item._doc);
-                    var temp = item._doc
-                    var id_CCKFields = item._doc._id
-                    delete temp.status;
-                    delete temp.sources;
-                    delete temp.v;
-                    delete temp._id;
-                    // Chuẩn hóa dữ liệu đầu vào
-                    _async.each(_.keys(temp), function (k, cb) {
-                        if (!_CCKFields[k] || _.isNull(temp[k]) || _.isEmpty(temp[k].toString()) || _.isUndefined(temp[k]) || temp[k] == "null") return cb(null, null)
-                        switch (_CCKFields[k].type) {
-                            case 2:
-                                temp[k] = Number(temp[k]);
-                                break;
-                            case 6:
-                                temp[k] = _moment(temp[k], 'DD/MM/YYYY')._d;
-                                break;
-                            default:
-                                break;
-                        }
-                        _CCKFields[k].db.update({ entityId: id_CCKFields }, { entityId: id_CCKFields, value: temp[k] }, { upsert: true }, cb);
-                    });
-                })
-                exportExcel(req, res, fileNameReal, excelData, resolve)
-            }
-        })
-    });
+async function createCustomer(req, res, filtered2, fileNameReal, excelData, columnToKey, sourceOrigin) {
+    try {
+        const insertCus = await _Customerindex.insertMany(filtered2)
+        //update lại số lượng KH trong nguồn
+        await Promise.all(
+            insertCus.map(async (el) => {
+                await _Customer.create(el._doc);
+                var temp = el._doc
+                var id_CCKFields = el._doc._id
+                delete temp.status;
+                delete temp.sources;
+                delete temp.v;
+                delete temp._id;
+                // Chuẩn hóa dữ liệu đầu vào
+                _async.each(_.keys(temp), function (k, cb) {
+                    if (!_CCKFields[k] || _.isNull(temp[k]) || _.isEmpty(temp[k].toString()) || _.isUndefined(temp[k]) || temp[k] == "null") return cb(null, null)
+                    switch (_CCKFields[k].type) {
+                        case 2:
+                            temp[k] = Number(temp[k]);
+                            break;
+                        case 4:
+                            temp[k] = _.chain(temp[k]).map(function (el) {
+                                return _.isEqual("0", el) ? null : el;
+                            }).compact().value();
+                            break;
+                        case 5:
+                            temp[k] = temp[k];
+                            break;
+                        case 6:
+                            temp[k] = _moment(temp[k], 'DD/MM/YYYY')._d;
+                            break;
+                        default:
+                            break;
+                    }
+                    _CCKFields[k].db.update({ entityId: id_CCKFields }, { entityId: id_CCKFields, value: temp[k] }, { upsert: true }, cb);
+                });
+            })
+        )
+        //update lại số lượng KH trong nguồn
+        await Promise.all(
+            sourceOrigin.map(async (el) => {
+                const totalCusInSource = await _Customerindex.find({ sources: el }).count()
+                await _CustomerSource.findByIdAndUpdate(el, { amount: totalCusInSource })
+            })
+        )
+        exportExcel(req, res, fileNameReal, excelData, columnToKey)
+    } catch (error) {
+        console.log("err create", error.message || error);
+    }
 }
 // function update customer exist
 async function fnupdateCustomers(req, res, filtered) {
@@ -206,14 +215,14 @@ async function fnupdateCustomers(req, res, filtered) {
                 el2.sources.forEach(function (el3) {
                     //khách hàng đã có trong sources từ trc đo thì báo duplicate
                     if (_.includes(arrString, el3.toString())) {
-                        el2.status = false;
-                        el2.statusMessage = "field_so_dien_thoai duplicate"
+                        el2.statusCheck = false;
+                        el2.statusMessage = "Số điện thoại duplicate"
                     } else {
                         //không thì update
                         arrString.push(el3)
                         el2.sources = arrString;
-                        el2.status = "update";
-                        updateCustomer(found[0], el2, req);
+                        el2.statusCheck = "update";
+                        updateCustomer(found[0], el2, req, arrString);
                     }
                     return el2;
                 })
@@ -227,54 +236,126 @@ async function fnupdateCustomers(req, res, filtered) {
     }
 }
 // cập nhật khách hàng nếu số điện thoại đã tồn tại trước đó
-function updateCustomer(result, el, req) {
-    //update collection customer vs customerIndex
-    _Customerindex.findByIdAndUpdate(result._id, {
-        field_so_dien_thoai: el.field_so_dien_thoai,
-        field_ho_ten: el.field_ho_ten,
-        field_tinh_thanh: [el.field_tinh_thanh],
-        field_quan_huyen: [el.field_quan_huyen],
-        field_ghi_chu: el.field_ghi_chu,
-        field_dia_chi_chi_tiet: el.field_dia_chi_chi_tiet,
-        field_dong_xe: el.field_dong_xe,
-        sources: el.sources,
-    }, function (err, data) {
-        if (err) {
-            console.log("update fail", err)
-        } else {
-            _Customer.findByIdAndUpdate(result._id, { sources: el.sources }, function (err1, data1) {
-                data1.save();
-            })
-            var temp = el
-            var id_CCKFields = data._doc._id
-            delete temp.status;
-            delete temp.sources;
-            delete temp.v;
-            delete temp._id;
-            // Chuẩn hóa dữ liệu đầu vào
-            _async.each(_.keys(temp), function (k, cb) {
-                if (!_CCKFields[k] || _.isNull(temp[k]) || _.isEmpty(temp[k].toString()) || _.isUndefined(temp[k]) || temp[k] == "null") return cb(null, null)
-                switch (_CCKFields[k].type) {
-                    case 2:
-                        temp[k] = Number(temp[k]);
-                        break;
-                    case 6:
-                        temp[k] = _moment(temp[k], 'DD/MM/YYYY')._d;
-                        break;
-                    default:
-                        break;
-                }
-                _CCKFields[k].db.update({ entityId: id_CCKFields }, { entityId: id_CCKFields, value: temp[k] }, { upsert: true }, cb);
-            });
+function updateCustomer(result, el, req, sourceOrigin) {
+    try {
+        //update collection customer vs customerIndex
+        let obj = {}
+        let getKeyObject = Object.keys(el)
+        getKeyObject.forEach(function (temp) {
+            obj[temp] = el[temp]
+        })
+        delete obj.status;
+        delete obj.sources
+        obj.sources = sourceOrigin;
+        _Customerindex.findByIdAndUpdate(result._id, obj, function (err, data) {
+            if (err) {
+                console.log("update fail", err)
+            } else {
+                _Customer.findByIdAndUpdate(result._id, { sources: sourceOrigin }, function (err1, data1) {
+                    data1.save();
+                })
+                var temp = el
+                var id_CCKFields = data._doc._id
+                delete temp.status;
+                delete temp.sources;
+                delete temp.v;
+                delete temp._id;
+                // Chuẩn hóa dữ liệu đầu vào
+                _async.each(_.keys(temp), function (k, cb) {
+                    if (!_CCKFields[k] || _.isNull(temp[k]) || _.isEmpty(temp[k].toString()) || _.isUndefined(temp[k]) || temp[k] == "null") return cb(null, null)
+                    switch (_CCKFields[k].type) {
+                        case 2:
+                            temp[k] = Number(temp[k]);
+                            break;
+                        case 4:
+                            temp[k] = _.chain(temp[k]).map(function (el) {
+                                return _.isEqual("0", el) ? null : el;
+                            }).compact().value();
+                            break;
+                        case 5:
+                            temp[k] = temp[k];
+                            break;
+                        // case 6:
+                        //     temp[k] = _moment(temp[k], 'DD/MM/YYYY')._d;
+                        //     break;
+                        default:
+                            break;
+                    }
+                    _CCKFields[k].db.update({ entityId: id_CCKFields }, { entityId: id_CCKFields, value: temp[k] }, { upsert: true }, cb);
+                });
+            }
+        });
+    } catch (error) {
+        console.log("err update",error.message || error);
+    }
+}
+
+//check ngày
+async function checkDate(excelData, fields) {
+    let found = fields.filter(function (el) {
+        return el.modalName == "field_thoi_gian_lap_dat_mua"
+    })
+    _.each(excelData, function (el, index) {
+        if (el.field_thoi_gian_lap_dat_mua && (typeof el.field_thoi_gian_lap_dat_mua == 'string')) {
+            if (moment(el.field_thoi_gian_lap_dat_mua, "DD/MM/YYYY").isValid() == false) {
+                console.log((found && found[0] && found[0].displayName ? found[0].displayName : "Ngày") + " khong hop le", el.field_thoi_gian_lap_dat_mua)
+                el.statusCheck = false
+                el.thoi_gian_lap_dat_mua = el.field_thoi_gian_lap_dat_mua
+                el.statusMessage = (found && found[0] && found[0].displayName ? found[0].displayName : "Ngày") + " khong hop le";
+                el.cellFail.push("E" + (index + 2))
+            } else {
+                el.thoi_gian_lap_dat_mua = el.field_thoi_gian_lap_dat_mua
+                el.field_thoi_gian_lap_dat_mua = _moment(el.field_thoi_gian_lap_dat_mua, 'DD/MM/YYYY').format("MM/DD/YYYY")
+            }
         }
-    });
+        if (el.field_thoi_gian_lap_dat_mua && (typeof el.field_thoi_gian_lap_dat_mua == 'object')) {
+            var temp = moment(el.field_thoi_gian_lap_dat_mua, "MM/DD/YYYY").valueOf() + (60000 * 60); //những trường hợp input truyền vào kiểu date thì bị thiếu mất 1 số s lên cứ cộng thêm 1h
+            if (moment(moment(temp).format("DD/MM/YYYY"), "DD/MM/YYYY").isValid() == false) {
+                console.log((found && found[0] && found[0].displayName ? found[0].displayName : "Ngày") + " khong hop le", el.field_thoi_gian_lap_dat_mua)
+                el.statusCheck = false
+                el.thoi_gian_lap_dat_mua = moment(el.field_thoi_gian_lap_dat_mua).format("DD/MM/YYYY");
+                el.statusMessage = (found && found[0] && found[0].displayName ? found[0].displayName : "Ngày") + " khong hop le";
+                el.cellFail.push("E" + (index + 2))
+            } else {
+                el.thoi_gian_lap_dat_mua = moment(moment(el.field_thoi_gian_lap_dat_mua, "DD/MM/YYYY").valueOf() + (60000 * 60)).format("DD/MM/YYYY");
+                el.field_thoi_gian_lap_dat_mua = moment(moment(el.field_thoi_gian_lap_dat_mua, "DD/MM/YYYY").valueOf() + (60000 * 60)).format("MM/DD/YYYY")
+            }
+        }
+        return el;
+    })
+    return excelData;
 }
 //check định dạng số điện thoại đầu vào
 function checkFormatPhone(arr) {
     arr.forEach(function (el, index) {
         el.field_so_dien_thoai = el.field_so_dien_thoai ? el.field_so_dien_thoai.toString() : "";
+        /* Xóa khoảng trắng trong số điện thoại */
+        el.field_so_dien_thoai = _.reduce(el.field_so_dien_thoai, (memo, c)=>{
+            if(c != ' '){
+                return memo.concat(c);
+            }
+            return memo
+        }, '');
+        /* số điện thoại bắt đầu bằng +84XXXXXX hoặc 84XXXXXX => 0XXXXXX */
+        if(el.field_so_dien_thoai.slice(0, 2) == '84'){
+            el.field_so_dien_thoai = el.field_so_dien_thoai.replace('84', '0');
+        }else if(el.field_so_dien_thoai.slice(0, 3) == '+84'){
+            el.field_so_dien_thoai = el.field_so_dien_thoai.replace('+84', '0');
+        }
         if (el.field_so_dien_thoai && el.field_so_dien_thoai.length > 0 && el.field_so_dien_thoai[0] != "0") {
             el.field_so_dien_thoai = "0" + el.field_so_dien_thoai
+        }
+
+        /* số điện thoại phải hoàn toàn là số và không chứa kí tự đặc biệt, độ dài 10 hoặc 11 số */
+        var phoneReg = new RegExp('^\\d+$');
+        if(!el.field_so_dien_thoai.toString().match(phoneReg)|| el.field_so_dien_thoai.toString().length < 10 || el.field_so_dien_thoai.toString().length > 11){
+            el.statusCheck = false
+            el.statusMessage = "Wrong form";
+            el.cellFail = []; // chứa các cell fail
+            el.cellFail.push("A" + (2 + index))
+        }else{
+            el.statusCheck = true
+            el.cellFail = []; // chứa các cell fail
         }
         return el;
     })
@@ -287,10 +368,10 @@ function checkDuplicate(arr) {
         temp.push(el.field_so_dien_thoai)
         const found = temp.filter(element => element == el.field_so_dien_thoai);
         if (found.length < 2) {
-            el.status = true
+            el.statusCheck = true
             el.cellFail = []; // chứa các cell fail
         } else {
-            el.status = false
+            el.statusCheck = false
             el.statusMessage = "checkDuplicate";
             el.cellFail = []; // chứa các cell fail
             el.cellFail.push("A" + (2 + index))
@@ -300,8 +381,30 @@ function checkDuplicate(arr) {
     return arr;
 }
 
-function exportExcel(req, res, fileNameReal, excelData) {
+//check số điện thoại có nằm trong danh sách chặn hay không
+async function checkDoNotCall(arr) {
+    let listDoNotCall = await getListDonotCall();
+
+    let doNotCall = new Set(listDoNotCall)
+    console.log("lấy xong do not call");
+    arr.forEach(function (el, index) {
+        if(el.statusCheck){
+            // Kiểm tra số điện thoại có nằm trong danh sách donotcall không	
+            if (doNotCall.has(el.field_so_dien_thoai)) {
+                el.statusCheck = false
+                el.statusMessage = "Do Not Call";
+                el.cellFail.push("A" + (2 + index))
+            }
+            return el;
+        }
+    })
+    return arr;
+}
+
+function exportExcel(req, res, fileNameReal, excelData, columnToKey) {
     var waterFallTask = [];
+    var arrTemp = Object.values(columnToKey);
+
     waterFallTask.push(function (next) {
         var workbook = new _Excel.Workbook();
         workbook.created = new Date();
@@ -309,21 +412,14 @@ function exportExcel(req, res, fileNameReal, excelData) {
     });
     waterFallTask.push(function (workbook, next) {
         var sheet = workbook.addWorksheet('My Sheet', { state: 'visible' });
-        //setWeightColumn(sheet);
+        setWeightColumn(sheet);
         //createTitleExcel(sheet);
         createHead(sheet);
         _.each(excelData, (item) => {
-            sheet.addRow([
-                (item.field_so_dien_thoai ? item.field_so_dien_thoai : ""),
-                (item.field_ho_ten ? item.field_ho_ten : ""),
-                (item.field_tinh_thanh ? item.field_tinh_thanh : ""),
-                (item.field_quan_huyen ? item.field_quan_huyen : ""),
-                (item.field_id ? item.field_id : ""),
-                (item.field_ghi_chu ? item.field_ghi_chu : ""),
-                (item.field_dia_chi_chi_tiet ? item.field_dia_chi_chi_tiet : ""),
-                (item.field_dong_xe ? item.field_dong_xe : ""),
-                (item.status == true ? "Success" : (item.status == false ? `Fail${item.statusMessage ? " " + item.statusMessage : "Chưa xác định"}` : "Updated")),
-            ]);
+            if(item.thoi_gian_lap_dat_mua){
+                item.field_thoi_gian_lap_dat_mua = item.thoi_gian_lap_dat_mua
+            }
+            sheet.addRow(genRowTable(item, arrTemp));
             // đổ màu back log
             if (item.cellFail && item.cellFail.length > 0) {
                 item.cellFail.map(key => {
@@ -388,6 +484,15 @@ function exportExcel(req, res, fileNameReal, excelData) {
         }
     });
 }
+function setWeightColumn(worksheet) {
+    let valueWidthColumn = [
+        30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30
+    ]
+    _.each(valueWidthColumn, function (item, index) {
+        worksheet.getColumn(++index).width = item;
+    })
+
+}
 function createHead(worksheet) {
     worksheet.addRow(_.pluck(titleHeadTable, 'value'));
     worksheet.lastRow.alignment = { vertical: 'middle', horizontal: 'center' };
@@ -401,4 +506,64 @@ function createHead(worksheet) {
             right: { style: "thin" }
         }
     }
+}
+
+function getTitleHeadTableExcel(fields) {
+    titleHeadTable = [];
+    fields.forEach(function (el, index) {
+        titleHeadTable.push(
+            { key: "key_" + index, value: el.displayName.toLocaleUpperCase() }
+        )
+    })
+    titleHeadTable.push({ key: "ketqua", value: "KẾT QUẢ" });
+    return titleHeadTable;
+}
+
+function genRowTable(item, arrTemp) {
+    var nameTitleTable = [];
+    arrTemp.forEach(function (el) {
+        nameTitleTable.push((item[el] ? item[el] : ""))
+    })
+    nameTitleTable.push((item.statusCheck == true ? "Success" : (item.statusCheck == false ? `Fail${item.statusMessage ? " " + item.statusMessage : "Chưa xác định"}` : "Updated")))
+    return nameTitleTable;
+}
+
+//gen ra thông tin các trường cần insert
+function genColumnExcel(fields) {
+    let columnToKey = {};
+    fields.forEach((element, index) => {
+        let chr = String.fromCharCode(97 + index).toLocaleUpperCase()
+        columnToKey[chr] = element.modalName
+    });
+    return columnToKey;
+}
+
+//lấy danh sách donotcalls
+
+async function getListDonotCall() {
+    let CONFIG = await _Config.findOne({}).lean();
+    if (!CONFIG || !CONFIG.FCAPI) {
+        throw new Error("Chưa set up modal config !");
+    }
+
+    let opts = {
+        method: 'GET',
+        uri: CONFIG.FCAPI.ip + CONFIG.FCAPI.getListDoNotCall + "?" + "token=" + CONFIG.FCAPI.token,
+        agentOptions: {
+            rejectUnauthorized: false
+        }
+    }
+
+    return new Promise((resolve, reject) => {
+        _request(opts, function (error, response, body) {
+            // code:400 rơi vào các lỗi trong trường hợp api verify	
+            if (body && _.IsJsonString(body) && body.code != 400) {
+                var body = JSON.parse(body)
+                resolve(body.message)
+            } else {
+                console.log("Lỗi api NĐ91", error)
+                reject("Cloud Disconnect or Error !")
+            }
+        });
+    })
 }

@@ -1,5 +1,7 @@
-# DNTN-Nguyen-Trung-Kien
-Đồ án tốt nghiệp - Nguyễn Trung Kiên
+
+DATN---- Bùi Văn Hoán
+
+
 1)  Tính năng :
 + Controllers : tạo file trong thư mục : /controllers/article
 + Modals : tạo file trong thư mục : /modals/article

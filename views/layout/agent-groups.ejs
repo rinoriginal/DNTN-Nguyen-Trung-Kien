@@ -10,11 +10,6 @@
         </div>
 
         <ul class="lv-actions actions">
-            <!--<li>-->
-            <!--<a href="" class="lvh-search-trigger" data-toggle="tooltip" data-placement="left" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." title="" data-original-title="Tìm kiếm">-->
-            <!--<i class="zmdi zmdi-search"></i>-->
-            <!--</a>-->
-            <!--</li>-->
             <li>
                 <a href="/#agent-groups/new" data-toggle="tooltip" data-placement="top"
                    data-original-title="Tạo nhóm mới">
@@ -52,12 +47,8 @@
                     <span id="txt_agent_group"> </span>
                 </th>
                 <th class="bgm-orange c-white text-center" id="txt_agent_company"></th>
-                <!--<th class="bgm-orange c-white text-center">Email</th>-->
                 <th class="bgm-orange c-white text-center" id="txt_agent_dtv"></th>
-                <!--<th class="bgm-orange c-white text-center">Loại nhóm</th>-->
                 <th class="bgm-orange c-white text-center" id="txt_agent_call"></th>
-                <th class="bgm-orange c-white text-center" id="txt_agent_chat"></th>
-                <th class="bgm-orange c-white text-center" id="txt_agent_mail"></th>
                 <th class="bgm-orange c-white text-center" id="txt_agent_updateby"></th>
                 <th role="button" class="updatedDate bgm-orange c-white text-center">
                     <i class="<%- (_equal(sortData.updated ? sortData.updated.toString() : '1', '1') ? 'zmdi zmdi-sort-amount-asc c-white zmdi-hc-fw p-r-10' : 'zmdi zmdi-sort-amount-desc c-white zmdi-hc-fw p-r-10') %>"></i>
@@ -79,8 +70,6 @@
                         <% }) %>
                     </select></td>
                 <!--<td></td>-->
-                <td></td>
-                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -114,8 +103,6 @@
                 <td class="text-center"><%- (el.members ? el.members.length : '0') %></td>
                 <!--<td></td>-->
                 <td class="text-center"><%- (el.profile.length > 0 ? el.profile[0].name : '') %></td>
-                <td class="text-center"><%- (el.profileChat.length > 0 ? el.profileChat[0].name : '') %></td>
-                <td class="text-center"><%- (el.profileMail.length > 0 ? el.profileMail[0].name : '') %></td>
                 <td class="text-center"><%- (el.updateBy ? el.updateBy[0].displayName : '') %></td>
                 <td class="text-center"><%- (el.updated ? _moment(el.updated).format("hh:mm DD/MM/YYYY") : '') %></td>
 

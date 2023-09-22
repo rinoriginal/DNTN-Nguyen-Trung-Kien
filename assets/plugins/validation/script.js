@@ -83,8 +83,6 @@
             form.off("click", "[" + options.validateAttribute + "*=validate][type=checkbox],[" + options.validateAttribute + "*=validate][type=radio]", methods._onFieldEvent);
             form.off(options.validationEventTrigger, "[" + options.validateAttribute + "*=validate][class*=datepicker]", methods._onFieldEvent);
 
-            console.log(88, 'off');
-
             // unbind form.submit
             form.off("submit", methods._onSubmitEvent);
             form.removeData('jqv');

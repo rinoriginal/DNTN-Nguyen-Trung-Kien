@@ -402,7 +402,7 @@ module.exports = {
                         tag: 'input',
                         attr: {
                             class: 'form-control date-picker',
-                            value: _moment().format('DD/MM/YYYY'),
+                            value: _moment(_val).format('DD/MM/YYYY'),
                             type: 'text',
                             id: 'edit_' + el.modalName,
                             name: el.modalName
@@ -524,7 +524,7 @@ module.exports = {
                         && !_.isEqual(menu.link, '/')
                         && !_.isEqual(menu.link, '/none')
                         && menu.link.split('/')[1] == url) {
-                        //Lamlv edit 16/08/2016
+                        //Lamlv edit 16/08/2023
                         memo.push({ tag: 'li', childs: [{ tag: 'span', attr: {}, content: menu.name }] });
 
                         if (_.isEqual(_.last(module), 'new')) memo.push({ tag: 'li', content: 'Tạo mới' });
@@ -760,42 +760,6 @@ module.exports = {
                     select: 'skillName alarmDurHigh alarmDurLow recordingState status'
                 }, next);
             },
-            function (result, next) {
-                _GroupsProfileChat.populate(result, {
-                    path: 'groupAgent.idProfileChat',
-                    select: 'name status skills'
-                }, next);
-            },
-            function (result, next) {
-                _SkillsChat.populate(result,
-                    [{
-                        path: 'groupAgent.idProfileChat.skills.idSkill',
-                        select: 'skillName status'
-                    },
-                    {
-                        path: 'channels.servicechats.idSkill',
-                        select: 'skillName status'
-                    }]
-                    , next);
-            },
-            function (result, next) {
-                _GroupsProfileMail.populate(result, {
-                    path: 'groupAgent.idProfileMail',
-                    select: 'name status skills'
-                }, next);
-            },
-            function (result, next) {
-                _SkillsMail.populate(result,
-                    [{
-                        path: 'groupAgent.idProfileMail.skills.idSkill',
-                        select: 'skillName status'
-                    },
-                    {
-                        path: 'channels.servicemails.idSkill',
-                        select: 'skillName status'
-                    }]
-                    , next);
-            }
         ], function (err, result) {
             var tree = {};
             tree.ternal = _config.app._id;
@@ -1252,7 +1216,7 @@ module.exports = {
                 _attr = {
                     class: 'input-group fg-line'
                 };
-                // 19.Mar.2017 hoangdv click to creat new ticket
+                // 19.Mar.2023 hoan click to creat new ticket
                 var clickToCreateTicket = {
                     tag: 'span'
                 };

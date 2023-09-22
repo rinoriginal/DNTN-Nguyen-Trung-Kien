@@ -16726,7 +16726,10 @@ form.form-horizontal .radio label {
 
 .bootstrap-select>.btn-default {
     background: none !important;
-    border-radius: 0
+    border-radius: 0;
+    height: 35px;
+    font-size: 15px;
+    color: #555;
 }
 
 .bootstrap-select>.btn-default:before {
@@ -30393,7 +30396,7 @@ table.table tr:not(.filter) td:not(:last-child):not(.inlineEditButton) li {
     padding: 10px 0px;
 }
 
-/* 2020/09/21 customize bootstrap 3 -> 4 by hainv */
+/* 2023/09/21 customize bootstrap 3 -> 4 by hainv */
 .d-none{
     display: none !important;
 }

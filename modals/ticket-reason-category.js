@@ -1,5 +1,4 @@
 
-
 var TicketCategorySchema = new mongoose.Schema({
     name: {type: String, index: true, unique: true},
     category: {type: Number, default: 0},//gọi vào và gọi ra:0, gọi vào:1, gọi ra:2, chat:3, mail:4, mạng xã hội:5

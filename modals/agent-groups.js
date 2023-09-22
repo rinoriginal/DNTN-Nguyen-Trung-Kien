@@ -1,11 +1,8 @@
 
-
  var AgentGroupsSchema = new mongoose.Schema({
     idParent: {type: mongoose.Schema.Types.ObjectId, default: null, ref: 'Company'},
     name: {type: String, default: '', required: true, unique: true},
     idProfile: {type: mongoose.Schema.Types.ObjectId, default: null, ref: 'GroupProfile'}, //Call
-    idProfileChat: {type: mongoose.Schema.Types.ObjectId, default: null, ref: 'GroupProfileChat'}, //Chat
-    idProfileMail: {type: mongoose.Schema.Types.ObjectId, default: null, ref: 'GroupProfileMail'},//Mail
     createBy: {type: mongoose.Schema.Types.ObjectId, default: null, ref: 'User'},
     updateBy: {type: mongoose.Schema.Types.ObjectId, default: null, ref: 'User'},
     agentStatus: {type: mongoose.Schema.Types.ObjectId, default: null, ref: 'AgentStatus'},

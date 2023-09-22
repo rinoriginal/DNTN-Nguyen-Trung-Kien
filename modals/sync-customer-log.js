@@ -1,5 +1,4 @@
 
-
 var SyncCustomerLogSchema = new mongoose.Schema({
     name: {type: String},
     type: {type: Number, default: 1}, // 1: Đồng bộ; 2: Tải về

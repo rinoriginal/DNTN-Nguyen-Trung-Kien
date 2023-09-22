@@ -1,5 +1,4 @@
 
-
 module.exports = function (client, sessionId) {
 
     client.subscribe('/queue/' + _config.app._id + '/LoginResMsg', function (body, header) {

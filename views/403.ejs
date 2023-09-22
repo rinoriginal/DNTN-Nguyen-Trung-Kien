@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+<body class="four-zero-content">
+<div class="four-zero c-white">
+    <h2>403 !</h2>
+    <small >Bạn không đủ quyền truy cập trang này !</small>
+
+    <footer>
+        <a role="button" onclick="window.history.back()"><i class="zmdi zmdi-arrow-back"></i></a>
+        <a href="/"><i class="zmdi zmdi-home"></i></a>
+    </footer>
+</div>
+
+<style>
+    .four-zero-content {
+        background: #fff;
+        padding: 20px;
+    }
+
+    .four-zero-content {
+        background: #fff;
+        padding: 20px;
+    }
+
+    .four-zero-content:before {
+        height: 50%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #EDECEC;
+        content: "";
+    }
+
+    .four-zero {
+        background: rgb(248, 49, 49);
+        box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
+        border-radius: 2px;
+        position: absolute;
+        top: 50%;
+        margin-top: -150px;
+        color: #fff;
+        text-align: center;
+        padding: 15px;
+        height: 300px;
+        width: 500px;
+        left: 50%;
+        margin-left: -250px;
+    }
+
+    .four-zero h2 {
+        font-size: 130px;
+    }
+
+    @media (max-width: 767px) {
+        .four-zero {
+            width: calc(100% - 40px);
+            left: 20px;
+            margin-left: 0;
+            height: 260px;
+            margin-top: -130px;
+        }
+
+        .four-zero h2 {
+            font-size: 90px;
+        }
+    }
+
+    .four-zero h2 {
+        line-height: 100%;
+        color: #fff;
+        font-weight: 100;
+    }
+
+    .four-zero small {
+        display: block;
+        font-size: 18px;
+    }
+
+    .four-zero footer {
+        background: rgba(0, 0, 0, 0.13);
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        padding: 10px;
+    }
+
+    .four-zero footer > a {
+        font-size: 21px;
+        display: inline-block;
+        color: #FFF;
+        margin: 0 1px;
+        line-height: 40px;
+        width: 40px;
+        height: 40px;
+        background: rgba(0, 0, 0, 0.09);
+        border-radius: 50%;
+        text-align: center;
+        -webkit-transition: all;
+        -o-transition: all;
+        transition: all;
+        -webkit-transition-duration: 300ms;
+        transition-duration: 300ms;
+    }
+
+    .four-zero footer > a:hover {
+        background: rgba(0, 0, 0, 0.2);
+    }
+</style>
+</body>
+</html>

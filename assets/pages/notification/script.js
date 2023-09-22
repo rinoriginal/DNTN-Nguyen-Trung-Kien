@@ -1,6 +1,4 @@
 
-
-
 var DFT = function ($) {
 
     var bindClick = function () {

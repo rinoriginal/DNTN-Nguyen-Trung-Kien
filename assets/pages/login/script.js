@@ -22,16 +22,16 @@ var DFT = function ($) {
     };
 
     /**
-     * 27.Feb.2017 hoangdv
+     * 27.Feb.2023 hoan
      * locker remove duplicate request login
      * @type {boolean}
      */
     // Check domain 
-    if (window.location.hostname == "localhost") {
-        window._urlBinding = "https://test-chat-mail.telehub.vn"; // Chạy dưới localhost, 
-    } else {
-        window._urlBinding = window.origin + "/";
-    }
+    window._urlBinding = "https://test-chat-mail.telehub.vn"; // Chạy dưới localhost, 
+    // if (window.location.hostname == "localhost") {
+    // } else {
+    //     window._urlBinding = window.origin + "/";
+    // }
     var isLoging = false;
     window._domain = "bhs.local";
     console.log(window._urlBinding)
@@ -66,6 +66,7 @@ var DFT = function ($) {
                                 var _username = form.getData().get('name'),
                                     _password = form.getData().get('password'),
                                     _extension = resp.extension;
+                                    console.log("ket qua tra ve", resp)
                                 setCookie('_username', _username);
                                 setCookie('_password', _password);
                                 setCookie('_extension', resp.extension);
@@ -78,7 +79,9 @@ var DFT = function ($) {
                                 setCookie('_isLoginMobile', resp.isLoginMobile);
                                 window._finesse = undefined;
                                 window._finesse = new Finesse(resp.agentId, _password);
+                                console.log("chay vo day signout ")
                                 _finesse.signOut(
+                                    
                                     resp.agentId, _extension, null, _signOutHandler, _signOutHandler);
                             }
 
@@ -134,6 +137,7 @@ var DFT = function ($) {
                         return  window.location.reload();
                     }
                     // Check jabber phải được connect 
+                    console.log("checj japasss", user)
                     if (user.state === 'LOGOUT') {
                         isLoging = false;
                         onClientError();
@@ -165,6 +169,7 @@ var DFT = function ($) {
     }
 
     function _signOutHandler(data, statusText, xhr) {
+        console.log("ket no api ", xhr.status)
         if (xhr.status === 202) {
             _finesse.signIn(getCookie('_agentId'), getCookie('_extension'),getCookie('_isLoginMobile'), getCookie('_extensionMobile'), getCookie('_dialNumber'),  null, _signInHandler, function () {
                 console.log('vao day3333 ')

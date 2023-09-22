@@ -1,5 +1,4 @@
 
-// GET
 exports.index = {
     json: function (req, res) {
         var _query = req.query;

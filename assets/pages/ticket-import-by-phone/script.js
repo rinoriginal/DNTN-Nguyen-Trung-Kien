@@ -1,5 +1,5 @@
 /**
- * 18.Mar.2017 hoangdv
+ * 18.Mar.2023 hoan
  * @type {{init, uncut}}
  */
 var DFT = function($) {

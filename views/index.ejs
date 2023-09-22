@@ -874,320 +874,6 @@
             <div class="card bgm-white">
                 <div class="row">
                     <div class="col-sm-3 p-r-0">
-                        <div class="list-group m-t-20" id="mail-task-lists">
-                            <a id="tab-danh-sach-mail" data-target="#mail-danh-sach-mail" data-type="new" data-text="Danh sách Mail" class="task list-group-item btn-float active" href="javascript:void(0)"><i class="zmdi zmdi-email f-22 p-relative t-3 m-r-10"></i>Danh
-                                sách Mail <span class="badge m-t-3 f-10 p-relative t-2"
-                                    style="display: none">0</span></a>
-                            <a id="tab-danh-sach-mail-nhan" data-target="#mail-danh-sach-mail-nhan" data-type="unprogressing" data-text="Danh sách Mail nhận" class="task list-group-item btn-float " href="javascript:void(0)"><i
-                                    class="zmdi zmdi-email-open f-22 p-relative t-3 m-r-10"></i>Danh sách Mail nhận
-                                <span class="badge m-t-3 f-10 p-relative t-2" style="display: none">0</span></a>
-                            <a id="tab-danh-sach-mail-gui" data-target="#mail-danh-sach-mail-gui" data-type="progressing" data-text="Danh sách Mail gửi" class="task list-group-item btn-float " href="javascript:void(0)"><i
-                                    class="zmdi zmdi-mail-send f-22 p-relative t-3 m-r-10"></i>Danh sách Mail gửi <span
-                                    class="badge m-t-3 f-10 p-relative t-2" style="display: none">0</span></a>
-                            <a id="tab-danh-sach-spam" data-target="#mail-danh-sach-spam" data-type="progressed" data-text="Danh sách Spam" class="task list-group-item btn-float " href="javascript:void(0)"><i
-                                    class="fa fa-exclamation-triangle f-21 p-relative t-2 m-r-9"></i>Danh sách Spam
-                                <span class="badge m-t-3 f-10 p-relative t-2" style="display: none">0</span></a>
-                            <a id="tab-danh-sach-mail-spam" data-target="#mail-danh-sach-mail-spam" data-type="spam" data-text="Danh sách Mail Spam" class="task list-group-item btn-float " href="javascript:void(0)"><img src="/assets/images/spam_mail.png" height="22" width="22"></img>
-                                </i> Danh sách Mail Spam <span class="badge m-t-3 f-10 p-relative t-2" style="display: none">0</span></a>
-                        </div>
-                    </div>
-                    <div class="col-sm-9" id="list-mail">
-                        <div class="lv-header-alt clearfix p-5" style="background-color: #edecec;">
-                            <h2 class="lvh-label p-l-15 c-orange">Danh sách Mail</h2>
-                            <input type="text" id="mail-search" class="fixed-table-toolbar p-absolute r-40 m-r-10" placeholder="Tìm kiếm..." style="float: right;height: 31px;padding: 6px 12px;font-size: 12px;line-height: 1.42857;color: #555;background-color: #fff;background-image: none;border: 1px solid #ccc;border-radius: 1px;">
-
-                        </div>
-
-                        <div id="mail-danh-sach-mail" style="border-left:outset;max-height: 600px;display:block;overflow-y:auto;overflow-x: hidden">
-                            <div class="form-group">
-                                <table style="width: 80%">
-                                    <tr>
-                                        <td style="padding: 5px;color: #333;">NỘI DUNG</td>
-                                        <td style="padding: 5px;">TIÊU ĐỀ</td>
-                                        <td style="padding: 5px;">FILE ĐÍNH KÈM</td>
-                                        <td style="padding: 5px;">NGÀY THÁNG</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 5px;"><input class="form-control" id="content-search" type="text"></td>
-                                        <td style="padding: 5px;"><input class="form-control" type="text" id="header-search"></td>
-                                        <td style="padding: 5px;"><input class="form-control" type="text" id="file-search">
-                                        </td>
-                                        <td style="padding: 5px;"><input class="form-control" type="date" id="date-search">
-                                        </td>
-                                        <td align="right">
-                                            <button style="width: 300%" id="mail-search-button-all" class="btn btn-primary">
-                                                <i class="fa fa-search"></i></button>
-                                        </td>
-
-                                    </tr>
-                                </table>
-                            </div>
-                            <div style="background: #edecec;height: 5px">
-                                <hr style="size: 10px">
-                            </div>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <td>
-                                            <button id="spamButton" style="display: none;" class="spam-button btn btn-light waves-effect" onclick="spamBtn(0)"><i
-                                                    class="fa fa-exclamation-triangle f-21 p-relative t-2 m-r-9"></i>Spam
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </thead>
-                            </table>
-
-
-                            <table id="tbl-new" data-toggle="table" data-url="/mail-all" data-table="mail-danh-sach-mail" data-query-params="MailFilterParams" data-side-pagination="server" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-search="false" data-sort-name="created"
-                                data-sort-order="desc" class="table table-fix table-bordered table-hover f-13">
-                                <thead>
-                                    <tr>
-                                        <th data-field="checked" data-checkbox="true" id="checked" oninput="loadButton()"></th>
-
-                                        <th data-field="from" data-width="200"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>Người gửi
-                                        </th>
-                                        <th data-field="subject" data-width="250"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Tiêu đề
-                                        </th>
-                                        <th data-field="body"><i class="zmdi zmdi-comment c-gray f-14 p-relative t-1 m-r-5"></i>Nội dung
-                                        </th>
-                                        <th data-field="created" data-sortable="true" data-width="150" data-class="text-center"><i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>Ngày gửi
-                                        </th>
-                                        <th data-field="attachments" data-width="150" data-class="text-center" data-formatter="listMailConvertAttachment"><i class="zmdi zmdi-file-text c-gray f-14 p-relative t-1 m-r-5"></i>Tệp đính kèm
-                                        </th>
-                                        <th data-width="50" data-field="forward"><i class="zmdi zmdi-forward c-gray f-14 p-relative t-1 m-r-1"></i>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody style="max-width: 250px"></tbody>
-                            </table>
-                        </div>
-                        <div id="mail-danh-sach-mail-nhan" style="display: none;border-left: outset">
-
-                            <div class="form-group">
-                                <table style="width: 80%">
-                                    <tr>
-                                        <td style="padding: 5px;color: #333;">NỘI DUNG</td>
-                                        <td style="padding: 5px;">TIÊU ĐỀ</td>
-                                        <td style="padding: 5px;">FILE ĐÍNH KÈM</td>
-                                        <td style="padding: 5px;">NGÀY THÁNG</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 5px;"><input class="form-control" id="content-search" type="text"></td>
-                                        <td style="padding: 5px;"><input class="form-control" type="text" id="header-search"></td>
-                                        <td style="padding: 5px;"><input class="form-control" type="text" id="file-search">
-                                        </td>
-                                        <td style="padding: 5px;"><input class="form-control" type="date" id="date-search">
-                                        </td>
-                                        <td>
-                                            <button style="width: 300%" id="mail-search-button-inbox" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                                        </td>
-
-                                    </tr>
-                                </table>
-                            </div>
-                            <div style="background: #edecec;height: 5px">
-                                <hr style="size: 10px">
-                            </div>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <td>
-                                            <button id="spamButton" style="display: none;" class="spam-button btn btn-light waves-effect" onclick="spamBtn(1)"><i
-                                                    class="fa fa-exclamation-triangle f-21 p-relative t-2 m-r-9"></i>Spam
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </thead>
-                            </table>
-                            <table id="tbl-unprogressing" data-toggle="table" data-url="/mail-inbox" data-table="mail-danh-sach-mail-nhan" data-query-params="MailFilterParams" data-side-pagination="server" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-search="false"
-                                data-sort-name="created" data-sort-order="desc" class="table table-fix table-bordered table-hover f-13">
-                                <thead>
-                                    <tr>
-                                        <th data-field="checked" data-checkbox="true" oninput="loadButton()"></th>
-                                        <th data-field="from" data-width="200"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>Người gửi
-                                        </th>
-                                        <th data-field="subject" data-width="250"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Tiêu đề
-                                        </th>
-                                        <th data-field="body"><i class="zmdi zmdi-comment c-gray f-14 p-relative t-1 m-r-5"></i>Nội dung
-                                        </th>
-                                        <th data-field="created" data-sortable="true" data-width="150" data-class="text-center"><i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>Ngày gửi
-                                        </th>
-
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                        <div id="mail-danh-sach-mail-gui" style="display: none;border-left: outset">
-                            <div class="form-group">
-                                <table style="width: 80%">
-                                    <tr>
-                                        <td style="padding: 5px;color: #333;">NỘI DUNG</td>
-                                        <td style="padding: 5px;">TIÊU ĐỀ</td>
-                                        <td style="padding: 5px;">FILE ĐÍNH KÈM</td>
-                                        <td style="padding: 5px;">NGÀY THÁNG</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 5px;"><input class="form-control" id="content-search" type="text"></td>
-                                        <td style="padding: 5px;"><input class="form-control" type="text" id="header-search"></td>
-                                        <td style="padding: 5px;"><input class="form-control" type="text" id="file-search">
-                                        </td>
-                                        <td style="padding: 5px;"><input class="form-control" type="date" id="date-search">
-                                        </td>
-                                        <td>
-                                            <button style="width: 300%" id="mail-search-button-sent" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                                        </td>
-
-                                    </tr>
-                                </table>
-                            </div>
-                            <div style="background: #edecec;height: 5px">
-                                <hr style="size: 10px">
-                            </div>
-                            <button class="btn btn-light waves-effect" onclick="spamBtn(2)" id="spamButton" style="display: none;"><i
-                                    class="fa fa-exclamation-triangle f-21 p-relative t-2 m-r-9"></i>Spam
-                            </button>
-                            <table id="tbl-progressing" data-toggle="table" data-url="/mail-outbox" data-table="mail-danh-sach-mail-gui" data-query-params="MailFilterParams" data-side-pagination="server" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-search="false"
-                                data-sort-name="created" data-sort-order="desc" class="table table-fix table-bordered table-hover f-13">
-                                <thead>
-                                    <tr>
-                                        <th data-field="from" data-width="200"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>Người gửi
-                                        </th>
-                                        <th data-field="subject" data-width="250"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Tiêu đề
-                                        </th>
-                                        <th data-field="body"><i class="zmdi zmdi-comment c-gray f-14 p-relative t-1 m-r-5"></i>Nội dung
-                                        </th>
-                                        <th data-field="created" data-sortable="true" data-width="150" data-class="text-center"><i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>Ngày gửi
-                                        </th>
-
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                        <div id="mail-danh-sach-spam" style="display: none;border-left: outset">
-                            <div class="form-group">
-                                <table style="width: 80%" ư>
-                                    <tr>
-                                        <td style="padding: 5px;color: #333;">NỘI DUNG</td>
-                                        <td style="padding: 5px;">TIÊU ĐỀ</td>
-                                        <td style="padding: 5px;">FILE ĐÍNH KÈM</td>
-                                        <td style="padding: 5px;">NGÀY THÁNG</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 5px;"><input class="form-control" id="content-search" type="text"></td>
-                                        <td style="padding: 5px;"><input class="form-control" type="text" id="header-search"></td>
-                                        <td style="padding: 5px;"><input class="form-control" type="text" id="file-search">
-                                        </td>
-                                        <td style="padding: 5px;"><input class="form-control" type="date" id="date-search">
-                                        </td>
-                                        <td>
-                                            <button style="width: 300%" id="mail-search-button-spam" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                                        </td>
-
-                                    </tr>
-                                </table>
-                            </div>
-                            <div style="background: #edecec;height: 5px">
-                                <hr style="size: 10px">
-                            </div>
-                            <div>
-                                <button class="spam-button btn btn-light waves-effect" style="display: none;" id="notSpamButton" onclick="notSpamBtn()"><i
-                                        class="fa fa-exclamation-triangle f-21 p-relative t-2 m-r-9"></i>Not Spam
-                                </button>
-                            </div>
-
-                            <table id="tbl-progressed" data-toggle="table" data-url="/mail-id-spam" data-table="mail-danh-sach-spam" data-side-pagination="server" data-query-params="MailFilterParams" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-search="false"
-                                data-sort-name="created" data-sort-order="desc" class="table table-fix table-bordered table-hover f-13">
-                                <thead>
-                                    <tr>
-                                        <th data-field="checked" data-checkbox="true"></th>
-                                        <th data-field="from" data-width="200"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>Người gửi
-                                        </th>
-                                        <th data-field="subject" data-width="250"><i class="zmdi zmdi-eye c-gray f-14 p-relative t-1 m-r-5"></i>Tiêu đề
-                                        </th>
-                                        <th data-field="body"><i class="zmdi zmdi-comment c-gray f-14 p-relative t-1 m-r-5"></i>Nội dung
-                                        </th>
-                                        <th data-field="created" data-sortable="true" data-width="150" data-class="text-center"><i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>Ngày gửi
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-
-                        <div id="mail-danh-sach-mail-spam" style="display: none;border-left: outset">
-                            <button type="button" data-toggle="modal" style="" class="btn btn-light" data-target="#spamModal"><i class="fa fa-plus c-gray f-14 p-relative t-1 m-r-5"></i>
-                            </button>
-                            <div class="modal fade" id="spamModal" tabindex="-1" role="dialog" aria-labelledby="labelModel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header" style="background: #74b23b; max-height: 50px;text-align: center">
-                                            <h5 class="c-white t-9" STYLE="text-align: center" id="labelModel">THÊM ĐỊA CHỈ SPAM
-                                            </h5>
-
-                                        </div>
-                                        <div class="modal-body">
-                                            <br>
-                                            <p>Địa chỉ Email: </p>
-
-                                            <input type="email" id="input_mail_spam" class="form-control">
-                                            <h4 style="font-style:italic" id='result'></h4>
-                                        </div>
-                                        <div class="modal-footer" style="text-align: center">
-
-                                            <button type="submit" onclick="addSpamMail()" class="btn btn-secondary">Hoàn
-                                                tất
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="labelModel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header" style="background: #74b23b; max-height: 50px;text-align: center">
-                                            <h5 class="c-white t-9" STYLE="text-align: center" id="labelModel">Xác nhận
-                                            </h5>
-
-                                        </div>
-                                        <div class="modal-body">
-                                            <br>
-                                            <h3 style="font-style: italic;text-align: center" id="contentDelete"></h3>
-                                            <div><i></i></div>
-
-                                        </div>
-                                        <div class="modal-footer" style="text-align: center">
-                                            <button type="submit" data-dismiss="modal" class="btn btn-secondary">Không
-                                            </button>
-                                            <button type="submit" onclick="actionDelete()" style="background: red" class="btn btn-secondary">Có
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <table id="tbl-spam" data-toggle="table" data-url="/mail-spam" data-table="mail-danh-sach-mail-spam" data-expand="false" data-action="false" data-animation="false" data-collapse="false" data-trigger="false" data-side-pagination="server" data-pagination="true"
-                                data-query-params="MailFilterParams" data-page-list="[10, 20, 50, 100, 200]" data-search="false" data-sort-name="date_time" data-sort-order="desc" class="table table-fix table-bordered table-hover f-13">
-                                <thead>
-                                    <tr>
-                                        <!--<th data-field="checked" data-checkbox="true"></th>-->
-                                        <th data-field="emails_spam" data-sortable="false" data-width="400"><i class="zmdi zmdi-account c-gray f-14 p-relative t-1 m-r-10"></i>ĐỊA CHỈ EMAIL
-                                        </th>
-                                        <th data-field="date_time" data-sortable="true" data-width="400">
-                                            <i class="zmdi zmdi-time c-gray f-14 p-relative t-1 m-r-5"></i>NGÀY ĐƯA VÀO DANH SÁCH
-                                        </th>
-                                        <th data-field="task" style="text-align: center" class="text-center"><i class="zmdi zmdi-comment c-gray f-14 p-relative t-1 m-r-5"></i>TÁC VỤ
-                                        </th>
-
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
                     </div>
                     <div class="modal fade" id="forwardModal" tabindex="-1" role="dialog" aria-labelledby="labelModel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -1344,7 +1030,7 @@
                     </li>
                     <li class="logo hidden-xs">
                         <a href="/#articles-list">
-                            <%- projectName %>
+                            ICALL
                                 <% if(company && company.name){ %>
                                     <span class="m-l-10 m-r-10">-</span>
                                     <%- company.name %>
@@ -1511,7 +1197,7 @@
             </a>
         </li> -->
 
-        <li role="presentation" class="" id="tab_chat-cisco">
+        <!-- <li role="presentation" class="" id="tab_chat-cisco">
             <a class="col-xs-4 p-relative" href="#tab-email-and-chat" aria-controls="tab-mail" role="tab" data-toggle="tab" aria-expanded="false">
                 <i class="zmdi zmdi-account-box-mail icon-tab visible-sm visible-xs" id="email-chat-icon-tab"></i><span class="m-l-10 hidden-sm hidden-xs">Email & Chat</span>
                 <i class="tmn-counts" style="display: none">0</i>
@@ -1522,7 +1208,7 @@
                 <i class="zmdi zmdi-account-box-mail icon-tab visible-sm visible-xs"></i><span class="m-l-10 hidden-sm hidden-xs">Email</span>
                 <i class="tmn-counts" style="display: none">0</i>
             </a>
-        </li>
+        </li> -->
         <li role="presentation" class="">
             <a class="col-xs-4 p-relative" href="#tab-voice" aria-controls="tab-voice" role="tab" data-toggle="tab" aria-expanded="false">
                 <i class="zmdi zmdi-account-box-phone icon-tab visible-sm visible-xs"></i><span class="m-l-10 hidden-sm hidden-xs">Voice</span>
@@ -1586,7 +1272,51 @@
                     <script type="text/javascript" src="/assets/tabs/chat/script.js"></script>
                     <script type="text/javascript" src="/assets/tabs/mail/script.js"></script>
                     <script type="text/javascript" src="/assets/tabs/emailchatcisco/script.js"></script>
-
+                    <script type="text/javascript" src="https://agent.telehub.vn/system/templates/chat/egain-chat.js"></script>
+                    <!-- <script language=javascript>
+                        /*eGain Chat server */
+                        var egainDockChat = egainDockChat  || {};
+                        egainDockChat.serverURL = "https://agent.telehub.vn/system";
+                        /*eGain Chat Entry Point*/
+                        egainDockChat.EntryPointId  = "1011";
+                        /*eGain Chat Locale*/
+                        egainDockChat.Locale  = "en-US";
+                        /*eGain template name*/
+                        egainDockChat.Template = "a25hotel";
+                        /*Set to true to enable posting attributes to templates*/
+                        egainDockChat.PostChatAttributes = false;
+                        egainDockChat.IntegratedEntryPoint  = "true";
+                        /*eGain video chat parameters */
+                        egainDockChat.VChatParams = '';
+                        /*Set to true if custom button is used to launch docked chat */
+                        egainDockChat.UseCustomButton=false;
+                        /*Method to set customer Parameters. To be called by client website. All the parameters specified in application-chat-defaults must be set here.*/
+                        egainDockChat.SetCustomerParameters = function (egainAttributeName, attributeValue) {
+                            if(!egainDockChat.SetParameter){
+                               egainDockChat.CallQueue = egainDockChat.CallQueue || [];
+                                egainDockChat.CallQueue.push({name:'SetParameter', args:[egainAttributeName,attributeValue]});
+                            }else{
+                                egainDockChat.SetParameter(egainAttributeName,attributeValue);
+                            }
+                        };
+                        /* Method to be called on click of custom button to launch chat in docked mode */
+                        egainDockChat.openHelp = function(){
+                            egainDockChat.IsChatLaunched = true;
+                                startChat();
+                        }
+                        if(!egainDockChat.UseCustomButton){
+                            startChat();
+                        }
+                        function startChat(){
+                            if(!egainDockChat.launchChat){
+                                egainDockChat.CallQueue = egainDockChat.CallQueue || [];
+                                egainDockChat.CallQueue.push({name:'launchChat', args:[]});
+                            }else{
+                                egainDockChat.launchChat();
+                            }
+                        }
+                    </script> -->
+                    
                     <script type="text/javascript" src="/assets/tabs/voice/script.js"></script>
                     <div class="page-loader">
                         <div class="preloader pls-blue">

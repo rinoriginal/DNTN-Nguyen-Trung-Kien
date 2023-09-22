@@ -1,5 +1,4 @@
 
-
 exports.index = function (req, res) {
     if (_.has(req.query, 'search')) {
         searchTicket(req, res);
@@ -75,7 +74,6 @@ exports.index = function (req, res) {
                     problemCategory: result.problemCategory,
                     brands: result.brands,
                     provinces: result.provinces,
-                    restaurants: result.restaurants,
                     isEditComplaint: result.isEdit,
                     'custom-view': true,
                     plugins: ['moment', 'zoka', ['bootstrap-select'], ['bootstrap-datetimepicker'], ['chosen']]
@@ -993,9 +991,6 @@ function collectionTicketInfo(req, t, getCustomerInfo) {
         },
         provinces: function (cb) {
             _Provinces.find({}).sort({ name: 1 }).exec(cb)
-        },
-        restaurants: function (cb) {
-            _Restaurants.find({}).sort({ name: 1 }).exec(cb)
         },
         complaintCategory: function (cb) {
             _ComplaintCategory.find({ status: 1 }, cb)

@@ -1,5 +1,5 @@
 /**
- * 03.Mar.2017 hoangdv updated
+ * 03.Mar.2023 hoan updated
  */
 exports.index = {
     json: function (req, res) {
@@ -101,7 +101,7 @@ exports.create = function (req, res) {
                 _SurveyQuestion.update({
                     _id: {
                         $ne: sq._id,
-                        // 03 Mar 2017 hoangdv only clear isStart of questions in this survey
+                        // 03 Mar 2023 hoan only clear isStart of questions in this survey
 						idSurvey: req.query.idSurvey
                     }
                 },
@@ -180,7 +180,7 @@ exports.update = function (req, res) {
             if(question.isStart == 1){
                 _SurveyQuestion.update({
                         _id: {$ne: sq._id},
-						// 03 Mar 2017 hoangdv only clear isStart of questions in this survey
+						// 03 Mar 2023 hoan only clear isStart of questions in this survey
 						idSurvey: req.query.idSurvey
                 },
                     {

@@ -1,5 +1,5 @@
 ﻿/*
- Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ Copyright (c) 2003-2023, CKSource - Frederico Knabben. All rights reserved.
  For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 var CKEDITOR_LANGS=function(){var c={af:"Afrikaans",ar:"Arabic",bg:"Bulgarian",bn:"Bengali/Bangla",bs:"Bosnian",ca:"Catalan",cs:"Czech",cy:"Welsh",da:"Danish",de:"German","de-ch":"German (Switzerland)",el:"Greek",en:"English","en-au":"English (Australia)","en-ca":"English (Canadian)","en-gb":"English (United Kingdom)",eo:"Esperanto",es:"Spanish",et:"Estonian",eu:"Basque",fa:"Persian",fi:"Finnish",fo:"Faroese",fr:"French","fr-ca":"French (Canada)",gl:"Galician",gu:"Gujarati",he:"Hebrew",hi:"Hindi",

@@ -57,20 +57,10 @@
                 <div class="col-sm-6">
                     <div class="fg-line select ">
                         <select class="selectpicker validate[required,ajax[EditCheck]]" id="idCompany" name="idCompany">
-                            <option value='' disabled selected>---- Chọn ----</option>
+                            <option value='' selected>---- Chọn ----</option>
                             <% orgs.forEach(function(el, i) {%>
                             <option value="<%- el._id%>" <%- (cur.idCompany && _equal(el._id.toString(),cur.idCompany.toString()) ? 'selected' : ''); %>><%- el.name%></option>
                             <%})%>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="group" class="col-sm-3 control-label">Trunk<span class="required">*</span></label>
-                <div class="col-sm-6">
-                    <div class="fg-line select ">
-                        <select class="selectpicker validate[required]" id="trunk" name="trunk">
-                            <option value='' disabled selected>---- Chọn ----</option>
                         </select>
                     </div>
                 </div>
@@ -83,45 +73,6 @@
                         <select class="selectpicker validate[required]" id="type" name="type" disabled>
                             <option value='' disabled selected>---- Chọn ----</option>
                             <option value="1" <%- (cur.type && _equal('1',cur.type.toString()) ? 'selected' : ''); %>>Gọi Thủ Công</option>
-                            <option value="2" <%- (cur.type && _equal('2',cur.type.toString()) ? 'selected' : ''); %>>Auto Dialing</option>
-                            <option value="3" <%- (cur.type && _equal('3',cur.type.toString()) ? 'selected' : ''); %>>Predictive</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="auto-dialing hidden form-group">
-                <label for="inputEmail3" class="col-sm-3 control-label">Delay time </label>
-                <div class="col-sm-6">
-                    <div class="fg-line">
-                        <input type="number" value="<%- cur.delayTime%>" class="form-control input-sm" id="delayTime" name="delayTime:number">
-                    </div>
-                </div>
-            </div>
-            <div class="auto-dialing hidden form-group">
-                <label for="inputEmail3" class="col-sm-3 control-label">Retry </label>
-                <div class="col-sm-6">
-                    <div class="fg-line">
-                        <input type="number" value="<%- cur.retry%>" class="form-control input-sm" id="retry" name="retry:number">
-                    </div>
-                </div>
-            </div>
-            <div class="auto-dialing hidden form-group">
-                <label for="inputEmail3" class="col-sm-3 control-label">Retry time </label>
-                <div class="col-sm-6">
-                    <div class="fg-line">
-                        <input type="number" value="<%- cur.retryTime%>" class="form-control input-sm" id="retryTime" name="retryTime:number">
-                    </div>
-                </div>
-            </div>
-            <div class="auto-dialing hidden form-group">
-                <label for="group" class="col-sm-3 control-label">Trạng thái Auto Dialing</label>
-                <div class="col-sm-6">
-                    <div class="fg-line select ">
-                        <select class="selectpicker" id="autoDialingStatus" name="autoDialingStatus">
-                            <option value='0' <%- (cur.type && _equal('0',cur.autoDialingStatus.toString()) ? 'selected' : ''); %>>Waiting</option>
-                            <option value='1' <%- (cur.type && _equal('1',cur.autoDialingStatus.toString()) ? 'selected' : ''); %>>Start</option>
-                            <option value='2' <%- (cur.type && _equal('2',cur.autoDialingStatus.toString()) ? 'selected' : ''); %>>Stop</option>
-                            <option value='3' <%- (cur.type && _equal('3',cur.autoDialingStatus.toString()) ? 'selected' : ''); %>>Completed</option>
                         </select>
                     </div>
                 </div>
@@ -161,36 +112,15 @@
                 </div>
             </div>
             <div class="auto-dialing-cisco hidden form-group">
-                <label for="inputEmail3" class="col-sm-3 control-label">Dialing mode <span class="required">*</span></label></label>
-                <div class="col-sm-6">
-                    <div class="fg-line select ">
-                        <select class="selectpicker" id="autoDialingMode" name="autoDialingMode">
-                            <option value='PREDICTIVEONLY' <%- (cur.autoDialingMode && _equal('0',cur.autoDialingMode.toString()) ? 'selected' : ''); %>>PREDICTIVEONLY</option>
-                            <option value='PREVIEWONLY' <%- (cur.autoDialingMode && _equal('0',cur.autoDialingMode.toString()) ? 'selected' : ''); %> >PREVIEWONLY</option>
-                            <option value='PROGRESSIVEONLY' <%- (cur.autoDialingMode && _equal('0',cur.autoDialingMode.toString()) ? 'selected' : ''); %> >PROGRESSIVEONLY</option>
-                            <option value='PREVIEWDIRECTONLY' <%- (cur.autoDialingModepe && _equal('0',cur.autoDialingMode.toString()) ? 'selected' : ''); %> >PREVIEWDIRECTONLY</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="auto-dialing-cisco hidden form-group">
                 <label for="inputEmail3" class="col-sm-3 control-label">Skill group <span class="required">*</span></label></label>
                 <div class="col-sm-6">
                     <div class="fg-line select ">
                         <select class="selectpicker" id="idSkillGroup" name="idSkillGroup">
                             <option value='<%- cur.idSkillGroup%>' selected ><%- cur.nameSkillGroup%></option>
                             <% skillsGroup.forEach(function(el, i) {%>
-                            <option value="<%- el.refURL[0]%>"  <%- (cur.idSkillGroup && _equal(el.refURL[0],cur.idSkillGroup) ? 'selected' : ''); %>><%- el.name[0]%></option>
+                            <option value="<%- el._id%>"  <%- (cur.idSkillGroup && _equal(el._id,cur.idSkillGroup) ? 'selected' : ''); %>><%- el.name%></option>
                             <%})%>
                         </select>
-                    </div>
-                </div>
-            </div>
-            <div class="auto-dialing hidden form-group">
-                <label for="inputEmail3" class="col-sm-3 control-label">Dialed number <span class="required">*</span></label></label>
-                <div class="col-sm-6">
-                    <div class="fg-line">
-                        <input type="number" value="<%- cur.dialedNumber ? cur.dialedNumber: 0%>" class="form-control input-sm addRequireCisco" id="dialedNumber" name="dialedNumber">
                     </div>
                 </div>
             </div>

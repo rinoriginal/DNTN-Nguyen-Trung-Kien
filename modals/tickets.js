@@ -15,7 +15,12 @@ var TicketSchema = new mongoose.Schema({
     ticketReason: { type: mongoose.Schema.Types.ObjectId, ref: 'TicketReason', index: true, default: null },
     ticketReasonCategory: { type: mongoose.Schema.Types.ObjectId, ref: 'TicketReasonCategory', index: true, default: null },
     status: { type: Number, index: true, default: 0 }, //0:chờ xử lí, 1:đang xử lí,2:đã xử lí
+    dealerSatisfaction: { type: Number, index: true,}, //0:không, 1:có
+    productStatisfaction: { type: Number, index: true,}, //0:không, 1:có
+    influlenceLevel: { type: Number, index: true,}, //0:Bình thường, 1:Cao, 2:Nghiêm trọng
+    errorTransferIcarHandle: { type: Number, index: true }, //0:Chuyển cho TT DVKH, 1:NV hỗ trợ thành công trong cuộc gọi, 2:KS Chưa thành công, 3:N/A
     note: { type: String, default: '' },
+    carCompany: { type: String, default: '' },
     customerStatisfy: { type: mongoose.Schema.Types.ObjectId, ref: 'CustomerStatisfy', index: true, default: null },
     customerStatisfyStage: { type: mongoose.Schema.Types.ObjectId, ref: 'CustomerStatisfyStage', index: true, default: null },
     created: { type: Date, index: true, default: Date.now },

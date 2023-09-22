@@ -1,8 +1,4 @@
 
-
-
-var manager = require(path.join(_rootPath, 'monitor', 'manager.js'));
-
 module.exports = function(service) {
     return new init(service);
 }

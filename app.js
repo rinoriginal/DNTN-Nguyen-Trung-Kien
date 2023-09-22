@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var sqlsv = require("mssql");
 var Stomp = require('stomp-client');
 var fs = require('fs')
 var fsg = require('graceful-fs')
@@ -7,17 +8,11 @@ var url = require('url');
 var http = require('http');
 require('mongoose-pagination');
 const { initDBCallBack } = require('./db/connections');
-const chatRouter = require("./api/routers/chatRouter");
-const mailRouter = require("./api/routers/mailRouter");
-const serviceRouter = require("./api/routers/serviceRouter");
-const voiceRouter = require("./api/routers/voiceRouter");
 const nameFolder = {
     log: 'log',
 }
-
+const voiceRouter = require("./api/routers/voiceRouter");
 require('colors');
-
-
 global._socketUsers = {};
 global.path = require('path');
 global.fsx = require('fs.extra');
@@ -41,8 +36,6 @@ try {
 }
 
 const {
-    SYNC_CHAT,
-    SYNC_MAIL,
     SYNC_RECORDING,
 } = process.env
 
@@ -77,10 +70,6 @@ global.EXCEL_CONFIG = {
     phongBan: `Phòng chất lượng dịch vụ`.toUpperCase(),
 };
 
-const { jobSynChatByDay } = require('./jobs/job-syn-chat-by-day')
-const { jobSynMailByDay } = require('./jobs/job-syn-mail-by-day')
-const jobChatCisco = require('./jobs/job-syn-chat-dev')
-const { jobSyncRecordingByDay } = require('./jobs/job-syn-recording-by-day')
 global.mongodb = require('mongodb');
 global.pagination = require('pagination');
 global._Excel = require('exceljs');
@@ -149,46 +138,12 @@ logger2.level = 'DEBUG';
 global.log = logger2;
 
 if (_config.database.user && _config.database.pwd) {
-    if (_config.replicaSet && _config.replicaSet.replicaSetName) {
-        global._dbPath = getConnRS(_config.replicaSet.user, _config.replicaSet.pwd);
-    } else {
-        global._dbPath = 'mongodb://' + _config.database.user + ':' + _config.database.pwd + '@' + _config.database.ip + ':' + _config.database.port + '/' + _config.database.name;
-    }
+    global._dbPath = 'mongodb://' + _config.database.user + ':' + _config.database.pwd + '@' + _config.database.ip + ':' + _config.database.port + '/' + _config.database.name;
 }
-/**
- * Keep uid and pwd of database in envoirerment variable
- */
-if (process.env.DATABASE_UID && process.env.DATABASE_PWD) {
-    _config.database.user = process.env.DATABASE_UID;
-    _config.database.pwd = process.env.DATABASE_PWD;
-    if (_config.replicaSet && _config.replicaSet.replicaSetName) {
-        global._dbPath = getConnRS(_config.replicaSet.user, _config.replicaSet.pwd);
-    } else {
-        global._dbPath = 'mongodb://' + _config.database.user + ':' + _config.database.pwd + '@' + _config.database.ip + ':' + _config.database.port + '/' + _config.database.name;
-    }
-}
-// _initDBCallBack(_dbPath, _dbName, function (err, db, client) {
-//     if (err) return process.exit(1);
-//     global['mongoClient'] = db;
 
-//     // Tao job lấy file ghi âm
-//     cron.schedule('* * * * *', () => {
-//         console.log('running a task every minute');
-//         updateRecording();
-//     });
-// });
 _initDBCallBack(_dbPath, _dbName, function (err, db, client) {
     if (err) return process.exit(1);
     global['mongoClient'] = db;
-    // Job đồng bộ chat
-    if(SYNC_CHAT && SYNC_CHAT == 'true') jobSynChatByDay();
-    // Job đồng bộ mail
-    if(SYNC_MAIL && SYNC_MAIL == 'true') jobSynMailByDay();
-    // Tao job lấy file ghi âm
-    cron.schedule('* * * * *', () => {
-        console.log('running a task every minute');
-        if(SYNC_RECORDING && SYNC_RECORDING == 'true') jobSyncRecordingByDay()
-    });
 });
 var app = express();
 
@@ -199,18 +154,14 @@ app.set('port', process.env.PORT || _config.app.port);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 // Set Modules api
-app.use("/api/v1/service", serviceRouter);
 // End setting module
 app.use(require('cookie-parser')('dft.vn'));
 app.use(require('express-session')({ secret: 'dft.vn', resave: false, saveUninitialized: true }));
 app.use(require('multer')({ dest: path.join(__dirname, 'temp') }).any());
-//app.use(require('multer')({dest: path.join(__dirname, 'temp')}).array(['avatar', 'attachments']));
 app.use(require('serve-favicon')(path.join(__dirname, 'assets', 'favicon.ico')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(require(path.join(_rootPath, 'libs', 'auth')).auth);
-app.use("/api/v1/mail", mailRouter);
 app.use("/api/v1/voice", voiceRouter);
-app.use("/api/v1/chat", chatRouter);
 
 require(path.join(_rootPath, 'libs', 'cleanup.js')).Cleanup();
 switch (process.env.NODE_ENV) {
@@ -254,23 +205,6 @@ String.prototype.zFormat = function () {
 
 mongoose.connect(_dbPath, options = { db: { native_parser: true }, server: { poolSize: 10 }, user: _config.database.user, pass: _config.database.pwd });
 
-// global._ActiveMQ = new Stomp(_config.activemq.ip, _config.activemq.port, _config.activemq.user, _config.activemq.pwd);
-
-// _ActiveMQ.connect(function (sessionId) {
-//     fsx.readdirSync(path.join(_rootPath, 'queue', 'subscribe')).forEach(function (file) {
-//         if (path.extname(file) !== '.js') return;
-//         require(path.join(_rootPath, 'queue', 'subscribe', file))(_ActiveMQ, sessionId);
-//     });
-
-//     fsx.readdirSync(path.join(_rootPath, 'queue', 'publish')).forEach(function (file) {
-//         if (path.extname(file) !== '.js') return;
-//         global['QUEUE_' + _.classify(_.replaceAll(file.toLowerCase(), '.js', ''))] = require(path.join(_rootPath, 'queue', 'publish', file));
-//         console.log('QUEUE'.gray + ' : QUEUE_' + _.classify(_.replaceAll(file.toLowerCase(), '.js', '')));
-//     });
-// });
-
-//Thử nghiệm lib sompit mới 
-//Fix lỗi không subscribe queue ở node nhận nhiều bản tin lớn 1 lúc từ activemq
 var activemqSV1 = {
     'host': _config.activemq.ip,
     'port': _config.activemq.port,
@@ -336,19 +270,5 @@ sio.on('connection', function (socket) {
     require(path.join(_rootPath, 'socket', 'io.js'))(socket);
 });
 
-global._MailService = require(path.join(_rootPath, 'libs', 'mailService'));//Gửi SMS/Email
 
-// DUONGNB: Add interval check agent online to assign order
 require(path.join(_rootPath, 'monitor', 'order-monitor.js')).assignByInterval();
-function getConnRS(user,pwd) {
-    var connRS = 'mongodb://';
-    if(user && pwd) {
-        connRS += user + ':' + pwd + '@';
-    }
-    _config.replicaSet.listMember.forEach(function (mem) {
-        connRS += mem.ip + ':' + mem.port + ','
-    });
-    connRS = connRS.slice(0, -1).concat('/' + _config.replicaSet.dbName + '?replicaSet=' + _config.replicaSet.replicaSetName);
-
-    return connRS;
-}

@@ -4,6 +4,7 @@ var ConfigSchema = new mongoose.Schema({
         campaign: { type: String }
     },
     prefix: { type: String },
+    monitors: { type: String },
     Agent_Team: { type: String },
     ipRecording: { type: String },
     ipCiscoReport: { type: String },

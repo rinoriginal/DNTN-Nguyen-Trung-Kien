@@ -1,5 +1,4 @@
 
-
 var SkillChatSchema = new mongoose.Schema({
     skillName: {type: String, required: true, index: true, unique: true},
     idCompany: {type: mongoose.Schema.Types.ObjectId, ref : 'Company', required: true},

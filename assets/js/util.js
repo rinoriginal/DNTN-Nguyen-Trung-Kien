@@ -1,5 +1,3 @@
-
-
 /**
  * Tải xuống một file từ url
  * Không mở popup dạng window.open(url);

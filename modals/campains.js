@@ -7,26 +7,13 @@ var CampainsSchema = new mongoose.Schema({
     idCategoryReason : {type: mongoose.Schema.Types.ObjectId, ref: 'TicketReasonCategory'},
     startDate: {type: Date, required: true},
     endDate: {type: Date, required: true},
-    trunk: {type: mongoose.Schema.Types.ObjectId, ref: 'Trunk'},
     type: {type: Number},
-    delayTime: {type: Number, default: 0},
-    retry: {type: Number, default: 0},
-    retryTime: {type: Number, default: 0},
-    autoDialingStatus: {type: Number, default: 0},
     agents: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-
-
     createBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     updateBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     status: {type: Number, default: 1},
     created: {type: Date, default: Date.now},
     updated: {type: Date},
-    idCompaignCreatedByCisco: {type: String},
-    idSkillGroup: {type: String},
-    campaignPrefix: {type: Number},
-    autoDialingMode: {type: String},
-    dialedNumber: {type: Number},
-    nameSkillGroup: {type: String},
     startTime: {type: String},
     endTime: {type: String}
 }, {id: false, versionKey: 'v'});

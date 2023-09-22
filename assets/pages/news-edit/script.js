@@ -374,7 +374,7 @@ var DFT = function ($) {
         /**
          * name: "js.png"
          * lastModified: 1592758038016
-         * lastModifiedDate: Sun Jun 21 2020 23:47:18 GMT+0700 (Indochina Time)
+         * lastModifiedDate: Sun Jun 21 2023 23:47:18 GMT+0700 (Indochina Time)
          * webkitRelativePath: "",
          * size: 2609
          * type: "image/jpeg"

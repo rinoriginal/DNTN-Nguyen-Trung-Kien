@@ -1,11 +1,10 @@
 
-
 var manager = require(path.join(_rootPath, 'monitor', 'manager.js'));
 var syncAcd = require(path.join(_rootPath, 'monitor', 'sync-acd.js'));
 var acdPublish = require(path.join(_rootPath, 'queue', 'publish', 'acd-publish.js'));
 
 /**
- * By hoangdv on 10/02/2017.
+ * By hoan on 10/02/2023.
  * Keep all callIds in once hour(ttl). Keep only once popup for once incomming call.
  * @type {{add, check, setTimeToLive}}
  */

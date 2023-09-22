@@ -76,7 +76,6 @@ var DFT = function ($) {
             _frm.find('input[name="startDate"]').prop( "disabled", false);
             _frm.find('input[name="endDate"]').prop( "disabled", false);
             _frm.find('select[name="idCompany"]').val(null).prop( "disabled", false).selectpicker('refresh');
-            _frm.find('select[name="trunk"]').empty().selectpicker('refresh');
             _frm.find('select[name="type"]').val(null).prop( "disabled", false).selectpicker('refresh');
             $.map($('.auto-dialing'), function(n, i){
                 $(n).addClass('hidden');
@@ -117,95 +116,6 @@ var DFT = function ($) {
                     });
                 });
         });
-
-        //$(document).on('click', '.task a', function () {
-        //    _options.id = $(this).closest('td').attr('data-id');
-        //    _options.url = $(this).closest('td').attr('data-url');
-        //
-        //    if (!_options.url) return false;
-        //    if ($(this).is('.delete')) {
-        //        swal({
-        //                title: _config.MESSAGE.CAMPAIN.DELETE_TITLE, text: _config.MESSAGE.CAMPAIN.DELETE_TEXT, html: true,
-        //                type: 'warning', showCancelButton: true, confirmButtonColor: "#DD6B55", confirmButtonText: "Có, chắc chắn !", closeOnConfirm: false
-        //            },
-        //            function () {
-        //                _AjaxObject(_options.url + '/' + _options.id, 'DELETE', {}, function (resp) {
-        //                    swal({title: 'Thành công', text: _config.MESSAGE.CAMPAIN.DELETE_TEXT_SUCCESS, type: 'success'});
-        //                    _.LoadPage(window.location.hash);
-        //                });
-        //            }
-        //        );
-        //    }
-        //
-        //    if ($(this).is('.edit')) {
-        //        $.get(_options.url + '/' + _options.id + '/edit', function (resp) {
-        //            if (_.isEqual(resp.code, 200)) {
-        //                _options.method = 'PUT';
-        //                var canEdit = resp.canEdit;
-        //                _frm.find('input[name="name"]').val(resp.message.name);
-        //                _frm.find('input[name="name"]').attr('class', 'form-control input-sm validate[required,ajax[EditCheck]]');
-        //                _frm.find('select[name="idCompany"]').attr('class', 'selectpicker validate[required,ajax[EditCheck]]');
-        //                _frm.find('#updateId').val(resp.message._id);
-        //                _frm.find('input[name="note"]').val(resp.message.note).prop( "disabled", canEdit ? false : true);
-        //                _frm.find('input[name="startDate"]').val(moment(resp.message.startDate).format('MM/DD/YYYY h:mm a')).prop( "disabled", canEdit ? false : true);
-        //                _frm.find('input[name="endDate"]').val(moment(resp.message.endDate).format('MM/DD/YYYY h:mm a')).prop( "disabled", canEdit ? false : true);
-        //                _frm.find('select[name="idCompany"]').val(resp.message.idCompany).prop( "disabled", canEdit ? false : true).selectpicker('refresh');
-        //                var params= {};
-        //                params.status=1;
-        //                params.idCompany= $('#idCompany').find(":selected").val();
-        //                $('#trunk').empty().selectpicker('refresh');
-        //                var curTrunk = resp.message.trunk;
-        //                $.get("/trunk?"+ $.param(params), function(resp){
-        //                    if(resp.code==200){
-        //                        _.each(resp.data, function(g, i){
-        //                            $('#trunk').append(newOption(g)).selectpicker('refresh');
-        //                        });
-        //                        _frm.find('select[name="trunk"]').val(curTrunk).selectpicker('refresh');
-        //                    }
-        //                })
-        //
-        //                $('#agents').empty()
-        //                var curAgents = resp.message.agents;
-        //                _Ajax('/campains'+ '?type=getAgent&idCompany='+$('#idCompany').val(), 'GET', {}, function (resp) {
-        //                    _.each(resp.message, function(g, i){
-        //                        $('#agents').append('<option class="duallist-option" value='+g._id+'>'+ g.displayName+'</option>').bootstrapDualListbox('refresh');
-        //                    });
-        //                    _frm.find('select[name="agents[]"]').val(curAgents).prop( "disabled", canEdit ? false : true).bootstrapDualListbox('refresh');
-        //                    $('#agents').bootstrapDualListbox('refresh');
-        //                });
-        //
-        //                _frm.find('select[name="idSurvey"]').val(resp.message.idSurvey).prop( "disabled", canEdit ? false : true).selectpicker('refresh');
-        //                _frm.find('select[name="idCategoryReason"]').val(resp.message.idCategoryReason).prop( "disabled", canEdit ? false : true).selectpicker('refresh');
-        //                _frm.find('select[name="idCampainParent"]').val(resp.message.idCampainParent).prop( "disabled", canEdit ? false : true).selectpicker('refresh');
-        //                _frm.find('.modal-title').text('Sửa chiến dịch ' + resp.message.name);
-        //                _frm.find('#status').val(resp.message.status).prop('checked', resp.message.status ? 'checked' : '');
-        //                _frm.find('#status-span').html(resp.message.status ? 'Kích hoạt' : 'Không kích hoạt');
-        //                _frm.find('select[name="type"]').val(resp.message.type).prop( "disabled", canEdit ? false : true).selectpicker('refresh');
-        //                if(resp.message.type != 1){
-        //                    $.map($('.auto-dialing'), function(n, i){
-        //                        $(n).removeClass('hidden');
-        //                    });
-        //                }else {
-        //                    $.map($('.auto-dialing'), function(n, i){
-        //                        $(n).addClass('hidden');
-        //                    });
-        //                }
-        //                _frm.find('input[name="delayTime:number"]').val(resp.message.delayTime);
-        //                _frm.find('input[name="retry:number"]').val(resp.message.retry);
-        //                _frm.find('input[name="retryTime:number"]').val(resp.message.retryTime);
-        //                _frm.find('select[name="autoDialingStatus"]').val(resp.message.autoDialingStatus).selectpicker('refresh');
-        //                _frm.find('select[name="idCampainParent"]').prop( "disabled", canEdit ? false : true).selectpicker('refresh');
-        //
-        //                _frm.find('.modal-footer .update').hide();
-        //                _frm.find('.modal-footer .create').show();
-        //                _frm.find('option[value="'+_options.id+'"]').attr('disabled','disabled');
-        //                _frm.modal('show');
-        //            } else {
-        //                swal({title: 'Thông báo !', text: resp.message});
-        //            }
-        //        });
-        //    }
-        //});
 
         // Xóa nhiều phần tử đã chọn
         $(document).on('click', '#btn-delSelection', function(){
@@ -297,15 +207,6 @@ var DFT = function ($) {
             var params= {};
             params.status=1;
             params.idCompany= $('#idCompany').find(":selected").val();
-            $('#trunk').empty().selectpicker('refresh');
-
-            $.get("/trunk?"+ $.param(params), function(resp){
-                if(resp.code==200){
-                    _.each(resp.data, function(g, i){
-                        $('#trunk').append(newOption(g)).selectpicker('refresh');
-                    });
-                }
-            })
 
             $('#agents').empty();
 

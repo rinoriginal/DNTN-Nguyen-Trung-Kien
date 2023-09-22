@@ -1,5 +1,4 @@
 
-
 var ProvincesShema = new mongoose.Schema({
     name: {type: String, default: '', required: true},
     typeArea: {type: Number}, // 1 - Miền Bắc , 2 - Miền Trung, 3 - Miền Nam

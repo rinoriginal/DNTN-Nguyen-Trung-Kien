@@ -122,7 +122,7 @@ var DFT = function ($) {
 				var _username = $('ul.top-menu a.c-white.t-7').find( "span" ).eq( 2 ).text();
                 $('ul.top-menu a.c-white.t-7').html('<span class="text-uppercase">' + $this.text() +'<span class="m-l-10 m-r-10">-</span><span>'+ _username +'</span><span class="m-l-10 m-r-10">-</span><span>' + getCookie("deviceId")+'</span>');
                 $('aside#sidebar .sidebar-inner .panel-group').html(html);
-                // hoangdv keep back to old url
+                // hoan keep back to old url
                 var hash = window.location.hash;
 				if (hash.length === 0 || hash.indexOf('auth') > -1) {
                     hash = 'articles-list';

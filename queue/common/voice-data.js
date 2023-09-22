@@ -1,7 +1,4 @@
 
-
-var publish = require(path.join(_rootPath, 'queue', 'publish', 'voice-publish.js'));
-
 /**
  * Lấy dữ liệu về skill, group của user trong tenant
  * @param user Đối tượng user cần lấy thông tin

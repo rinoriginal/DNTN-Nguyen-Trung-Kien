@@ -1,5 +1,4 @@
 
-
 var SkillMailSchema = new mongoose.Schema({
     skillName: {type: String, required: true, index: true},
     idCompany: {type: mongoose.Schema.Types.ObjectId, ref : 'Company', required: true, index: true},

@@ -1,5 +1,4 @@
 
-
 var inProcess = {};
 var acdPublish = require(path.join(_rootPath, 'queue', 'publish', 'acd-publish.js'));
 var users = [];

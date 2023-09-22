@@ -1,49 +1,49 @@
 /*
- Highcharts 4.2.4 JS v/Highstock 4.2.4 (2016-04-14)
+ Highcharts 4.2.4 JS v/Highstock 4.2.4 (2023-04-14)
 
- (c) 2009-2016 Torstein Honsi
+ (c) 2009-2023 Torstein Honsi
 
  License: www.highcharts.com/license
 
  Highcharts funnel module
 
- (c) 2010-2016 Torstein Honsi
+ (c) 2010-2023 Torstein Honsi
 
  License: www.highcharts.com/license
- Highcharts 4.2.4 JS v/Highstock 4.2.4 (2016-04-14)
+ Highcharts 4.2.4 JS v/Highstock 4.2.4 (2023-04-14)
  Exporting module
 
- (c) 2010-2016 Torstein Honsi
+ (c) 2010-2023 Torstein Honsi
 
  License: www.highcharts.com/license
- Highcharts 4.2.4 JS v/Highstock 4.2.4 (2016-04-14)
+ Highcharts 4.2.4 JS v/Highstock 4.2.4 (2023-04-14)
  Client side exporting module
 
  (c) 2015 Torstein Honsi / Oystein Moseng
 
  License: www.highcharts.com/license
- Highcharts 4.2.4 JS v/Highstock 4.2.4 (2016-04-14)
+ Highcharts 4.2.4 JS v/Highstock 4.2.4 (2023-04-14)
  Data module
 
- (c) 2012-2016 Torstein Honsi
+ (c) 2012-2023 Torstein Honsi
 
  License: www.highcharts.com/license
- Highcharts 4.2.4 JS v/Highstock 4.2.4 (2016-04-14)
+ Highcharts 4.2.4 JS v/Highstock 4.2.4 (2023-04-14)
  Plugin for displaying a message when there is no data visible in chart.
 
- (c) 2010-2016 Highsoft AS
+ (c) 2010-2023 Highsoft AS
  Author: Oystein Moseng
 
  License: www.highcharts.com/license
- Highcharts 4.2.4 JS v/Highstock 4.2.4 (2016-04-14)
+ Highcharts 4.2.4 JS v/Highstock 4.2.4 (2023-04-14)
  Solid angular gauge module
 
- (c) 2010-2016 Torstein Honsi
+ (c) 2010-2023 Torstein Honsi
 
  License: www.highcharts.com/license
- Highcharts 4.2.4 JS v/Highstock 4.2.4 (2016-04-14)
+ Highcharts 4.2.4 JS v/Highstock 4.2.4 (2023-04-14)
 
- (c) 2011-2016 Torstein Honsi
+ (c) 2011-2023 Torstein Honsi
 
  License: www.highcharts.com/license
  */

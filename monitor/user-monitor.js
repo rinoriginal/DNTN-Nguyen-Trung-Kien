@@ -1,5 +1,4 @@
 
-
 var manager = require(path.join(_rootPath, 'monitor', 'manager.js'));
 
 module.exports = function () {
@@ -155,7 +154,7 @@ function init() {
     };
 
 	/**
-     * 27.Feb.2017 hoangdv
+     * 27.Feb.2023 hoan
 	 * Cập nhật trạng thái làm việc của agent
 	 * @param newSts
 	 * @param reason loại thay đổi trạng thái login | logout | change_status

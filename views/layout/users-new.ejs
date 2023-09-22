@@ -1,132 +1,202 @@
 <%-breadcrumb%>
 <div class="card">
-    <div class="lv-header-alt clearfix">
-        <h2 class="lvh-label hidden-xs"><%- title %></h2>
-
-        <div class="lvh-search">
-            <input type="text" placeholder="Start typing..." class="lvhs-input" id="company-search-bar">
-
-            <i class="lvh-search-close">×</i>
-        </div>
-
-        <ul class="lv-actions actions">
-            <li>
-                <a href="#users" data-toggle="tooltip" data-placement="top"
-                   data-original-title="Làm mới danh sách">
-                    <i class="zmdi zmdi-refresh"></i>
-                </a>
-            </li>
-            <li class="hidden" id="li-hidden">
-                <a role="button" data-toggle="tooltip" data-placement="top" data-original-title="Xóa các mục đánh dấu" id="btn-addSelection">
-                    <i class="zmdi zmdi-delete zmdi-hc-fw"></i>
-                </a>
-            </li>
-        </ul>
+    <div class="card-header">
+        <h2 class="m-b-5"><%- title %></h2>
+        <small class="text-muted f-12">( Những trường có dấu <span class="c-red">*</span> là bắt buộc nhập. )</small>
     </div>
+    <div class="card-body card-padding">
+        <form role="form" class="form-horizontal" id="add-new-user">
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label" id="text_user_name"></label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="hidden" id="cName" value="">
+                        <input type="text" class="form-control validate[required, ajax[userNameCheck]]" id="name" name="name"
+                            placeholder="">
+                        <small class="text-muted f-12" id="txt_user_name_desc"></small>
+                    </div>
+                </div>
+            </div>
 
-    <div class="card-body table-responsive" style=" min-height:200px">
-        <!--<form id="userForm">-->
-        <table class="table table-hover table-condensed table-bordered table-fix" style="table-layout: fixed;">
-            <thead>
-            <tr>
-                <th class="w-50 bgm-orange c-white"></th>
-                <th data-sort="none" sortName="name" role="button" class="text-center bgm-orange c-white filter"
-                    data-original-title="Click để sắp xếp dữ liệu tăng dần/giảm dần" data-container="body"
-                    data-toggle="tooltip" data-placement="top">
-                    <i data-toggle="tooltip" data-placement="top" data-original-title="Sắp xếp tăng dần"
-                       class="zmdi zmdi-sort-asc"></i>
-                    <i data-toggle="tooltip" data-placement="top" data-original-title="Sắp xếp giảm dần"
-                       class="zmdi zmdi-sort-desc"></i>
-                    <span id="text_user_name"></span>
-                </th>
-                <th data-sort="none" sortName="displayName" role="button" class="text-center bgm-orange c-white filter"
-                    data-original-title="Click để sắp xếp dữ liệu tăng dần/giảm dần" data-container="body"
-                    data-toggle="tooltip" data-placement="top">
-                    <i data-toggle="tooltip" data-placement="top" data-original-title="Sắp xếp tăng dần"
-                       class="zmdi zmdi-sort-asc"></i>
-                    <i data-toggle="tooltip" data-placement="top" data-original-title="Sắp xếp giảm dần"
-                       class="zmdi zmdi-sort-desc"></i>
-                    <span id="text_display_name"></span>
-                </th>
-                <th data-sort="none" sortName="email" role="button" class="text-center bgm-orange c-white filter"
-                    data-original-title="Click để sắp xếp dữ liệu tăng dần/giảm dần" data-container="body"
-                    data-toggle="tooltip" data-placement="top">
-                    <i data-toggle="tooltip" data-placement="top" data-original-title="Sắp xếp tăng dần"
-                       class="zmdi zmdi-sort-asc"></i>
-                    <i data-toggle="tooltip" data-placement="top" data-original-title="Sắp xếp giảm dần"
-                       class="zmdi zmdi-sort-desc"></i>
-                    <span id="text_email"></span>
-                </th>
-                <th data-sort="none" sortName="accountCode" role="button" class="text-center bgm-orange c-white filter"
-                    data-original-title="Click để sắp xếp dữ liệu tăng dần/giảm dần" data-container="body"
-                    data-toggle="tooltip" data-placement="top">
-                    <i data-toggle="tooltip" data-placement="top" data-original-title="Sắp xếp tăng dần"
-                       class="zmdi zmdi-sort-asc"></i>
-                    <i data-toggle="tooltip" data-placement="top" data-original-title="Sắp xếp giảm dần"
-                       class="zmdi zmdi-sort-desc"></i>
-                    <span id="text_accountcode"></span>
-                </th>
-                <th class="text-center bgm-orange c-white w-80" id="text_actions"></th>
-            </tr>
-            </thead>
+            <div class="form-group">
+                <label for="password" class="col-sm-3 control-label" id="text_pass_word"></label>
+                <div class="col-sm-6">
+                    <div class="input-group fg-line">
+                        <input type="password"
+                               class="form-control validate[required,minSize[3],funcCall[checkSpaceInString]]"
+                               id="password"
+                               name="password" placeholder="" value=""
+                               data-prompt-position="topRight:40" tabindex="2">
+                        <span class="input-group-btn showPwd">
+                            <button class="btn btn-default reveal" type="button" title="Hiển thị password"><i
+                                        class="glyphicon glyphicon-eye-open"></i></button>
+                        </span>
+                    </div>
+                    <small class="text-muted f-12" id="txt_pass_word_desc"></small>
+                </div>
+            </div>
 
-            <tbody>
-            <tr id="searchForm">
-                <td class="text-center select-cell">
-                    <div class="checkbox m-0">
+            <div class="form-group">
+                <label for="" class="col-sm-3 control-label" id="text_re_pass_word"></label>
+                <div class="col-sm-6">
+                    <div class="input-group fg-line">
+                        <input type="password"
+                               class="form-control validate[required, equals[password]],minSize[3],funcCall[checkSpaceInString]]"
+                                placeholder="" value=""
+                               data-prompt-position="topRight:40" tabindex="3">
+                        <span class="input-group-btn showPwd">
+                            <button class="btn btn-default reveal" type="button" title="Hiển thị password"><i
+                                        class="glyphicon glyphicon-eye-open"></i></button>
+                        </span>
+                    </div>
+                    <small class="text-muted f-12" id="txt_re_pass_word_desc"></small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="displayName" class="col-sm-3 control-label" id="text_display_name"></label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="text" class="form-control validate[required, minSize[3]]" id="displayName"
+                               name="displayName" placeholder="vd: Trần Văn A" maxlength="60"
+                               value="" tabindex="4">
+                        <small class="text-muted f-12" id="text_display_name_desc"></small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="idAgentCisco" class="col-sm-3 control-label" id="text_account_code"></label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="text" class="form-control" id="idAgentCisco"
+                               name="idAgentCisco" placeholder="vd: 660220" maxlength="60"
+                               value="" tabindex="4">
+                        <small class="text-muted f-12" id="text_account_code_desc"></small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="col-sm-3 control-label" id="text_email"></label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="text" class="form-control validate[required,custom[email]]"
+                               id="email" name="email" placeholder="vd: john@bbc.com" maxlength="60"
+                               value="" tabindex="5">
+                        <small class="text-muted f-12" id="text_email_desc"></small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="role" class="col-sm-3 control-label" id="text_role"></label>
+
+                <div class="col-sm-6 card-body">
+                    <table class="table table-hover table-fix" id="role-table">
+                        <thead>
+                        <tr>
+                            <th class="p-0"></th>
+                            <th class="p-0"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="company">
+                            <td><span class="text-muted m-t-20"><b><i><%- _config.app.name %></i></b></span></td>
+                            <td>
+                                <select class="tag-select role-select" name="pmRole"
+                                        id="pmRole"
+                                        data-placeholder=" ">
+                                    <option value=""></option>
+                                    <% role.forEach(function(item){ %>
+                                    <% if (item._id == 1 || item._id == 2 || item._id == 6 || item._id == 7){ %>
+                                    <optgroup label="<%- item.name %>">
+                                        <% item.role.forEach(function(el){ %>
+                                        <option value="<%- el.roleId + '-' + _config.app._id %>" ><%- el.name %></option>
+                                        <% }) %>
+                                    </optgroup>
+                                    <% }}) %>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <% for(var i = 0; i < myCompany.length; i++){ %>
+                        <tr style="background-color: rgba(220,220,220,0.2)" class="company"
+                            data-id="<%- myCompany[i]._id %>" show='0'>
+                            <td class="p-l-10 vertial-td">
+                                <div class="indentation m-r-10
+                                    tree-child<%- _equal(i, myCompany.length - 1) ? '-last' : '' %>">
+                                    &nbsp;
+                                </div>
+                                <span class="text-muted p-r-5 company-leader">Công ty : <b><%- myCompany[i].name %></b></span>
+                            </td>
+                            <td>
+                                <select class="tag-select role-select companyRole" name="clRole"
+                                        data-placeholder=" ">
+                                    <option value=""></option>
+                                    <% role.forEach(function(item){ %>
+                                    <% if(item._id == 3 || item._id == 7){ %>
+                                    <% item.role.forEach(function(el){ %>
+                                    <option value="<%- el.roleId + "-" + myCompany[i]._id %>"<%- _equal(myCompany[i].role, el.roleId) ? 'selected' : '' %>><%- el.name %></option>
+                                    <% }) %>
+                                    <% }}) %>
+                                </select>
+                            </td>
+                        </tr>
+                        <% for (var j = 0; j < myCompany[i].ag.length; j++){ %>
+                        <tr class="agentGroup <%- 'companyId' + j %>">
+                            <td class="p-l-10 vertial-td">
+                                <div class="indentation tree-child-left <%- _equal(i, myCompany.length - 1) ? 'nobg' : '' %>"></div>
+                                <div class="indentation w-40 m-l-20 m-r-10 tree-child<%- _equal(j, myCompany[i].ag.length - 1) ? '-last' : '' %>">
+                                    &nbsp;</div>
+                                <span class="text-muted p-r-5">Nhóm :</span> <%- myCompany[i].ag[j].name %>
+                            </td>
+                            <td>
+                                <select class="tag-select role-select" name="agRole"
+                                        data-placeholder=" ">
+                                    <% role.forEach(function(item){ %>
+                                    <option value=""></option>
+                                    <% if(item._id == 4 || item._id == 5){ %>
+                                    <optgroup label="<%- item.name %>">
+                                        <% item.role.forEach(function(el){ %>
+                                        <option value="<%- el.roleId + '-' + myCompany[i].ag[j]._id + '-' + item._id %>"<%- _equal(myCompany[i].ag[j].role, el.roleId) ? 'selected' : '' %>><%- el.name %></option>
+                                        <% }) %>
+                                        <% }}) %>
+                                    </optgroup>
+                                </select>
+                            </td>
+                        </tr>
+                        <% } %>
+                        <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="status" class="col-sm-3 control-label" id="text_status"></label>
+                <div class="col-sm-6">
+                    <div class="checkbox m-t-3 m-b-15">
                         <label>
-                            <input name="select" type="checkbox" class="select-box select-box-all c-white" value="all"
-                                   id="deleteAll">
+                            <input type="checkbox" value="1" id="status" name="status">
                             <i class="input-helper"></i>
+                            <span class="p-l-5 text-capitalize-f" data-text-on="Không kích hoạt"
+                                  data-text-off="Kích hoạt"></span>
                         </label>
                     </div>
-                </td>
-                <td><input class="form-control searchColumn" type="text" id="search_name" name="name"
-                           placeholder="vd: lamlv"></td>
-                <td><input class="form-control searchColumn" type="text" id="search_displayName"
-                           name="displayName"
-                           placeholder="vd: Trần Văn"></td>
-                <td><input class="form-control searchColumn" type="text" id="search_email" name="email"
-                           placeholder="vd: john@bbc.com"></td>
-                <td><input class="form-control searchColumn" type="text" id="search_accountCode" name="accountCode"
-                           placeholder="vd: 123456"></td>
-                <td>
-                    <button type="button" class="btn btn-primary btn-block waves-effect" id="btn-search" name="btn-search">
-                        <i class="zmdi zmdi-search"></i></button>
-                </td>
-            </tr>
+                </div>
+            </div>
 
-            <% if(myUser.length == 0){ %>
-            <script> var isNullUser = true;</script>
-            <% } else{ %>
-            <script> var isNullUser = false;</script>
-            <% myUser.forEach(function(element, index) { %>
-            <tr>
-                <td class="select-cell text-center">
-                    <div class="checkbox m-0">
-                        <label>
-                            <input data-id="<%- element._id %>" name="select" type="checkbox"
-                                   class="select-box select-box-cell" value="all">
-                            <i class="input-helper"></i>
-                        </label>
-                    </div>
-                </td>
-                <td><%- element.name %></td>
-                <td><%- element.displayName %></td>
-                <td><%- element.email %></td>
-                <td><%- element.accountCode %></td>
-                <td class="text-center">
-                    <a class="p-t-3 btn-flat-bg add-user" data-id="<%- element._id %>" data-toggle="tooltip"
-                       data-placement="top" data-original-title="Thêm người dùng vào dự án"><i class="zmdi zmdi-account-add zmdi-hc-fw green f-17"></i></a>
-                </td>
-            </tr>
-            <% })} %>
 
-            </tbody>
-        </table>
-        <!--</form>-->
-        <% if(paging && paging.pageCount > 1){ %>
-        <% include('../paging.ejs') %>
-        <% } %>
+            <div class="form-group m-b-0">
+                <div class="col-sm-offset-3 col-sm-10">
+                    <a href="/#users" class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect"><i
+                                class="m-r-5 zmdi zmdi-arrow-left"></i>Quay lại</a>
+                    <button type="submit" class="btn btn-primary btn-icon-text m-t-10 waves-effect"><i
+                                class="m-r-5 zmdi zmdi-plus-circle-o"></i>Xác nhận
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

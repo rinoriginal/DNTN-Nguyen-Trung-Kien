@@ -2,6 +2,7 @@ _.mixin(_.extend(require('underscore.string').exports(), require(path.join(_root
 _moment.locale("vi");
 
 var acdPublish = require(path.join(_rootPath, 'queue', 'publish', 'acd-publish.js'));
+var commonFunc = require(path.join(_rootPath, 'commons', 'functions'));
 
 fsx.readdirSync(path.join(_rootPath, 'modals')).forEach(function (file) {
     if (path.extname(file) !== '.js') return;
@@ -40,19 +41,17 @@ module.exports = function routers(app) {
     app.locals._dInputFilter2 = _.dynamicInputFilter2;
     app.locals._dInputField = _.dynamicInputField;
     app.locals._fieldValue = function (obj, name, type) {
+        console.log('obj[name][0].value', obj, name,value);
         if (!_.has(obj, name)) return '';
         if (!obj[name].length) return '';
         switch (Number(type)) {
             case 4:
             case 5:
                 return _.without(obj[name][0].value, '0', '', null).join(', ');
-                break;
             case 6:
                 return _moment(obj[name][0].value).format('DD/MM/YYYY');
-                break;
             default:
                 return obj[name][0].value;
-                break;
         }
     };
 
@@ -83,7 +82,7 @@ module.exports = function routers(app) {
         res.redirect('/');
     });
 
-    app.post('/login', function (req, res) {
+    app.post('/login', async function (req, res) {
         var _body = _.pick(req.body, 'name', 'email', 'password', 'deviceId');
         if (!((_.has(_body, 'name') || _.has(_body, 'email')) && _.has(_body, 'password'))) return res.status(200).send({
             code: 406,
@@ -101,7 +100,7 @@ module.exports = function routers(app) {
             _socketUsers[user._id].monitor.setData(user);
             _socketUsers[user._id].monitor.setDeviceID(_body.deviceId);
             _socketUsers[user._id].sessionID = req.sessionID;
-            // 25.Feb.2017 hoangdv fake default agent status
+            // 25.Feb.2023 hoan fake default agent status
             //var agentStatus = message.transID.split('|')[3];
             var agentStatus = 23; // unavailable
             if (agentStatus) _socketUsers[user._id].monitor.setStatus(Number(agentStatus), 'login');
@@ -380,5 +379,42 @@ module.exports = function routers(app) {
         _Role.create({ _id: _staticRole.QA, name: "QA", status: 1, modify: 0, weight: 7, roleGroup: 7 });
     });
 
+    //add thêm field cho modal customer indexx
+    _Company.findOne({}, async function (err, comp) {
+        if (comp) {
+            let idCompany = comp._id.toString();
+            let fields = await commonFunc.getCustomerFields(idCompany)
+            //khai báo field cho modal theo từng dự án
+            fields.forEach(function (el) {
+                let defineType = {};
+                let modalName = el.modalName;
+                let fieldType = el.fieldType;
+                switch (fieldType) {
+                    case 1:
+                        defineType[modalName] = { type: String }
+                        require('mongoose').model('Customerindex').schema.add(defineType);
+                        break;
+                    case 2:
+                        defineType[modalName] = { type: Number }
+                        require('mongoose').model('Customerindex').schema.add(defineType);
+                        break;
+                    case 5:
+                        defineType[modalName] = [{ type: String }]
+                        require('mongoose').model('Customerindex').schema.add(defineType);
+                        break;
+                    case 6:
+                        defineType[modalName] = { type: Date }
+                        require('mongoose').model('Customerindex').schema.add(defineType);
+                        break;
+                    default:
+                        defineType[modalName] = { type: String }
+                        require('mongoose').model('Customerindex').schema.add(defineType);
+                        break;
+                }
+            })
+        } else {
+            console.info("Chưa có công ty nào được tạo mới cả !")
+        }
+    })
 }
 

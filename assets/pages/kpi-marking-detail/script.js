@@ -1,5 +1,4 @@
 
-
 var DFT = function ($) {
     var _recordHost = '';
 

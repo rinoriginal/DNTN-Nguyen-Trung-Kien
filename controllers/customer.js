@@ -53,7 +53,6 @@ exports.index = {
                         _Company.findById({ _id: new mongodb.ObjectID(req.session.auth.company._id) }, cb);
                     },
                     function (comInfo, cb) {
-                        console.log(comInfo.companyProfile);
                         _CompanyProfile.findById({ _id: comInfo.companyProfile }, cb);
                     },
                     function (fields, cb) {
@@ -164,7 +163,6 @@ exports.new = function (req, res) {
                     _Company.findById({ _id: new mongodb.ObjectID(req.session.auth.company._id) }, cb);
                 },
                 function (comInfo, cb) {
-                    console.log(comInfo.companyProfile);
                     _CompanyProfile.findById({ _id: comInfo.companyProfile }, cb);
                 },
                 function (fields, cb) {
@@ -212,7 +210,6 @@ exports.edit = function (req, res) {
                         _Company.findById({ _id: new mongodb.ObjectID(req.session.auth.company._id) }, cb);
                     },
                     function (comInfo, cb) {
-                        // console.log(comInfo.companyProfile);
                         _CompanyProfile.findById({ _id: comInfo.companyProfile }, cb);
                     },
                     function (fields, cb) {

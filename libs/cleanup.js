@@ -8,7 +8,7 @@ exports.Cleanup = function Cleanup(callback) {
 
     process.on('exit', function () {
 		/**
-         * 28.Feb.2017 hoangdv
+         * 28.Feb.2023 hoan
          * kick all agent online to mark logout in agentstatuslog table
 		 */
 		if (_socketUsers) {

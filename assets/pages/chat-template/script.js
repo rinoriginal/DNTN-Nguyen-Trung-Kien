@@ -1,5 +1,3 @@
-
-
 var DFT = function ($) {
 
     var deleteOrg = function () {

@@ -1252,7 +1252,7 @@
             //                                     ChatContainer.updateBadge('visitor-panel', _.isEqual(_customers[customerId].customer.status, CustomerStatus.active) ? 'active' : 'idle', 1);
             //                                     //Bật mini popup
             //                                     // if (_.isEqual(offline, CustomerStatus.offline)){
-            //                                     //     //1
+            //                                     //     //sonth1
             //                                     //     console.log(1124, '--- offline ---');
             //                                     //     ChatContainer.open(customerId, customer, {isOffline: offline});
             //                                     // }

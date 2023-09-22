@@ -1,4 +1,3 @@
-
 var DFT = function ($) {
     var pagingObject = [];
     var inboundLastSearch = {};

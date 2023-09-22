@@ -1,6 +1,4 @@
 
-
-
 module.exports = function (client, sessionId) {
     var ternalPrefix = _config.activemq.queueName;
     log.debug('/queue/subscribe/cdr-subscribe', sessionId);

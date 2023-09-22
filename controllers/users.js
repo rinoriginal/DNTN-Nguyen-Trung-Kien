@@ -1,4 +1,3 @@
-var requestUser = require(path.join(_rootPath, 'queue', 'common', 'request-users.js'));
 var syncAcd = require(path.join(_rootPath, 'monitor', 'sync-acd.js'));
 var manager = require(path.join(_rootPath, 'monitor', 'manager.js'));
 
@@ -12,181 +11,241 @@ exports.index = {
         });
     },
     html: function(req, res) {
-        var page = _.has(req.query, 'page') ? parseInt(req.query.page) : 1;
-        var rows = _.has(req.query, 'rows') ? parseInt(req.query.rows) : 10;
-
-        var agg = _Users.aggregate();
-
-        if (_.has(req.query, 'sort')) {
-            var sortArr = req.query.sort.split(':');
-            var sortObj = {};
-            sortObj[sortArr[0]] = _.isEqual(sortArr[1], 'asc') ? 1 : -1;
-            agg._pipeline.push({ $sort: sortObj });
-            delete req.query.sort;
+        if(req.session && req.session.auth.role._id === '56ccdf99031ce3e32a48f5d9'){
+            res.render('403', {title: '403 | Access Denied'});
         }
+        else{
+            var page = _.has(req.query, 'page') ? parseInt(req.query.page) : 1;
+            var rows = _.has(req.query, 'rows') ? parseInt(req.query.rows) : 10;
 
-        if (_.has(req.query, 'status')) {
-            if (!_.isEqual(req.query.status, '2')) agg._pipeline.push({ $match: { status: parseInt(req.query.status) } });
-            delete req.query.status;
-        }
+            var agg = _Users.aggregate();
 
-        _.allKeys(req.query).forEach(function(el) {
-            if (_.isEqual(el, 'page') || _.isEqual(el, 'rows')) return;
-            var matchObj = {};
-            matchObj[el] = { $regex: new RegExp(_.stringRegex(req.query[el]), 'i') };
-            agg._pipeline.push({ $match: matchObj });
-        });
+            if (_.has(req.query, 'sort')) {
+                var sortArr = req.query.sort.split(':');
+                var sortObj = {};
+                sortObj[sortArr[0]] = _.isEqual(sortArr[1], 'asc') ? 1 : -1;
+                agg._pipeline.push({ $sort: sortObj });
+                delete req.query.sort;
+            }
 
-        _Users.aggregatePaginate(agg, {
-            page: page,
-            limit: rows
-        }, function(error, users, node, count) {
-            var paginator = new pagination.SearchPaginator({
-                prelink: '/users',
-                current: page,
-                rowsPerPage: rows,
-                totalResult: count
+            if (_.has(req.query, 'status')) {
+                if (!_.isEqual(req.query.status, '2')) agg._pipeline.push({ $match: { status: parseInt(req.query.status) } });
+                delete req.query.status;
+            }
+
+            _.allKeys(req.query).forEach(function(el) {
+                if (_.isEqual(el, 'page') || _.isEqual(el, 'rows')) return;
+                var matchObj = {};
+                matchObj[el] = { $regex: new RegExp(_.stringRegex(req.query[el]), 'i') };
+                agg._pipeline.push({ $match: matchObj });
             });
-            _.render(req, res, 'users', {
-                title: 'Danh sách người dùng',
-                myUser: users,
-                paging: paginator.getPaginationData(),
-                plugins: [
-                    ['bootstrap-select']
-                ]
-            }, true, error);
-        });
+
+            _Users.aggregatePaginate(agg, {
+                page: page,
+                limit: rows
+            }, function(error, users, node, count) {
+                var paginator = new pagination.SearchPaginator({
+                    prelink: '/users',
+                    current: page,
+                    rowsPerPage: rows,
+                    totalResult: count
+                });
+                _.render(req, res, 'users', {
+                    title: 'Danh sách người dùng',
+                    myUser: users,
+                    paging: paginator.getPaginationData(),
+                    plugins: [
+                        ['bootstrap-select']
+                    ]
+                }, true, error);
+            });
+        }
     }
 };
 
 // POST
 exports.create = function(req, res) {
-    if (_.has(req.query, 'type')) {
-        _Users.find({}, function(error, data) {
-            return res.json({ code: error ? 500 : 200, users: error ? error : data })
-        });
-    } else {
-        if (!_.has(req.body, 'uId')) return res.json({ code: 500, message: 'UserID không hợp lệ' });
-        var uid = req.body.uId;
-        if (!mongodb.ObjectID.isValid(uid)) uid = uid.split(',');
-
-        requestUser.RequestAddUser(uid,
-            function() {
-                res.locals._url = req.originalUrl;
-                var err = new Error('Request Timeout !');
-                res.render('500', { message: err.message });
-            },
-            function(obj) {
-                var err = obj['error'];
-                var result = obj['result'];
-                res.json({ code: err ? 500 : 200, message: err ? err.message : result });
-            });
+    var agentGroupMembers = []
+    var agentGroupLeaders = []
+    var companyLeaders = []
+    var ternalLeaders = []
+    if(_.has(req.body, 'agRole') && req.body.agRole !== ''){
+        let id = req.body.agRole.split('-')
+        if(id[0] === '56ccdf99031ce3e32a48f5d9'){
+            agentGroupMembers.push({
+                group: new mongoose.Types.ObjectId(id[1]),
+                role: new mongoose.Types.ObjectId(id[0])
+            })
+        }
+        else{
+            agentGroupLeaders.push({
+                group: new mongoose.Types.ObjectId(id[1]),
+                role: new mongoose.Types.ObjectId(id[0])
+            })
+        }
     }
+    if(_.has(req.body, 'clRole') && req.body.clRole !== ''){
+        let id = req.body.clRole.split('-')
+        companyLeaders.push({
+            company: new mongoose.Types.ObjectId(id[1]),
+            role: new mongoose.Types.ObjectId(id[0])
+        })
+    }
+    if(_.has(req.body, 'pmRole') && req.body.pmRole !== ''){
+        let id = req.body.pmRole.split('-')
+        ternalLeaders.push({
+            ternal: new mongoose.Types.ObjectId(id[1]),
+            role: new mongoose.Types.ObjectId(id[0])
+        })
+    }
+    let dataUser = {
+        name: req.body.name,
+        password: req.body.password,
+        displayName: req.body.displayName,
+        status: parseInt(req.body.status),
+        email: req.body.email,
+        accountCode: req.body.idAgentCisco || 0,
+        agentGroupMembers: agentGroupMembers,
+        agentGroupLeaders: agentGroupLeaders,
+        companyLeaders: companyLeaders,
+        ternalLeaders: ternalLeaders
+    }
+    if(_.has(req.body, 'idAgentCisco') && req.body.idAgentCisco !== ''){
+        dataUser.idAgentCisco = req.body.idAgentCisco
+    }
+    _Users.create(dataUser, function(err, result){
+        res.json({
+            code: err ? 500: 200,
+            data: result
+        })
+    })
 
 };
 
 exports.new = function(req, res) {
-    var page = _.has(req.query, 'page') ? parseInt(req.query.page) : 1;
-    var rows = _.has(req.query, 'rows') ? parseInt(req.query.rows) : 10;
-
-    requestUser.RequestUser(page, rows, req.query,
-        function() {
-            res.locals._url = req.originalUrl;
-            var err = new Error('Request Timeout !');
-            res.render('500', { message: err.message });
-        },
-        function(result) {
-            var paging = null;
-            if (!!result && !!result.count) {
-                paging = new pagination.SearchPaginator({
-                    prelink: '/users/new',
-                    current: page,
-                    rowsPerPage: rows,
-                    totalResult: result.count
-                }).getPaginationData();
-            }
-
-            _.render(req, res, 'users-new', {
-                title: 'Thêm mới người dùng vào dự án',
-                myUser: result.users,
-                paging: paging,
-            }, true, result.error);
-        });
+    try {
+        if(req.session && req.session.auth.role._id === '56ccdf99031ce3e32a48f5d9'){
+            res.render('403', {title: '403 | Access Denied'});
+        }
+        else{
+            _async.parallel({
+                role: function(callback) {
+                    _Role.aggregate([
+                        { $match: { status: 1 } },
+                        { $sort: { weight: 1 } },
+                        {
+                            $group: {
+                                _id: '$roleGroup',
+                                name: { $first: '$name' },
+                                role: { $push: { roleId: '$_id', name: '$name' } }
+                            }
+                        }
+                    ], callback)
+                },
+                company: function(callback) {
+                    _Company.aggregate([
+                        { $match: { status: 1 } },
+                        { $lookup: { from: 'agentgroups', localField: '_id', foreignField: 'idParent', as: 'ag' } },
+                        { $unwind: { path: "$ag", preserveNullAndEmptyArrays: true } },
+                        { $group: { _id: '$_id', name: { $first: '$name' }, ag: { $push: { _id: '$ag._id', name: '$ag.name' } } } }
+                    ], callback);
+                }
+            }, function(err, result){
+                _.render(req, res, 'users-new', {
+                    title: 'Thêm mới người dùng',
+                    role: result.role,
+                    myCompany: result.company,
+                    plugins: [['bootstrap-duallistbox'], ['bootstrap-select'], ['chosen']]
+                }, !_.isNull(result), err);
+            })
+        }
+    } catch (error) {
+        res.json({
+            code: 500,
+            message: error.message || error
+        })
+    }
+    
 };
 // GET : http://domain.com/users/:_id/edit
 exports.edit = function(req, res) {
     if (!mongodb.ObjectID.isValid(req.params.user)) return res.render('404', { title: '404 | Page not found' });
-    _Users.findById(req.params.user, function(err, user) {
-        if (err) return res.json({ code: 500, message: err });
-        _async.parallel({
-            role: function(callback) {
-                _Role.aggregate([
-                    { $match: { status: 1 } },
-                    { $sort: { weight: 1 } },
-                    {
-                        $group: {
-                            _id: '$roleGroup',
-                            name: { $first: '$name' },
-                            role: { $push: { roleId: '$_id', name: '$name' } }
+    if(req.session && req.session.auth.role._id === '56ccdf99031ce3e32a48f5d9'){
+        res.render('403', {title: '403 | Access Denied'});
+    }
+    else{
+        _Users.findById(req.params.user, function(err, user) {
+            if (err) return res.json({ code: 500, message: err });
+            _async.parallel({
+                role: function(callback) {
+                    _Role.aggregate([
+                        { $match: { status: 1 } },
+                        { $sort: { weight: 1 } },
+                        {
+                            $group: {
+                                _id: '$roleGroup',
+                                name: { $first: '$name' },
+                                role: { $push: { roleId: '$_id', name: '$name' } }
+                            }
                         }
-                    }
-                ], callback)
-            },
-            company: function(callback) {
-                _Company.aggregate([
-                    { $match: { status: 1 } },
-                    { $lookup: { from: 'agentgroups', localField: '_id', foreignField: 'idParent', as: 'ag' } },
-                    { $unwind: { path: "$ag", preserveNullAndEmptyArrays: true } },
-                    { $group: { _id: '$_id', name: { $first: '$name' }, ag: { $push: { _id: '$ag._id', name: '$ag.name' } } } }
-                ], function(err, company) {
-                    function convertArrayToDict(arr, key, val) {
-                        var tmp = {};
-                        for (var i = 0; i < arr.length; i++) tmp[arr[i][key]] = arr[i][val];
-                        return tmp;
-                    }
-                    let companyLeaders = user && user.companyLeaders && user.companyLeaders.length > 0 ? user.companyLeaders : []
-                    let qaMembers = user && user.qaMembers && user.qaMembers.length > 0 ? user.qaMembers : []
-                    let agentGroupLeaders = user && user.agentGroupLeaders && user.agentGroupLeaders.length > 0 ? user.agentGroupLeaders : []
-                    let agentGroupMembers = user && user.agentGroupMembers && user.agentGroupMembers.length > 0 ? user.agentGroupMembers : []
-                    var cl = convertArrayToDict(companyLeaders, 'company', 'role');
-                    var qa = convertArrayToDict(qaMembers, 'company', 'role');
-                    var agl = convertArrayToDict(agentGroupLeaders, 'group', 'role');
-                    var agm = convertArrayToDict(agentGroupMembers, 'group', 'role');
-                    var rr = [];
-                    _.each(company, function(el) {
-                        if ((!_.isUndefined(cl[el._id.toString()]))) el['role'] = cl[el._id.toString()];
-                        if (!_.isUndefined(qa[el._id.toString()])) el['role'] = qa[el._id.toString()];
-                        var ag = _.reduce(el.ag, function(memo, item) {
-                            if (_.isEmpty(item) || item.status < 1) return memo;
-                            item['role'] = _.isEmpty(agl[item._id.toString()]) ? agm[item._id.toString()] : agl[item._id.toString()];
-                            memo.push(item);
-                            return memo;
-                        }, []);
-                        el['ag'] = ag;
-                        rr.push(el);
+                    ], callback)
+                },
+                company: function(callback) {
+                    _Company.aggregate([
+                        { $match: { status: 1 } },
+                        { $lookup: { from: 'agentgroups', localField: '_id', foreignField: 'idParent', as: 'ag' } },
+                        { $unwind: { path: "$ag", preserveNullAndEmptyArrays: true } },
+                        { $group: { _id: '$_id', name: { $first: '$name' }, ag: { $push: { _id: '$ag._id', name: '$ag.name' } } } }
+                    ], function(err, company) {
+                        function convertArrayToDict(arr, key, val) {
+                            var tmp = {};
+                            for (var i = 0; i < arr.length; i++) tmp[arr[i][key]] = arr[i][val];
+                            return tmp;
+                        }
+                        let companyLeaders = user && user.companyLeaders && user.companyLeaders.length > 0 ? user.companyLeaders : []
+                        let qaMembers = user && user.qaMembers && user.qaMembers.length > 0 ? user.qaMembers : []
+                        let agentGroupLeaders = user && user.agentGroupLeaders && user.agentGroupLeaders.length > 0 ? user.agentGroupLeaders : []
+                        let agentGroupMembers = user && user.agentGroupMembers && user.agentGroupMembers.length > 0 ? user.agentGroupMembers : []
+                        var cl = convertArrayToDict(companyLeaders, 'company', 'role');
+                        var qa = convertArrayToDict(qaMembers, 'company', 'role');
+                        var agl = convertArrayToDict(agentGroupLeaders, 'group', 'role');
+                        var agm = convertArrayToDict(agentGroupMembers, 'group', 'role');
+                        var rr = [];
+                        _.each(company, function(el) {
+                            if ((!_.isUndefined(cl[el._id.toString()]))) el['role'] = cl[el._id.toString()];
+                            if (!_.isUndefined(qa[el._id.toString()])) el['role'] = qa[el._id.toString()];
+                            var ag = _.reduce(el.ag, function(memo, item) {
+                                if (_.isEmpty(item) || item.status < 1) return memo;
+                                item['role'] = _.isEmpty(agl[item._id.toString()]) ? agm[item._id.toString()] : agl[item._id.toString()];
+                                memo.push(item);
+                                return memo;
+                            }, []);
+                            el['ag'] = ag;
+                            rr.push(el);
+                        });
+                        callback(null, rr);
                     });
-                    callback(null, rr);
+                }
+            }, function(err, result) {
+                user = user.toObject();
+                _.each(user.ternalLeaders, function(item) {
+                    if (_.isEqual(item.ternal.toString(), _config.app._id)) user['ternalLeaders'] = item.role;
                 });
-            }
-        }, function(err, result) {
-            user = user.toObject();
-            _.each(user.ternalLeaders, function(item) {
-                if (_.isEqual(item.ternal.toString(), _config.app._id)) user['ternalLeaders'] = item.role;
+                _.each(user.qaLeaders, function(item) {
+                    if (_.isEqual(item.ternal.toString(), _config.app._id)) user['qaLeaders'] = item.role;
+                });
+                _.render(req, res, 'users-edit', {
+                    title: 'Chỉnh sửa người dùng',
+                    myUser: user,
+                    role: result.role,
+                    myCompany: result.company,
+                    plugins: [
+                        ['chosen']
+                    ]
+                }, !_.isNull(result), err);
             });
-            _.each(user.qaLeaders, function(item) {
-                if (_.isEqual(item.ternal.toString(), _config.app._id)) user['qaLeaders'] = item.role;
-            });
-            _.render(req, res, 'users-edit', {
-                title: 'Chỉnh sửa người dùng',
-                myUser: user,
-                role: result.role,
-                myCompany: result.company,
-                plugins: [
-                    ['chosen']
-                ]
-            }, !_.isNull(result), err);
         });
-    });
+    }
 };
 
 exports.show = {
@@ -533,7 +592,6 @@ exports.update = function(req, res) {
                                 } else {
                                     if (!mongodb.ObjectID.isValid(roleId) || !mongodb.ObjectID.isValid(newCompanyId)) return;
 
-                                    // do nghiệp vụ cũ làm trường này bị null, méo hiểu kiểu gì
                                     let currentGroup = {
                                         company: new mongodb.ObjectID(newCompanyId),
                                         role: new mongodb.ObjectID(roleId)
@@ -587,7 +645,6 @@ exports.update = function(req, res) {
                                 } else {
                                     if (!mongodb.ObjectID.isValid(roleId) || !mongodb.ObjectID.isValid(agId)) return;
 
-                                    // do nghiệp vụ cũ làm trường này bị null, méo hiểu kiểu gì
                                     let currentGroup = {
                                         group: new mongodb.ObjectID(agId),
                                         role: new mongodb.ObjectID(roleId)
@@ -621,7 +678,6 @@ exports.update = function(req, res) {
                                 } else {
                                     if (!mongodb.ObjectID.isValid(roleId) || !mongodb.ObjectID.isValid(agId)) return;
 
-                                    // do nghiệp vụ cũ làm trường này bị null, méo hiểu kiểu gì
                                     let currentGroup = {
                                         group: new mongodb.ObjectID(agId),
                                         role: new mongodb.ObjectID(roleId)
@@ -743,12 +799,6 @@ exports.search = function(req, res) {
         });
 };
 
-////DELETE http://domain.com/users/:_id
-//exports.destroy = function (req, res) {
-//    _Users.findByIdAndRemove(req.params.user, function (error, user) {
-//        res.json(user);
-//    });
-//};
 function createSortObj(req) {
     var sortData = ['sortName', 'sortDisplayName', 'sortEmail'];
     var sortColumn = ['name', 'displayName', 'email'];

@@ -177,24 +177,6 @@ exports.new = function (req, res) {
           callback(null, result);
         });
       },
-      // Query chat profile
-      groupProfileChat: function (callback) {
-        _GroupsProfileChat.find({ status: 1 }, function (err, result) {
-          if (err) {
-            callback(err);
-          }
-          callback(null, result);
-        });
-      },
-      // Query mail profile
-      groupProfileMail: function (callback) {
-        _GroupsProfileMail.find({ status: 1 }, function (err, result) {
-          if (err) {
-            callback(err);
-          }
-          callback(null, result);
-        });
-      },
     }, function (error, resp) {
       // if (error) {
       //   throw error
@@ -207,8 +189,6 @@ exports.new = function (req, res) {
         agents: resp.agents ? resp.agents : [],
         skillsGroup: resp.skillsGroup ? resp.skillsGroup : [],
         groupsProfile: resp.groupProfileCall ? resp.groupProfileCall : [],
-        groupsProfileChat: resp.groupProfileChat ? resp.groupProfileChat : [],
-        groupsProfileMail: resp.groupProfileMail ? resp.groupProfileMail : [],
         plugins: [['bootstrap-duallistbox'], ['bootstrap-select']]
       }, true, error);
     });
@@ -381,14 +361,6 @@ exports.edit = function (req, res) {
     groupsProfile: function (callback) {
       _GroupsProfile.find({ status: 1 }, callback);
     },
-    // Query group profile chat
-    groupsProfileChat: function (callback) {
-      _GroupsProfileChat.find({ status: 1 }, callback);
-    },
-    // Query group profile mail
-    groupsProfileMail: function (callback) {
-      _GroupsProfileMail.find({ status: 1 }, callback);
-    },
     // Query danh sách agent No ACD
     agentGroupDisable: function (callback) {
       _AgentGroupDisable.find({ idGroup: req.params['agentgroup'] }, callback);
@@ -416,8 +388,6 @@ exports.edit = function (req, res) {
         leaders: result.leader,
         agents: result.agent,
         groupsProfile: result.groupsProfile,
-        groupsProfileChat: result.groupsProfileChat,
-        groupsProfileMail: result.groupsProfileMail,
         agentDisable: _.pluck(result.agentGroupDisable, 'idAgent'),
         skillsGroup: result.skillGroup ? result.skillGroup : [],
         plugins: [['bootstrap-duallistbox'], ['bootstrap-select']]

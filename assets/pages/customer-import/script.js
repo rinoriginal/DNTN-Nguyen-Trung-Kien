@@ -39,7 +39,7 @@ var DFT = function ($) {
                                 window.location.href = '/#customer-import-history';
                             });
                         } else {
-                            swal("Đã xảy ra lỗi !", resp.message, "error");
+                            swal("Đã xảy ra lỗi !", resp.message.message, "error");
                         }
                     })
                 }

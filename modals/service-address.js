@@ -1,5 +1,4 @@
 
-
 var ServiceAddressSchema = new mongoose.Schema({
     name: {type: String, required: true, index: true, unique: true},
     status: {type: Number, default: 1},

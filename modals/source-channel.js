@@ -1,5 +1,3 @@
-const { string } = require('underscore');
-
 
 var SourceChannelSchema = new mongoose.Schema({
     name: {type: String, required: true}, // Tên page

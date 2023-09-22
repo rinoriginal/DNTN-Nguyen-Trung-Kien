@@ -1,5 +1,4 @@
 
-
 var campaigns = {};
 var groups = {};
 var services = {};
@@ -275,7 +274,7 @@ function customerInteractiveVoice() {
 
     var _dateStr = _moment().format('YYYY-MM-DD');
     var _date = _moment().startOf('day').valueOf();
-    // var _date = _moment('2017-01-01', 'YYYY-MM-DD').startOf('day').valueOf();
+    // var _date = _moment('2023-01-01', 'YYYY-MM-DD').startOf('day').valueOf();
     _async.waterfall([
         function (next) {
             mongoClient.collection("cdrtransinfos").aggregate([

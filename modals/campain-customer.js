@@ -13,7 +13,5 @@ var CampainCustomerSchema = new mongoose.Schema({
 
 CampainCustomerSchema.set('toJSON', {getters: true});
 CampainCustomerSchema.plugin(require('mongoose-aggregate-paginate'));
-// DUONGNB: Remove index for Akira
-// CampainCustomerSchema.index({idCustomer: 1, idCampain: 1}, {unique: true});
 module.exports = mongoose.model('CampainCustomer', CampainCustomerSchema);
 

@@ -78,7 +78,7 @@ var DFTSOCKET = function ($) {
                 });
             });
 
-            /* 28/nov2016 hoangdv */
+
             socket.on('AccountIsUse', function () {
                 console.log("this is multi tab")
             });

@@ -186,7 +186,7 @@ var DFT = function ($) {
                 if (currentTicket.idService) {
                     serviceId = currentTicket.idService._id;
                 }
-                // 21.Mar.2017 hoangdv Thực hiện gọi ra trên ticket gọi vào, hỏi có tạo ticket hay không?
+                // 21.Mar.2023 hoan Thực hiện gọi ra trên ticket gọi vào, hỏi có tạo ticket hay không?
                 if (currentTicket && currentTicket.idService && !currentTicket.idCampain) {
                     // là ticket gọi vào - confirm tạo ticket
                     swal({
@@ -236,29 +236,7 @@ var DFT = function ($) {
                             }
                         });
                     }, function done(err) {
-                        
-                        // Khi có cuộc call kết nối thực hiện call api tạo ticket
-                        let data = {
-                            id: dialog && dialog.id,
-                            ticketId: currentTicket && currentTicket._id
-                        }
-                        jQuery.post('/api/v1/voice/update-ticket', data
-                            , function (resp) {
-                                if (resp && resp.code == 200) {
-                                    $.LoadingOverlay("hide");
-                                } else {
-                                    $.LoadingOverlay("hide");
-                                    return swal({
-                                        title: "Thông báo",
-                                        text: "Tạo thông tin khách hàng và ticket thất bại!",
-                                        type: "warning",
-                                        confirmButtonColor: "#DD6B55",
-                                        confirmButtonText: "OK",
-                                        closeOnConfirm: true,
-                                    });
-                                }
-                                
-                            });
+                        $.LoadingOverlay("hide");
                     })
                 }
             }, _makeCallHandler);
@@ -275,7 +253,7 @@ var DFT = function ($) {
         });
 
         /**
-         * 22.Mar.2017 hoangdv Mở cửa newtab thực hiện tạo ticket dựa trên số điện thoại
+         * 22.Mar.2023 hoan Mở cửa newtab thực hiện tạo ticket dựa trên số điện thoại
          * Nếu không có số điện thoại -> mở tab mới với thông tin số điện thoại trống
          * @param phoneNumber Số điện thoại
          */
@@ -429,8 +407,6 @@ var DFT = function ($) {
 
     };
     function createPaging(paging, classPaging) {
-        console.log(paging);
-
         if (!paging) return '';
         var firstPage = paging.first ? '<li><a class="' + classPaging + '" data-link="' + paging.first + '">&laquo;</a></li>' : '';
         var prePage = paging.previous ? '<li><a class="' + classPaging + '" data-link="' + paging.previous + '">&lsaquo;</a></li>' : '';
@@ -475,7 +451,7 @@ var DFT = function ($) {
                 (el.customerName ? el.customerName : ''),
                 (el.customerPhone ? el.customerPhone : ''),
                 (el.agent ? el.agent : ''),
-                (el.restaurant ? el.restaurant : ''),
+                // (el.restaurant ? el.restaurant : ''),
                 (el.status == 0 ? 'Đang xử lý' : (el.status == 1 ? 'Tạm dừng xử lý' : 'Đã xử lý')),
                 (moment(el.created).format('DD/MM/YYYY HH:mm A')),
                 (moment(el.deadline).format('DD/MM/YYYY HH:mm A')),
@@ -511,11 +487,8 @@ var DFT = function ($) {
             autoPositionUpdate: true,
             validationEventTrigger: 'keyup',
             onValidationComplete: function (form, status) {
-                let facebook = $("#edit_field_facebook").val();
-                let zalo = $("#edit_field_zalo").val();
-                let query = `?field_facebook=${facebook}&field_zalo=${zalo}`
                 if (status) {
-                    _AjaxData('/ticket-edit/customer-' + $('#save-customer').attr('data-id')+ query, 'PUT', $(form).getData(), function (resp) {
+                    _AjaxData('/ticket-edit/customer-' + $('#save-customer').attr('data-id'), 'PUT', $(form).getData(), function (resp) {
                         if (resp.code == 200) {
                             swal({
                                 title: 'Cập nhật thành công',
@@ -587,27 +560,39 @@ var DFT = function ($) {
                     var fcrVal = $('#frm-edit-ticket-fcr-value').val();
                     if (!!callLogs.data && callLogs.data.length > 0) $('#frm-edit-ticket-fcr-value').val(1);
                     _AjaxData('/ticket-edit/editTicket-' + $('#save-new-ticket').attr('data-id'), 'PUT', $(form).getData(), function (resp) {
-
-                        if (resp.code == 200) {
+                        if($('#errorTransferIcarHandle').val() == ''){
                             swal({
-                                title: 'Cập nhật thành công',
-                                text: '',
-                                type: "success",
+                                title: 'Có lỗi xảy ra',
+                                text: 'Vui lòng nhập lỗi Chuyển ICALL Xủ Lý',
+                                type: "warning",
                                 confirmButtonColor: "#DD6B55",
-                                confirmButtonText: "Xác nhận",
+                                confirmButtonText: "Xác nhận!",
                                 closeOnConfirm: true
+                            }, function () {
+            
                             });
-                            $('#tab-edit-ticket').find('#ticket-history-list').html(zoka.showTicketListBody(resp.message.data, false));
-                            $('#tab-edit-ticket').find('.paging-list').html(zoka.createPaging(resp.message.paging));
-                        } else {
-                            swal({
-                                title: 'Thiếu Ngày hẹn xử lý',
-                                text: resp.message,
-                                type: "error",
-                                confirmButtonColor: "#DD6B55",
-                                confirmButtonText: "Quay lại!",
-                                closeOnConfirm: true
-                            });
+                        }else{
+                            if (resp.code == 200) {
+                                swal({
+                                    title: 'Cập nhật thành công',
+                                    text: '',
+                                    type: "success",
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "Xác nhận",
+                                    closeOnConfirm: true
+                                });
+                                $('#tab-edit-ticket').find('#ticket-history-list').html(zoka.showTicketListBody(resp.message.data, false));
+                                $('#tab-edit-ticket').find('.paging-list').html(zoka.createPaging(resp.message.paging));
+                            } else {
+                                swal({
+                                    title: 'Thiếu Ngày hẹn xử lý',
+                                    text: resp.message,
+                                    type: "error",
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "Quay lại!",
+                                    closeOnConfirm: true
+                                });
+                            }
                         }
                     });
                 }
@@ -798,7 +783,6 @@ var DFT = function ($) {
     //Load iframe chỉnh sửa phiếu khiếu nại
     $('#editComlaintPopup').on('shown.bs.modal', function (e) {
         var idTicket = $(this).attr('data-id')
-        console.log('idticket', idTicket);
 
         $(this).find('iframe').attr('src', '/#complaint/' + idTicket + '/edit');
     });
@@ -899,90 +883,9 @@ var DFT = function ($) {
         });
     };
 
-    var bindClickAdvisory = function () {
-        // Chuyển trang
-        $(document).on('click', '#pagingAdvisory .pagination li a', function (e) {
-            e.preventDefault();
-            let url = e.target.getAttribute('href')
-            let i = url.indexOf("?page=");
-            let page = i === -1 ? 1 : url.substring(i + 6);
-            _page = page;
-            getFilterAdvisoryTicket(false, page);
-        });
-        // Click tìm kiếm
-        $('#searchAdvisoryTicket').click(function () {
-            console.log(1111111111);
-            getFilterAdvisoryTicket(true);
-        });
-        // Làm mới trang
-        $(document).on('click', '.zmdi-refresh', function () {
-            _.LoadPage(window.location.hash);
-        });
-    };
-
-    // Lấy dữ liệu lọc và truy vấn server
-    var getFilterAdvisoryTicket = function (load, page) {
-        var filter = _.chain($('.input'))
-            .reduce(function (memo, el) {
-                if (!_.isEqual($(el).val(), '') && !_.isEqual($(el).val(), null)) memo[el.name] = $(el).val();
-                return memo;
-            }, {}).value();
-        console.log('filter', filter);
-
-        if (page) filter['page'] = page;
-        filter['idCustomer'] = currentTicket.idCustomer;
-        if (load) {
-            _Ajax("/ticket-advisory?search=ticket&" + $.param(filter), 'GET', {}, function (resp) {
-                if (resp.code == 200) {
-                    $('#body-table').empty();
-                    if (resp.data.length) {
-                        console.log(resp.data.length);
-                        let total = document.querySelector('.totalAdvisory');
-                        if (total) {
-                            total.remove();
-                        }
-                        $('#pagingAdvisory').empty();
-                        loadDataAdvisory(resp);
-                        $('#pagingAdvisory').append(_.paging('#ticket-advisory', resp.paging));
-                    } else {
-                        swal({
-                            title: "Thông báo",
-                            text: "Không tìm thấy các trường phù hợp",
-                            type: "warning",
-                            confirmButtonColor: "#DD6B55",
-                            confirmButtonText: "Xác nhận!",
-                            closeOnConfirm: true
-                        });
-                    }
-                } else {
-                    swal({ title: 'Cảnh báo!', text: resp.message });
-                }
-            })
-        } else {
-            _Ajax("/ticket-advisory?search=ticket&" + $.param(filter), 'GET', {}, function (resp) {
-                if (resp.code == 200) {
-                    $('#body-table').empty();
-                    if (resp.data.length) {
-                        console.log(resp.data.length);
-                        let total = document.querySelector('.totalAdvisory');
-                        if (total) {
-                            total.remove();
-                        }
-                        $('#pagingAdvisory').empty();
-                        loadDataAdvisory(resp);
-                        $('#pagingAdvisory').append(_.paging('#ticket-advisory', resp.paging));
-                    }
-                } else {
-                    swal({ title: 'Cảnh báo!', text: resp.message });
-                }
-            })
-        }
-    };
-
 
     // Hiển thị dữ liệu lên giao diện
     var loadDataAdvisory = function (resp) {
-        console.log(1111, resp);
 
         var template = '<tr>' +
             '<td>{0}</td>' +
@@ -996,7 +899,6 @@ var DFT = function ($) {
 
         var rows = '';
         resp.data.forEach(function (el) {
-            console.log(el)
             if (_.isEmpty(el)) return;
 
             rows += template.str(
@@ -1020,8 +922,6 @@ var DFT = function ($) {
     })
     // //Load iframe tạo mới phiếu tư vấn
     $('#editAdvisoryPopup').on('shown.bs.modal', function (e) {
-        console.log(123123123123, $(this).attr('data-id'));
-
         // var idCompany = currentTicket.idService.idCompany._id
         var idTicket = $(this).attr('data-id')
         $(this).find('iframe').attr('src', '/#ticket-advisory/' + idTicket + '/edit?checkVoice=true');
@@ -1116,29 +1016,12 @@ var DFT = function ($) {
             survey = JSON.parse(survey);
             surveyResult = JSON.parse(surveyResult);
             createCallInfo();
-            console.log('script js sjsjsjsjsj 2', new Date())
             bindClick();
             bindSubmit();
             bindValue();
             bindSocket(_socket);
             showTicket();
-
-            //ticketAvisory
-            bindValueAdvisory();
-            bindClickAdvisory();
-            getFilterAdvisoryTicket(false);
-            $('#btn-addTicketAdvisory').attr('style', 'display:none')
             $('#khachhang').attr('style', 'display:none')
-            //zoka.ticketReasonEvent($, '#frm-edit-ticket', '#ticketReasonCategory', '#ticketSubreason', '.tReason', {});
-            //$('.testthoima').html('<select class="select-picker form-control" id="123conma">' +
-            //    '<option>123123123</option>' +
-            //    '<option>123123123</option>' +
-            //    '<option>123123123</option>' +
-            //    '<option>123123123</option>' +
-            //    '<option>123123123</option>' +
-            //    '</select>');
-            //
-            //$('#123conma').selectpicker()
             $('.multi-date-picker').datepicker({
                 multidate: 2,
                 multidateSeparator: ' - ',

@@ -1,5 +1,4 @@
 
-
 var SkillSchema = new mongoose.Schema({
     skillName: {type: String, required: true, index: true},
     alarmDurHigh: {type: Number, required: true},
@@ -30,42 +29,6 @@ SkillSchema.statics._deleteAll = function (ids, cb) {
             cb(err, _errorSkills);
         });
     });
-
-
-//    mongoose.model('Skill').find({_id: ids}, function (error, ss) {
-//        if (!ss) {
-//            cb(error, 404);
-//        }else{
-//            _async.forEachOf(ss, function(s, i, cb1){
-//                mongoose.model('GroupProfile').find({
-//                    skills: s._id
-//                }, function(err2, _gps){
-//                    _async.waterfall([
-//                        function(cb2){
-//                            _gps.forEach(function(el, i){
-//                                console.log(el);
-//                                if (el.skills[i] == s._id){
-//                                    el.skills = undefined;
-//                                    el.save();
-//                                }
-//                            })
-//                            cb2(null);
-//                        }
-//
-//                    ], function(err, result){
-////                        mongoose.model('Skill').remove({_id: s._id}, cb1);
-//                        mongoose.model('Service').update({
-//                            idSkill: s._id
-//                        }, {$unset: {idSkill: 1}}, {$multi: true}, function(err2){
-//                            mongoose.model('Skill').remove({_id: s._id}, cb1);
-//                        });
-//                    });
-//                });
-//            }, function (err) {
-//                cb(err);
-//            })
-//        }
-//    });
 };
 
 SkillSchema.set('toJSON', {getters: true});

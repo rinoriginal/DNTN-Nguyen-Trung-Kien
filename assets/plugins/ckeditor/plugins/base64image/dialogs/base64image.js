@@ -1,7 +1,4 @@
-/*
- * Created by ALL-INKL.COM - Neue Medien Muennich - 04. Feb 2014
- * Licensed under the terms of GPL, LGPL and MPL licenses.
- */
+
 CKEDITOR.dialog.add("base64imageDialog", function(editor){
 	
 	var t = null,

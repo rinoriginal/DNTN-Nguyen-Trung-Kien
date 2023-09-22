@@ -265,9 +265,10 @@ function _eventConnect() {
         _jwClient.event("clientStatusChanged").bind(function (evt) {
             if (evt.data.next == jabberwerx.Client.status_connected) {
                 _finesse.signIn(getCookie('_agentId'), getCookie('_extension'), getCookie('_isLoginMobile'), getCookie('_extensionMobile'), getCookie('_dialNumber'), true, _signInHandler, _signInHandler);
-            } else if (evt.data.next == jabberwerx.Client.status_disconnected) {
-                _finesse.signOut(getCookie('_agentId'), _extension, null, _signOutHandler, _signOutHandler);
-            }
+            } 
+            // else if (evt.data.next == jabberwerx.Client.status_disconnected) {
+            //     _finesse.signOut(getCookie('_agentId'), _extension, null, _signOutHandler, _signOutHandler);
+            // }
         });
         _jwClient.connect(jid, _password, jwArgs);
         window._jwClient = _jwClient;

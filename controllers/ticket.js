@@ -157,7 +157,7 @@
                                     }
                                 });
                             } else {
-                                // 09-11-2016: Cuongnm 
+                                // 09-11-2023: Cuongnm 
                                 //callback(null, null);
                                 if (_.has(req.query, 'field_so_dien_thoai')) {
                                     _CCKFields['field_so_dien_thoai'].db.findOne({ value: req.query['field_so_dien_thoai'] }, function (error, phone) {

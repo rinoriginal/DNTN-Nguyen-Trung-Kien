@@ -66,24 +66,12 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="group" class="col-sm-3 control-label">Trunk<span class="required">*</span></label>
-                <div class="col-sm-6">
-                    <div class="fg-line select ">
-                        <select class="selectpicker validate[required]" id="trunk" name="trunk">
-                            <option value='' disabled selected>---- Chọn ----</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
                 <label for="group" class="col-sm-3 control-label">Loại<span class="required">*</span></label>
                 <div class="col-sm-6">
                     <div class="fg-line select ">
                         <select class="selectpicker validate[required]" id="type" name="type">
                             <option value='' disabled selected>---- Chọn ----</option>
                             <option value="1">Gọi Thủ Công</option>
-                            <option value="2">Auto Dialing</option>
-                            <option value="3">Predictive</option>
                         </select>
                     </div>
                 </div>
@@ -180,7 +168,7 @@
                         <select class="selectpicker" id="idSkillGroup" name="idSkillGroup">
                             <option value='' disabled selected>---- Chọn ----</option>
                             <% skillsGroup.forEach(function(el, i) {%>
-                            <option value="<%- el.refURL[0]%>"><%- el.name[0]%></option>
+                            <option value="<%- el._id%>"><%- el.name%></option>
                             <%})%>
                         </select>
                     </div>

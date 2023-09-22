@@ -1,5 +1,3 @@
-
-
 var DFT = function ($) {
     /**
      * Tạo thẻ của option của thẻ selectpicker

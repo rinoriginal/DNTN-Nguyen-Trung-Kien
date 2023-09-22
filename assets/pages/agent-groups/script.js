@@ -1,6 +1,4 @@
 
-
-
 var DFT = function ($) {
     /**
      * Lọc dữ liệu ở ô filter
@@ -173,8 +171,6 @@ var DFT = function ($) {
         $('#txt_agent_company').html(_config.MESSAGE.AGENT_GROUPS.TXT_AGENT_COMPANY);
         $('#txt_agent_dtv').html(_config.MESSAGE.AGENT_GROUPS.TXT_AGENT_DTV);
         $('#txt_agent_call').html(_config.MESSAGE.AGENT_GROUPS.TXT_AGENT_CALL);
-        $('#txt_agent_chat').html(_config.MESSAGE.AGENT_GROUPS.TXT_AGENT_CHAT);
-        $('#txt_agent_mail').html(_config.MESSAGE.AGENT_GROUPS.TXT_AGENT_MAIL);
         $('#txt_agent_status_agent').html(_config.MESSAGE.AGENT_GROUPS.TXT_AGENT_STATUS_AGENT);
         $('#txt_agent_updateby').html(_config.MESSAGE.AGENT_GROUPS.TXT_AGENT_UPDATE_BY);
         $('#txt_agent_updateday').html(_config.MESSAGE.AGENT_GROUPS.TXT_AGENT_UPDATE_DAY);

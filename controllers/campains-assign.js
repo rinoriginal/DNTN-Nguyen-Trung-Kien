@@ -1,28 +1,3 @@
-//_Users.create({
-//    name: "aaa",
-//    password: "aaa",
-//    displayName: "Leader group 5",
-//    agentGroupLeaders: [
-//        {
-//            group: '56b31f245c76cf410a99f385'
-//        }
-//    ],
-//});
-//
-//for(var i = 1; i <= 10; i++){
-//    _Users.create({
-//        name: "aaa",
-//        password: "aaa",
-//        displayName: "Agent "+i+" group 5",
-//        agentGroupMembers: [
-//            {
-//                group: '56b31f245c76cf410a99f385'
-//            }
-//        ],
-//    });
-//}
-
-
 exports.index = {
     json: function (req, res) {
         var page = _.has(req.query, 'page') ? parseInt(req.query.page) : 1;

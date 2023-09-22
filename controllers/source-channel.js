@@ -1,6 +1,4 @@
 
-
-// GET
 exports.index = {
     json: function (req, res) {
         var page = _.has(req.query, 'page') ? parseInt(req.query.page) : 1;

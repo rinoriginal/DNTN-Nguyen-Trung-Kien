@@ -64,15 +64,6 @@ var DFT = function ($) {
             var params= {};
             params.status=1;
             params.idCompany= $('#idCompany').find(":selected").val();
-            $('#trunk').empty().selectpicker('refresh');
-
-            $.get("/trunk?"+ $.param(params), function(resp){
-                if(resp.code==200){
-                    _.each(resp.data, function(g, i){
-                        $('#trunk').append(newOption(g)).selectpicker('refresh');
-                    });
-                }
-            })
 
             $('#agents').empty();
 

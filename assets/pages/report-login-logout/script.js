@@ -1,109 +1,122 @@
-
 var DFT = function ($) {
-	var queryFilter = function () {
-		var _data = $('#form').serializeJSON();
-		var listFilter = _.chain(_.keys(_data))
-			.reduce(function (memo, item) {
-				if(!_.isEqual(_data[item], ''))
-					memo[item.replace("filter_", "")] = _data[item];
-				return memo;
-			}, {})
-			.value();
-
-		window.location.hash = newUrl(window.location.hash.replace('#', ''), listFilter);
-	};
-
-	var bindClick = function () {
-		$(document).on('click', '#filter-btn', function () {
-			queryFilter();
+  function bindClick() {
+    $('#export_excel_total').on('click', function (e) {
+			getFilter(true, 'total');
 		});
-		$('#exportexcel').on('click', function () {
-			var currentDate = moment().format('DD-MM-YYYY');
-			var exportexcel = tableToExcel('exceldata', 'Detailed Report');
-			$(this).attr('download', currentDate + '_LoginLogoutReport.xls');
-			$(this).attr('href', exportexcel);
+    $('#search_data').on('click', function () {
+			getFilter();
+			getFilter(false, 'by-day');
+			// fetchDataChart();
 		});
-		$('#exportexcelgroupbyday').on('click', function (e) {
-/*			var currentDate = moment().format('DD-MM-YYYY');
-			var exportexcel = tableToExcel('exceldatagroupbyday', 'Detailed Report Group By Day');
-			$(this).attr('download', currentDate + '_LoginLogoutReportGroupByDay.xls');
-			$(this).attr('href', exportexcel);*/
-			tableHtmlToExcel.bind(this)('exceldatagroupbyday', 'Detailed Report Group By Day');
+    $('#export_excel_by_time').on('click', function (e) {
+			getFilter(true, 'by-day');
 		});
-	};
+  }
 
-	/**
-	 *
-	 * @param idTable id of table data
-	 * @param sheetName
-	 * @param fileName Optional
-	 */
-	var tableHtmlToExcel = function(idTable, sheetName, fileName) {
-		if (!fileName) {
-			fileName = moment().format('DD-MM-YYYY') + '_' + (sheetName.replace(/\s/g,'')) + '.xls';
+  // Lấy dữ liệu
+	function getFilter(exportExcel, type) {
+		var filter = {};
+
+		var filter = _.chain($('.input')).reduce(function (memo, input) {
+			if (!_.isEqual($(input).val(), '') && !_.isEqual($(input).val(), null)) {
+				memo[input.name] = $(input).val();
+			}
+			return memo;
+		}, {}).value();
+
+		if (!exportExcel) {
+			$('#table_total').empty();
+			$('#table_by_day').empty();
 		}
-		var exportexcel = tableToExcel(idTable, sheetName);
-		$(this).attr('download', fileName);
-		$(this).attr('href', exportexcel);
-	};
 
-	var bindTextValue = function () {
-		_.each(_.allKeys(_config.MESSAGE.REPORT_LOGIN_LOGOUT), function (item) {
-			$('.' + item).html(_config.MESSAGE.REPORT_LOGIN_LOGOUT[item]);
-		});
-	};
+		if (exportExcel) filter.exportExcel = true;
+		if (type) filter.type = type;
+		_Ajax('/report-login-logout?' + $.param(filter), 'GET', [], function (resp) {
+			if (!resp || resp.code !== 200) {
+				return swal({ title: 'Cảnh báo!', text: resp.message ? resp.message : 'Có lỗi xảy ra!' });
+			}
 
-	var msToTime = function(s) {
-		if(s == 0) return '00:00:00';
-		var ms = s % 1000;
-		s = (s - ms) / 1000;
-		var secs = s % 60;
-		s = (s - secs) / 60;
-		var mins = s % 60;
-		var hrs = (s - mins) / 60;
-		return _.pad(hrs, 2, '0') + ':' + _.pad(mins, 2, '0') + ':' + _.pad(secs, 2, '0');
-	};
+			if (!exportExcel) {
+				if(type === 'by-day'){
+					loadDataByDay(resp.data)
+				}
+				else{
+					loadDataTotal(resp.data);
+					drawCharts(resp.data)
+				}
+				return;
+			}
 
-	/**
-	 *
-	 * @param timeline array time status
-	 * @param idSelector
-	 */
-	function drawTimelineChar(timeline, idSelector) {
-		var dataTable = new google.visualization.DataTable();
-		dataTable.addColumn({
-			type: 'string',
-			id: 'Name'
-		});
-		dataTable.addColumn({
-			type: 'string',
-			id: 'Status'
-		});
-		dataTable.addColumn({
-			type: 'string',
-			id: 'Tooltip',
-			role: 'tooltip',
-			'p': {
-				'html': true
+			if (exportExcel) {
+				return downloadFromUrl(resp.linkFile);
 			}
 		});
-		dataTable.addColumn({
-			type: 'string',
-			role: 'style'
+	};
+
+	function loadDataByDay(data) {
+		var rowHtml = '';
+		data.forEach((item, index) =>{
+			rowHtml += `
+				<tr>
+					<td colspan="5" class="text-center">
+						<h4 class="lvh-label hidden-xs" style="font-weight: bold; display: ${index > 0 && data[index]._id.date == data[index-1]._id.date ? 'none' : 'block'}">
+							${item._id.date || ''}
+						</h4>
+					</td>
+				</tr>
+     		<tr>
+				<td class="text-center">${item.displayName}</td>
+				<td class="text-center">${moment(item.LoginDateTime).format('HH:mm DD/MM/YYYY')}</td>
+				<td class="text-center">${moment(item.LogoutDateTime).format('HH:mm DD/MM/YYYY')}</td>
+				<td class="text-center">${hms(item.totalDuration)}</td>
+				<td class="text-center">${hms(item.avgDuration)}</td>
+			</tr>`;
+		})
+		$('#table_by_day').html(rowHtml);
+	}
+
+	function loadDataTotal(data){
+		let rowHtml = ''
+		data.forEach(item => {
+			rowHtml += `
+				<tr>
+					<td class="text-center">${item.displayName}</td>
+					<td class="text-center">${moment(item.LoginDateTime).format('HH:mm DD/MM/YYYY')}</td>
+					<td class="text-center">${moment(item.LogoutDateTime).format('HH:mm DD/MM/YYYY')}</td>
+					<td class="text-center">${hms(item.totalDuration)}</td>
+					<td class="text-center">${hms(item.avgDuration)}</td>
+				</tr>
+      `;
 		});
-		dataTable.addColumn({
-			type: 'date',
-			id: 'Start'
-		});
-		dataTable.addColumn({
-			type: 'date',
-			id: 'End'
-		});
-		var rows = [];
+		$('#table_total').html(rowHtml);
+	}
+
+	function drawCharts(timelineData) {
+		if ((typeof google === 'undefined') || (typeof google.visualization === 'undefined')) {
+			google.charts.load("current", { packages: ["timeline"], 'language': 'vi' });
+			return;
+		}
+
+		if (timelineData) {
+			// hiển thị dữ liệu tổng
+			drawTimelineChar(timelineData, 'timelines');
+		}
+	};
+
+	function drawTimelineChar(timeline, idSelector) {
+		let dataTable = new google.visualization.DataTable();
+		dataTable.addColumn({ type: 'string', id: 'Name' });
+		dataTable.addColumn({ type: 'string', id: 'Status' });
+		dataTable.addColumn({ type: 'string', id: 'Tooltip', role: 'tooltip', 'p': { 'html': true } });
+		dataTable.addColumn({ type: 'string', role: 'style' });
+		dataTable.addColumn({ type: 'date', id: 'Start' });
+		dataTable.addColumn({ type: 'date', id: 'End' });
+
+		let rows = [];
 
 		// Hacked to String Object to get Date from ISO String
 		if (!String.prototype.getTime) {
-			String.prototype.getTime = function() {
+			String.prototype.getTime = function () {
 				var self = this;
 				var _d = moment(self.toString());
 				if (_d.isValid()) {
@@ -113,114 +126,90 @@ var DFT = function ($) {
 			};
 		}
 
-		timeline.map(function(time) {
-			function getStyleTooltip(stt) {
-				var color = 'color: #000000';
-				switch (stt.status) {
-					case 'Sẵn sàng phục vụ':
-						color = 'color: #42B72A';
-						break;
-					case 'Không sẵn sàng':
-						color = 'color: #DB4437';
-						break;
-					case 'Nghỉ trưa':
-						color = 'color: #F4B400';
-						break;
-					case 'Missing':
-						color = 'color: #4F5148';
-						break;
-					default:
-						color = 'color: #000000';
-				}
-				var tooltip = '<div style="padding: 5px; min-width: 200px !important;">' +
-					'<h4>' + stt.status.toString() + '</h4>' +
-					'<hr />' +
-					'<b>Thời gian: </b>' + moment(stt.start).format('HH:mm:ss') + ' - ' + moment(stt.end).format('HH:mm:ss') + '<br />' +
-					'<b>Thời lượng: </b>' + moment.utc(moment(stt.end).diff(moment(stt.start))).format("HH:mm:ss");
-					'</div>';
-				return {
-					color,
-					tooltip
-				};
-			}
-			time.status = _.sortBy(time.status, function(stt) {
-				return stt.startTime.getTime();
-			});
-			var sttLen = time.status.length;
-			for (var i = 0; i < sttLen; i++) {
-				var statusI = time.status[i];
+		timeline.forEach((el) => {
+			el.status.forEach((item) => {
 				var stt = {
-					name: time.agent.name.toString(),
-					status: statusI.status.toString(),
-					start: statusI.startTime.getTime(),
-					end: statusI.endTime.getTime()
+					name: el.displayName.toString(),
+					status: item.event.toString(),
+					start: item.startTime,
+					end: item.endTime,
 				};
-				if (statusI.endReason !== 'logout') { // Trạng thái cuối của chuỗi liên tục
-					// Tìm cho tới khi đổi trạng thái
-					for (var j = i + 1; j < sttLen; j++) {
-						var statusJ = time.status[j];
-						stt.end = statusJ.startTime.getTime();
-						// Cùng trạng thái
-						if (statusI.status == statusJ.status) {
-							stt.end = statusJ.endTime.getTime();
-							i = j;
-						} else {
-							break;
-						}
-					}
-				}
+
 				var tmp = getStyleTooltip(stt);
 				stt.color = tmp.color;
 				stt.tooltip = tmp.tooltip;
 				rows.push(stt);
-			}
+			});
 		});
-		$('#' + idSelector).height(_.uniq(rows, function(r) {
-				return r.name;
-			}).length * 50 + 50);
+
+		$('#' + idSelector).height(_.uniq(rows, function (r) {
+			return r.name;
+		}).length * 50 + 50);
+
 		var container = document.getElementById(idSelector);
 		var chart = new google.visualization.Timeline(container);
 		var chartRows = [];
-		rows.map(function(r) {
+
+		rows.map(function (r) {
 			var start = moment(r.start)._d;
 			var end = moment(r.end)._d;
 			chartRows.push([r.name, r.status, r.tooltip, r.color, start, end]);
 		});
+
 		dataTable.addRows(chartRows);
+
 		var options = {
 			avoidOverlappingGridLines: false,
-			tooltip: {
-				isHtml: true
-			}
+			tooltip: { isHtml: true },
+			timeline: { showBarLabels: false }
 		};
+
 		return chart.draw(dataTable, options);
 	}
 
-	/**
-	 *
-	 */
-	var drawCharts = function() {
-		if ((typeof google === 'undefined') || (typeof google.visualization === 'undefined')) {
-			google.charts.load("current", {packages: ["timeline"], 'language': 'vi'});
-			google.charts.setOnLoadCallback(drawCharts);
-		} else {
-			if (typeof timeline !== 'undefined') {
-				drawTimelineChar(timeline, 'timelines');
-			}
-			if (typeof  timelineByDay !== 'undefined') {
-				timelineByDay.map(function(timeline) {
-					var time = timeline._id;
-					var selector = "chart" + "-" + time.day + "-" + time.month + "-" + time.year;
-					drawTimelineChar(timeline.timelines, selector);
-				});
-			}
-		}
+	function getStyleTooltip(stt) {
+		let color = 'color: #42B72A';
+		let time = moment(stt.start).format('HH:mm:ss DD/MM/YYYY') + ' - ' + moment(stt.end).format('HH:mm:ss DD/MM/YYYY');
+		let duration = moment.utc(moment(stt.end).diff(moment(stt.start))).format("HH:mm:ss");
+
+		let tooltip = `
+			<div style="padding: 5px; width: 320px !important;">
+				<b>Thời gian: </b>${time}
+				<br />
+				<b>Thời lượng: </b>${duration}
+			</div>
+		`;
+
+		return { color, tooltip };
+	}
+
+	function hms(secs){
+		if (isNaN(secs)) return "00:00:00"
+        var sec = Math.ceil(secs / 1000);
+        var minutes = Math.floor(sec / 60);
+        sec = sec % 60;
+        var hours = Math.floor(minutes / 60)
+        minutes = minutes % 60;
+        return hours + ":" + pad(minutes) + ":" + pad(sec);
+	}
+
+	function pad(num) {
+		return ("0" + num).slice(-2);
+	}
+
+  function bindTextValue() {
+		_.each(_.allKeys(_config.MESSAGE.REPORT_LOGIN_LOGOUT), function (item) {
+			$('.' + item).html(_config.MESSAGE.REPORT_LOGIN_LOGOUT[item]);
+		});
 	};
 
-	return {
-		init: function () {
-			bindClick();
-			bindTextValue();
+  return {
+    init: function () {
+      bindClick();
+      bindTextValue();
+
+      // Config google chart
+			google.charts.load("current", { packages: ["timeline"], 'language': 'vi' });
 
 			$('.multi-date-picker').datepicker({
 				multidate: 2,
@@ -228,35 +217,9 @@ var DFT = function ($) {
 				format: 'dd/mm/yyyy',
 				todayHighlight: true
 			});
-
-			if ($('.pagination')[0]) {
-				delete window.location.obj.page;
-				var _url = $.param(window.location.obj);
-				$('.pagination a').each(function (i, v) {
-					$(v).attr('href', $(v).attr('href') + '&' + _url);
-				});
-			}
-
-			_.each($.deparam(window.location.hash.split('?')[1] || ''), function (v, k) {
-				var el = $('#' + k.replace(['[]'], ''));
-				if (el[0]) {
-					switch (el.prop('tagName')) {
-						case 'INPUT':
-							el.val(v);
-							break;
-						case 'SELECT':
-							el.val(v);
-							if (el.is('.selectpicker')) el.selectpicker('refresh');
-							if(el.chosen) el.trigger("chosen:updated");
-							break;
-					}
-				}
-			});
-
-			drawCharts();
-		},
-		uncut: function () {
+    },
+    uncut: function () {
 			$(document).off('click', '#exportexcel');
 		}
-	};
+  }
 }(jQuery);

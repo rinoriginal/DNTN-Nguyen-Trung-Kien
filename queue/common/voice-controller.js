@@ -1,7 +1,4 @@
 
-
-var publish = require(path.join(_rootPath, 'queue', 'publish', 'voice-publish.js'));
-
 var createLoginRequest = function(user, cb){
     var mes = {
         messageType: 1,

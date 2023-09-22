@@ -1,5 +1,4 @@
 
-
 var syncManager = require(path.join(_rootPath, 'monitor', 'sync-customer.js'));
 
 exports.index = {

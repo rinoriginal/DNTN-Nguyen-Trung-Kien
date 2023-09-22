@@ -48,11 +48,11 @@ exports.index = {
 
 		_async.parallel({
 			companies: function (next) {
-				var _query = req.session.auth.company ? (req.session.auth.company.group ? { status: 9999 } : { _id: req.session.auth.company._id }) : {};
+				var _query = req.session.auth.company ? { _id: req.session.auth.company._id } : {};
 				_Company.find(_query, next);
 			},
 			skills: function (next) {
-				var _query = req.session.auth.company ? (req.session.auth.company.group ? { status: 9999 } : { idCompany: req.session.auth.company._id }) : {};
+				var _query = req.session.auth.company ? { idCompany: req.session.auth.company._id } : {};
 				_Skills.find(_query, next);
 			}
 		}, function (err, result) {
@@ -69,7 +69,7 @@ exports.index = {
 			if (query['status']) _query['status'] = query['status'];
 			if (query['queueNumber']) _query['queueNumber'] = query['queueNumber'];
 
-			var _query2 = req.session.auth.company ? (req.session.auth.company.group ? { status: 9999 } : { idCompany: req.session.auth.company._id }) : {};
+			var _query2 = req.session.auth.company ? { idCompany: req.session.auth.company._id } : {};
 
 			_Services
 				.find({ $and: [_query, _query2] })
@@ -102,9 +102,7 @@ exports.new = function (req, res) {
 			// Truy vấn danh sách công ty và kỹ năng liên quan
 			var aggregate = [];
 			var _query = req.session.auth.company
-				? (req.session.auth.company.group
-					? { status: 9999 }
-					: { _id: new mongodb.ObjectId(req.session.auth.company._id) })
+				? { _id: new mongodb.ObjectId(req.session.auth.company._id) }
 				: {};
 			aggregate.push({ $match: { $and: [_query, { status: 1 }] } });
 			aggregate.push({
@@ -170,7 +168,7 @@ exports.edit = function (req, res) {
 		companies: function (next) {
 			// Truy vấn danh sách công ty và kỹ năng liên quan
 			var aggregate = [];
-			var _query = req.session.auth.company ? (req.session.auth.company.group ? { status: 9999 } : { _id: new mongodb.ObjectId(req.session.auth.company._id) }) : {};
+			var _query = req.session.auth.company ? { _id: new mongodb.ObjectId(req.session.auth.company._id) } : {};
 			aggregate.push({ $match: { $and: [_query, { status: 1 }] } });
 			aggregate.push({ $lookup: { from: 'skills', localField: '_id', foreignField: 'idCompany', as: 'skills' } });
 			_Company.aggregate(aggregate, next);

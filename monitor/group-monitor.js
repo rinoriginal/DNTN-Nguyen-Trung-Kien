@@ -1,6 +1,4 @@
 
-
-
 var groupManager = require(path.join(_rootPath, 'monitor', 'manager.js'));
 
 module.exports = function(group) {
