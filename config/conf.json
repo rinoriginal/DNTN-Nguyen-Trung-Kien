@@ -46,6 +46,11 @@
 		"host": "localhost",
 		"port": "6379"
 	},
+	"ipRecording" : {
+		"ip" : "https://crmdata.telehub.vn/api",
+		"user" : "0969684716",
+		"pass" : "123456"
+	},
 	"cisco": {
 		"ipApi": "https://172.16.86.244",
 		"username": "ccadmin@bhs.local",

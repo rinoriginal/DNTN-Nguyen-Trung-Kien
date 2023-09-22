@@ -8,6 +8,11 @@
             "TEXT_CONFIRM_DELETE_MANY_SKILL": "Các kỹ năng này sẽ bị xóa bỏ",
             "TEXT_SUCCESS_DELETE_MANY_SKILL": "Kỹ năng đã được xoá"
         },
+        "REPORT_CALL_MONITOR_HISTORIES": {
+            "TXT_FILENAME": "Tên file",
+            "TXT_CREAT": "Thời gian xuất",
+            "TXT_ACTION": "Tác vụ"
+        },
         "COMPANY": {
             "TEXT_COMPANY_NAME": "Tên công ty",
             "TEXT_COMPANY_PROFILE": "Company Profile",
